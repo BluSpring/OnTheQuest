@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/empty_map"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 15
+      },
+      "model": "questsmp:map_shard"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 16
+      },
+      "model": "questsmp:map"
+    }
+  ]
+}
