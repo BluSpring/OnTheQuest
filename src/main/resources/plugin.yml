@@ -1,0 +1,7 @@
+name: OnTheQuest
+version: '${version}'
+main: xyz.bluspring.onthequest.OnTheQuest
+api-version: 1.19
+authors: [ BluSpring ]
+description: Custom plugin made for the Quest SMP.
+website: https://bluspring.xyz
