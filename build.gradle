@@ -31,15 +31,12 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     compileOnly "io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT"
-
-    implementation "dev.jorel:commandapi-shade:8.7.0"
 }
 
 shadowJar {
     relocate "org.jetbrains", "xyz.bluspring.shade.onthequest.jetbrains"
     relocate "kotlin", "xyz.bluspring.shade.onthequest.kotlin"
     relocate "kotlinx", "xyz.bluspring.shade.onthequest.kotlinx"
-    relocate "dev.jorel.commandapi", "xyz.bluspring.shade.onthequest.commandapi"
 }
 
 def targetJavaVersion = 17
