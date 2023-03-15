@@ -1,11 +1,9 @@
 package xyz.bluspring.onthequest.generation
 
-import io.github.bananapuncher714.nbteditor.NBTEditor
 import net.kyori.adventure.text.Component
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.MapMeta
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
 import java.lang.IllegalStateException
