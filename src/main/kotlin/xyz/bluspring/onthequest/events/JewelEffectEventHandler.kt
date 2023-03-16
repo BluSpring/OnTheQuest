@@ -60,7 +60,7 @@ class JewelEffectEventHandler : Listener {
 
                 activeJewels[ev.player]!!.remove(jewelType)
             }
-        } while (false)
+        } while (false) // don't loop
 
         // Register newly held items
         if (item != null) {
