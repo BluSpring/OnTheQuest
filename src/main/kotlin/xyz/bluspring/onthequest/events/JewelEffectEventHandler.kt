@@ -18,6 +18,8 @@ import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
+import xyz.bluspring.onthequest.util.DataContainerUtil
+import xyz.bluspring.onthequest.util.StringArrayDataType
 
 class JewelEffectEventHandler : Listener {
     private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
@@ -32,17 +34,16 @@ class JewelEffectEventHandler : Listener {
         }, 0L, 10L) // don't need to run this all the damn time
     }
 
-    private fun getJewelType(item: ItemStack): JewelType? {
+    private fun getJewelTypes(item: ItemStack): List<JewelType>? {
         if (!item.hasItemMeta())
             return null
 
         val meta = item.itemMeta
         val data = meta.persistentDataContainer
 
-        if (!data.has(Jewels.JEWEL_TYPE_KEY))
-            return null
+        val list = DataContainerUtil.parseKeys(Jewels.JEWEL_TYPE_KEY, data)
 
-        return Jewels.REGISTRY.get(NamespacedKey.fromString(data.get(Jewels.JEWEL_TYPE_KEY, PersistentDataType.STRING)!!)!!)
+        return list.map { Jewels.REGISTRY.get(it)!! }
     }
 
     @EventHandler
@@ -64,47 +65,51 @@ class JewelEffectEventHandler : Listener {
         do {
             // Unregister previously held items
             if (oldItem != null) {
-                val jewelType = getJewelType(oldItem) ?: break
+                val jewelTypes = getJewelTypes(oldItem) ?: break
 
                 if (!activeJewels.contains(ev.player))
                     break
 
-                activeJewels[ev.player]!!.remove(jewelType)
+                activeJewels[ev.player]!!.removeAll(jewelTypes.toSet())
             }
         } while (false) // don't loop
 
         // Register newly held items
         if (item != null) {
-            val jewelType = getJewelType(item) ?: return
+            val jewelTypes = getJewelTypes(item) ?: return
 
-            if (jewelType.materials.contains(item.type) || jewelType.effectsWhenHeld) {
-                if (!activeJewels.contains(ev.player))
-                    activeJewels[ev.player] = mutableSetOf()
+            jewelTypes.forEach { jewelType ->
+                if (jewelType.materials.contains(item.type) || jewelType.effectsWhenHeld) {
+                    if (!activeJewels.contains(ev.player))
+                        activeJewels[ev.player] = mutableSetOf()
 
-                activeJewels[ev.player]!!.add(jewelType)
+                    activeJewels[ev.player]!!.add(jewelType)
+                }
             }
         }
     }
 
     // Armor handling, because Bukkit has like 12 different events just to deal with armor.
     private fun tryAddArmorJewel(player: Player, item: ItemStack, slot: EquipmentSlot) {
-        val jewelType = getJewelType(item) ?: return
+        val jewelTypes = getJewelTypes(item) ?: return
 
-        if (jewelType.materials.contains(item.type) || jewelType.slots.contains(slot)) {
-            if (!activeJewels.contains(player))
-                activeJewels[player] = mutableSetOf()
+        jewelTypes.forEach { jewelType ->
+            if (jewelType.materials.contains(item.type) || jewelType.slots.contains(slot)) {
+                if (!activeJewels.contains(player))
+                    activeJewels[player] = mutableSetOf()
 
-            activeJewels[player]!!.add(jewelType)
+                activeJewels[player]!!.add(jewelType)
+            }
         }
     }
 
     private fun tryRemoveArmorJewel(player: Player, item: ItemStack) {
-        val jewelType = getJewelType(item) ?: return
+        val jewelTypes = getJewelTypes(item) ?: return
 
         if (!activeJewels.contains(player))
             return
 
-        activeJewels[player]!!.remove(jewelType)
+        activeJewels[player]!!.removeAll(jewelTypes.toSet())
     }
 
     @EventHandler

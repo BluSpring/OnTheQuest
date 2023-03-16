@@ -25,6 +25,7 @@ class OnTheQuest : JavaPlugin() {
 
         this.server.pluginManager.registerEvents(CustomMapEventHandler(), this)
         this.server.pluginManager.registerEvents(JewelEffectEventHandler(), this)
+        this.server.pluginManager.registerEvents(JewelCraftingEventHandler(), this)
         Jewels.init()
 
         commandAPICommand("give-jewel") {
