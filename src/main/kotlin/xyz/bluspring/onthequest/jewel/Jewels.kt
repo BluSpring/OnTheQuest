@@ -11,6 +11,7 @@ import xyz.bluspring.onthequest.util.ToolType
 
 object Jewels {
     val REGISTRY: Registry<JewelType> = MappedRegistry()
+    val JEWEL_TYPE_KEY = NamespacedKey("questsmp", "jewel_type")
 
     val EARTH = register(
         JewelType(
@@ -92,9 +93,8 @@ object Jewels {
     )
 
     val AVATAR = register(
-        JewelType(
+        AvatarJewelType(
             key("avatar_jewel"),
-            listOf(),
             21,
             effectsWhenHeld = true
         )
