@@ -13,6 +13,11 @@ object Jewels {
     val REGISTRY: Registry<JewelType> = MappedRegistry()
     val JEWEL_TYPE_KEY = NamespacedKey("questsmp", "jewel_type")
 
+    fun init() {
+        // lol, he cried.
+        // lmao, he sobbed.
+    }
+
     val EARTH = register(
         JewelType(
             key("earth_jewel"),

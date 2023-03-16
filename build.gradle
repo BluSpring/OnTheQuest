@@ -31,12 +31,16 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     compileOnly "io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT"
+
+    implementation "dev.jorel:commandapi-kotlin:8.8.0"
+    implementation "dev.jorel:commandapi-shade:8.8.0"
 }
 
 shadowJar {
     relocate "org.jetbrains", "xyz.bluspring.shade.onthequest.jetbrains"
     relocate "kotlin", "xyz.bluspring.shade.onthequest.kotlin"
     relocate "kotlinx", "xyz.bluspring.shade.onthequest.kotlinx"
+    relocate "dev.jorel", "xyz.bluspring.shade.onthequest.jorel"
 }
 
 def targetJavaVersion = 17
@@ -53,6 +57,13 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release = targetJavaVersion
     }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "17"
 }
 
 processResources {

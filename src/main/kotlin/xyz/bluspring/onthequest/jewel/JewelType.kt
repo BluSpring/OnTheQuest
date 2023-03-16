@@ -1,5 +1,7 @@
 package xyz.bluspring.onthequest.jewel
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Keyed
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -29,6 +31,12 @@ open class JewelType(
         val itemStack = ItemStack(Material.EMERALD, count)
 
         val meta = itemStack.itemMeta
+
+        meta.displayName(
+            Component
+                .translatable("item.${key.namespace}.${key.key}")
+                .decoration(TextDecoration.ITALIC, false)
+        )
         meta.setCustomModelData(modelId)
         meta.persistentDataContainer.set(Jewels.JEWEL_TYPE_KEY, PersistentDataType.STRING, id.toString())
 

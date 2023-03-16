@@ -7,6 +7,10 @@ import org.bukkit.Registry
 class MappedRegistry<T : Keyed> : Registry<T> {
     private val map = mutableMapOf<NamespacedKey, T>()
 
+    fun keys(): Collection<NamespacedKey> {
+        return map.keys
+    }
+
     override fun iterator(): MutableIterator<T> {
         return map.values.iterator()
     }
