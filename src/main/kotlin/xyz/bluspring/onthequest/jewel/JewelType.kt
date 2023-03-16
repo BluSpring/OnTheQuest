@@ -5,6 +5,8 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
 
 open class JewelType(
@@ -21,5 +23,17 @@ open class JewelType(
 
     open fun apply(player: Player) {
         player.addPotionEffects(effects)
+    }
+
+    open fun getItem(count: Int = 1): ItemStack {
+        val itemStack = ItemStack(Material.EMERALD, count)
+
+        val meta = itemStack.itemMeta
+        meta.setCustomModelData(modelId)
+        meta.persistentDataContainer.set(Jewels.JEWEL_TYPE_KEY, PersistentDataType.STRING, id.toString())
+
+        itemStack.itemMeta = meta
+
+        return itemStack
     }
 }

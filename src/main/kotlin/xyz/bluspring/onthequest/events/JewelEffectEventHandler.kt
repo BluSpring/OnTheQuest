@@ -15,11 +15,22 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 
 class JewelEffectEventHandler : Listener {
     private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
+
+    init {
+        OnTheQuest.plugin.server.scheduler.runTaskTimer(OnTheQuest.plugin, Runnable {
+            activeJewels.forEach { (player, jewels) ->
+                jewels.forEach { jewel ->
+                    jewel.apply(player)
+                }
+            }
+        }, 0L, 10L) // don't need to run this all the damn time
+    }
 
     private fun getJewelType(item: ItemStack): JewelType? {
         if (!item.hasItemMeta())
