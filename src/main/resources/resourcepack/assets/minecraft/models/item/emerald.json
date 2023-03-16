@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/emerald"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 15
+      },
+      "model": "questsmp:jewels/earth"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 16
+      },
+      "model": "questsmp:jewels/fire_resistance"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 17
+      },
+      "model": "questsmp:jewels/haste"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 18
+      },
+      "model": "questsmp:jewels/invisibility"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 19
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 20
+      },
+      "model": "questsmp:jewels/strength"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 21
+      },
+      "model": "questsmp:jewels/avatar"
+    }
+  ]
+}
