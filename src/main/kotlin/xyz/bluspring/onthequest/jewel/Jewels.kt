@@ -31,7 +31,7 @@ object Jewels {
         JewelType(
             key("strength_jewel"),
             listOf(
-                PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 0)
+                PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 1)
             ),
             20,
             materials = mutableListOf<Material>().apply {
