@@ -19,11 +19,16 @@ class CustomMapEventHandler : Listener {
         if (item.type != Material.MAP)
             return
 
-        if (item.itemMeta.hasCustomModelData() && item.itemMeta.customModelData == 16) {
-            ev.setUseItemInHand(Event.Result.ALLOW)
+        if (item.itemMeta.hasCustomModelData()) {
+            if (item.itemMeta.customModelData == 16) {
+                ev.setUseItemInHand(Event.Result.ALLOW)
 
-            val stack = MapChestManager.generate(ev.player)
-            ev.player.inventory.setItem(ev.hand ?: EquipmentSlot.HAND, stack)
+                val stack = MapChestManager.generate(ev.player)
+                ev.player.inventory.setItem(ev.hand ?: EquipmentSlot.HAND, stack)
+            } else if (item.itemMeta.customModelData == 15) {
+                // map shards
+                ev.setUseItemInHand(Event.Result.DENY)
+            }
         }
     }
 }
