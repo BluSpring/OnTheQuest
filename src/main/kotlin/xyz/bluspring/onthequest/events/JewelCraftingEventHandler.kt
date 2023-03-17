@@ -5,6 +5,7 @@ import io.papermc.paper.event.block.BeaconActivatedEvent
 import io.papermc.paper.event.block.BeaconDeactivatedEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.*
 import org.bukkit.block.Beacon
 import org.bukkit.entity.EntityType
@@ -25,7 +26,7 @@ import xyz.bluspring.onthequest.util.StringArrayDataType
 
 class JewelCraftingEventHandler : Listener {
     @EventHandler
-    fun onAnvilCraft(ev: PrepareAnvilEvent) {
+    fun onAnvilPrepare(ev: PrepareAnvilEvent) {
         if (ev.inventory.secondItem != null && ev.inventory.firstItem != null) {
             val item = ev.inventory.secondItem!!
 
@@ -53,7 +54,12 @@ class JewelCraftingEventHandler : Listener {
                 }
             }
 
+            val cost = (jewelTypes.size * 1.125).toInt()
             ev.result = resultItem
+            // what the FUCK
+            OnTheQuest.plugin.server.scheduler.runTask(OnTheQuest.plugin, Runnable {
+                ev.inventory.repairCost = cost
+            })
         }
     }
 
@@ -68,8 +74,21 @@ class JewelCraftingEventHandler : Listener {
         meta.persistentDataContainer.set(Jewels.JEWEL_TYPE_KEY, StringArrayDataType(), list.map { it.toString() }.toTypedArray())
 
         meta.lore(mutableListOf<Component>().apply {
+            add(
+                Component
+                    .text("Applied Jewels:")
+                    .color(NamedTextColor.WHITE)
+                    .decoration(TextDecoration.ITALIC, false)
+                    .decoration(TextDecoration.UNDERLINED, true)
+            )
+
             list.forEach {
-                add(Component.translatable("item.${it.namespace}.${it.key}").color(NamedTextColor.DARK_PURPLE))
+                add(
+                    Component
+                        .translatable("item.${it.namespace}.${it.key}")
+                        .color(NamedTextColor.DARK_PURPLE)
+                        .decoration(TextDecoration.ITALIC, false)
+                )
             }
         })
 
