@@ -1,15 +1,21 @@
 package xyz.bluspring.onthequest.events
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent.SlotType
+import io.papermc.paper.event.block.BeaconActivatedEvent
+import io.papermc.paper.event.block.BeaconDeactivatedEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Location
+import org.bukkit.*
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
+import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.DataContainerUtil
@@ -71,4 +77,79 @@ class JewelCraftingEventHandler : Listener {
     }
 
     // Beacon crafting handles
+    private val beacons = mutableSetOf<Location>()
+
+    init {
+        OnTheQuest.plugin.server.scheduler.runTaskTimer(OnTheQuest.plugin, Runnable {
+            beacons.forEach {
+                if (!it.isChunkLoaded)
+                    return@forEach
+
+                scanBeaconForJewels(it.add(0.0, 1.0, 0.0))
+            }
+        }, 0L, 35L)
+    }
+
+    private fun scanBeaconForJewels(pos: Location) {
+        val entities = pos.getNearbyEntitiesByType(Item::class.java, 1.75, 1.0)
+
+        if (entities.isEmpty())
+            return
+
+        val entitiesToRemove = mutableListOf<Item>()
+        val foundJewelTypes = mutableSetOf<JewelType>()
+        entities.forEach {
+            val stack = it.itemStack
+
+            if (!stack.hasItemMeta())
+                return@forEach
+
+            val meta = stack.itemMeta
+            if (!meta.persistentDataContainer.has(Jewels.JEWEL_TYPE_KEY))
+                return@forEach
+
+            val jewelTypeId = NamespacedKey.fromString(meta.persistentDataContainer.get(Jewels.JEWEL_TYPE_KEY, PersistentDataType.STRING)!!) ?: return@forEach
+            val jewelType = Jewels.REGISTRY.get(jewelTypeId) ?: return@forEach
+
+            if (jewelType == Jewels.AVATAR)
+                return@forEach
+
+            if (!foundJewelTypes.contains(jewelType)) {
+                foundJewelTypes.add(jewelType)
+                entitiesToRemove.add(it)
+            }
+        }
+
+        if (foundJewelTypes.size < Jewels.REGISTRY.toList().size - 1)
+            return
+
+        pos.world.spawnParticle(Particle.END_ROD, pos, 75, .05, .02, .05, .1)
+
+        pos.world.playSound(pos, Sound.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, .4F, 1.6F)
+        pos.world.playSound(pos, Sound.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 2.4F, 1.0F)
+        pos.world.playSound(pos, Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, 2.4F, 1.1F)
+
+        pos.add(0.0, -1.0, 0.0).block.type = Material.AIR
+
+        val avatarItemEntity = pos.world.spawnEntity(pos.add(0.0, 0.5, 0.0), EntityType.DROPPED_ITEM, false) as Item
+        val avatarItem = Jewels.AVATAR.getItem(1)
+
+        avatarItemEntity.itemStack = avatarItem
+    }
+
+    @EventHandler
+    fun onBeaconActivate(ev: BeaconActivatedEvent) {
+        val pos = ev.block.location
+
+        // theoretically, this shouldn't run more than once before a BeaconDeactivatedEvent happens.
+        beacons.add(pos)
+
+        scanBeaconForJewels(pos.add(0.0, 1.0, 0.0))
+    }
+
+    @EventHandler
+    fun onBeaconDeactivate(ev: BeaconDeactivatedEvent) {
+        val pos = ev.block.location
+        beacons.removeIf { it.blockX == pos.blockX && it.blockY == pos.blockY && it.blockZ == pos.blockZ }
+    }
 }
