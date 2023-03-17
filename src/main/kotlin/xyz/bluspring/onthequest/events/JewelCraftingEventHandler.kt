@@ -83,11 +83,17 @@ class JewelCraftingEventHandler : Listener {
     init {
         OnTheQuest.plugin.server.scheduler.runTaskTimer(OnTheQuest.plugin, Runnable {
             beacons.forEach {
-                if (!it.isChunkLoaded)
+                if (!it.isChunkLoaded) {
+                    beaconsToRemove.add(it)
                     return@forEach
+                }
 
                 scanBeaconForJewels(it)
             }
+
+            // Due to concurrency issues, we need to remove it here.
+            beacons.removeAll(beaconsToRemove.toSet())
+            beaconsToRemove.clear()
         }, 0L, 35L)
     }
 
@@ -133,6 +139,10 @@ class JewelCraftingEventHandler : Listener {
         pos.world.playSound(pos, Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, 2.4F, 1.1F)
 
         beaconsToRemove.add(pos)
+
+        entitiesToRemove.forEach {
+            it.remove()
+        }
 
         val avatarItemEntity = pos.world.spawnEntity(pos.clone().add(0.0, 0.5, 0.0), EntityType.DROPPED_ITEM, false) as Item
         val avatarItem = Jewels.AVATAR.getItem(1)
