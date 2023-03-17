@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     id 'com.github.johnrengelman.shadow' version '7.1.1'
     id "xyz.jpenilla.run-paper" version "2.0.1"
+    id "io.papermc.paperweight.userdev" version "1.5.3"
 }
 
 group = 'xyz.bluspring'
@@ -30,7 +31,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    compileOnly "io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT"
+    paperweightDevelopmentBundle "io.papermc.paper:dev-bundle:1.19-R0.1-SNAPSHOT"
 
     implementation "dev.jorel:commandapi-kotlin:8.8.0"
     implementation "dev.jorel:commandapi-shade:8.8.0"
