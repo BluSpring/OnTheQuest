@@ -1,6 +1,7 @@
 package xyz.bluspring.onthequest.events
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
+import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent.SlotType
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockDispenseArmorEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -150,6 +152,59 @@ class JewelEffectEventHandler : Listener {
             // so let's just handle both to save time.
             if (slotItem == item || slotItem.type == Material.AIR)
                 tryAddArmorJewel(ev.player, item, armorSlot)
+        }
+    }
+
+    // i fucking hate bukkit with a passion
+    @EventHandler
+    fun onInventoryClick(ev: InventoryClickEvent) {
+        if (ev.whoClicked is Player && activeJewels.contains(ev.whoClicked)) {
+            if (ev.slotType == InventoryType.SlotType.QUICKBAR) {
+                if (ev.slot != ev.whoClicked.inventory.heldItemSlot)
+                    return
+
+                if (ev.currentItem != null) {
+                    val jewelTypes = getJewelTypes(ev.currentItem!!) ?: return
+
+                    jewelTypes.forEach {
+                        if (it.effectsWhenHeld)
+                            activeJewels[ev.whoClicked]!!.remove(it)
+                    }
+                }
+
+                if (ev.cursor != null) {
+                    val jewelTypes = getJewelTypes(ev.cursor!!) ?: return
+
+                    jewelTypes.forEach {
+                        if (it.effectsWhenHeld)
+                            activeJewels[ev.whoClicked]!!.add(it)
+                    }
+                }
+            } else if (ev.slotType == InventoryType.SlotType.ARMOR) {
+                if (ev.currentItem != null) {
+                    do {
+                        val jewelTypes = getJewelTypes(ev.currentItem!!) ?: return
+                        val slot = SlotType.getByMaterial(ev.currentItem!!.type) ?: break
+                        val eqSlot = EquipmentSlot.valueOf(slot.name)
+
+                        jewelTypes.forEach {
+                            if (it.slots.contains(eqSlot))
+                                activeJewels[ev.whoClicked]!!.remove(it)
+                        }
+                    } while (false)
+                }
+
+                if (ev.cursor != null) {
+                    val jewelTypes = getJewelTypes(ev.cursor!!) ?: return
+                    val slot = SlotType.getByMaterial(ev.currentItem!!.type) ?: return
+                    val eqSlot = EquipmentSlot.valueOf(slot.name)
+
+                    jewelTypes.forEach {
+                        if (it.slots.contains(eqSlot))
+                            activeJewels[ev.whoClicked]!!.add(it)
+                    }
+                }
+            }
         }
     }
 }
