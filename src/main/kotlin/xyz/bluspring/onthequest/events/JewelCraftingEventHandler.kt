@@ -6,11 +6,13 @@ import io.papermc.paper.event.block.BeaconDeactivatedEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.*
+import org.bukkit.block.Beacon
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -164,5 +166,24 @@ class JewelCraftingEventHandler : Listener {
     fun onBeaconDeactivate(ev: BeaconDeactivatedEvent) {
         val pos = ev.block.location
         beacons.removeIf { it.blockX == pos.blockX && it.blockY == pos.blockY && it.blockZ == pos.blockZ }
+    }
+
+    // This is a problem, the solution is to interact with the block to trigger a beacon scan.
+    @EventHandler
+    fun onBeaconInteract(ev: PlayerInteractEvent) {
+        if (ev.clickedBlock == null)
+            return
+
+        if (ev.clickedBlock!!.type != Material.BEACON)
+            return
+
+        if (beacons.contains(ev.clickedBlock!!.location))
+            return
+
+        val beacon = ev.clickedBlock!! as Beacon
+        if (beacon.tier > 0) {
+            beacons.add(beacon.location)
+            scanBeaconForJewels(beacon.location)
+        }
     }
 }
