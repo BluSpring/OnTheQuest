@@ -14,6 +14,9 @@ open class AvatarJewelType(
 ) : JewelType(id, listOf(), modelId, slots, materials, effectsWhenHeld) {
     override fun apply(player: Player) {
         Jewels.REGISTRY.forEach {
+            if (it == this) // oops
+                return@forEach
+
             it.apply(player)
         }
     }
