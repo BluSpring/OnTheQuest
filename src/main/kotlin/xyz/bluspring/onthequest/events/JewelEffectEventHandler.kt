@@ -4,10 +4,13 @@ import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent.SlotType
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.block.data.Ageable
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockDispenseArmorEvent
+import org.bukkit.event.block.BlockDropItemEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryType
@@ -22,6 +25,7 @@ import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.DataContainerUtil
 import xyz.bluspring.onthequest.util.StringArrayDataType
+import kotlin.random.Random
 
 class JewelEffectEventHandler : Listener {
     private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
@@ -208,6 +212,22 @@ class JewelEffectEventHandler : Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    fun onCropBreak(ev: BlockDropItemEvent) {
+        if (!activeJewels.contains(ev.player))
+            return
+
+        if (!activeJewels[ev.player]!!.contains(Jewels.EARTH))
+            return
+
+        if (ev.block.blockData !is Ageable)
+            return
+
+        ev.items.forEach {
+            it.itemStack.amount = Random.nextInt(it.itemStack.amount, it.itemStack.amount + 5)
         }
     }
 }
