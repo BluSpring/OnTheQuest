@@ -158,7 +158,10 @@ class JewelEffectEventHandler : Listener {
     // i fucking hate bukkit with a passion
     @EventHandler
     fun onInventoryClick(ev: InventoryClickEvent) {
-        if (ev.whoClicked is Player && activeJewels.contains(ev.whoClicked)) {
+        if (ev.whoClicked is Player) {
+            if (!activeJewels.contains(ev.whoClicked))
+                activeJewels[ev.whoClicked as Player] = mutableSetOf()
+
             if (ev.slotType == InventoryType.SlotType.QUICKBAR) {
                 if (ev.slot != ev.whoClicked.inventory.heldItemSlot)
                     return
