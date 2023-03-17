@@ -78,6 +78,7 @@ class JewelCraftingEventHandler : Listener {
 
     // Beacon crafting handles
     private val beacons = mutableSetOf<Location>()
+    private val beaconsToRemove = mutableListOf<Location>()
 
     init {
         OnTheQuest.plugin.server.scheduler.runTaskTimer(OnTheQuest.plugin, Runnable {
@@ -85,13 +86,13 @@ class JewelCraftingEventHandler : Listener {
                 if (!it.isChunkLoaded)
                     return@forEach
 
-                scanBeaconForJewels(it.add(0.0, 1.0, 0.0))
+                scanBeaconForJewels(it)
             }
         }, 0L, 35L)
     }
 
     private fun scanBeaconForJewels(pos: Location) {
-        val entities = pos.getNearbyEntitiesByType(Item::class.java, 1.75, 1.0)
+        val entities = pos.getNearbyEntitiesByType(Item::class.java, 1.75, 4.5)
 
         if (entities.isEmpty())
             return
@@ -125,13 +126,15 @@ class JewelCraftingEventHandler : Listener {
 
         pos.world.spawnParticle(Particle.END_ROD, pos, 75, .05, .02, .05, .1)
 
+        pos.block.type = Material.AIR
+
         pos.world.playSound(pos, Sound.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, .4F, 1.6F)
         pos.world.playSound(pos, Sound.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 2.4F, 1.0F)
         pos.world.playSound(pos, Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, 2.4F, 1.1F)
 
-        pos.add(0.0, -1.0, 0.0).block.type = Material.AIR
+        beaconsToRemove.add(pos)
 
-        val avatarItemEntity = pos.world.spawnEntity(pos.add(0.0, 0.5, 0.0), EntityType.DROPPED_ITEM, false) as Item
+        val avatarItemEntity = pos.world.spawnEntity(pos.clone().add(0.0, 0.5, 0.0), EntityType.DROPPED_ITEM, false) as Item
         val avatarItem = Jewels.AVATAR.getItem(1)
 
         avatarItemEntity.itemStack = avatarItem
@@ -144,7 +147,7 @@ class JewelCraftingEventHandler : Listener {
         // theoretically, this shouldn't run more than once before a BeaconDeactivatedEvent happens.
         beacons.add(pos)
 
-        scanBeaconForJewels(pos.add(0.0, 1.0, 0.0))
+        scanBeaconForJewels(pos)
     }
 
     @EventHandler
