@@ -13,6 +13,7 @@ import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.inventory.PrepareItemCraftEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.EquipmentSlot
@@ -204,5 +205,10 @@ class JewelCraftingEventHandler : Listener {
             beacons.add(beacon.location)
             scanBeaconForJewels(beacon.location)
         }
+    }
+
+    @EventHandler
+    fun onJewelMapCraft(ev: PrepareItemCraftEvent) {
+
     }
 }

@@ -5,10 +5,14 @@ import dev.jorel.commandapi.CommandAPIConfig
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
 import xyz.bluspring.onthequest.events.*
+import xyz.bluspring.onthequest.generation.MapChestManager
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.MappedRegistry
@@ -59,6 +63,21 @@ class OnTheQuest : JavaPlugin() {
                 if (!giveJewelItem(to, player, jewelId, count))
                     throw CommandAPI.failWithString("Invalid jewel type!")
             }
+        }
+
+        run {
+            val itemStack = ItemStack(Material.MAP, 1).apply {
+                val meta = this.itemMeta
+                meta.setCustomModelData(16)
+                this.itemMeta = meta
+            }
+
+            val mapShard = MapChestManager.getMapShard(1)
+
+            val mapRecipe = ShapelessRecipe(NamespacedKey("questsmp", "map"), itemStack)
+            mapRecipe.addIngredient(4, mapShard)
+
+            this.server.addRecipe(mapRecipe)
         }
     }
 
