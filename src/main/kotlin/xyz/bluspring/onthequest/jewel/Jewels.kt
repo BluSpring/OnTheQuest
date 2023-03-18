@@ -24,7 +24,10 @@ object Jewels {
             key("earth_jewel"),
             listOf(),
             15,
-            materials = ToolType.HOE.items,
+            materials = mutableListOf<Material>().apply {
+                addAll(ToolType.HOE.items)
+                addAll(ToolType.AXE.items)
+            },
             probability = Chances.MEDIUM
         )
     )

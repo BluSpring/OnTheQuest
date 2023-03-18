@@ -262,15 +262,31 @@ class JewelEffectEventHandler : Listener {
         }
     }
 
+    private val farmable = listOf(
+        Material.WHEAT,
+        Material.MELON,
+        Material.GRASS,
+        Material.TALL_GRASS,
+        Material.POTATOES,
+        Material.CARROTS,
+        Material.BEETROOTS,
+        Material.PUMPKIN,
+        Material.MUSHROOM_STEM,
+        Material.BROWN_MUSHROOM,
+        Material.BROWN_MUSHROOM_BLOCK,
+        Material.RED_MUSHROOM,
+        Material.RED_MUSHROOM_BLOCK
+    )
+
     @EventHandler
     fun onCropBreak(ev: BlockDropItemEvent) {
         if (!activeJewels.contains(ev.player))
             return
 
-        if (!activeJewels[ev.player]!!.contains(Jewels.EARTH))
+        if (!activeJewels[ev.player]!!.contains(Jewels.EARTH) && !activeJewels[ev.player]!!.contains(Jewels.AVATAR))
             return
 
-        if (ev.block.blockData !is Ageable)
+        if (!farmable.contains(ev.block.type))
             return
 
         ev.items.forEach {
