@@ -60,6 +60,7 @@ object MapChestManager {
 
         LootTables.END_CITY_TREASURE.lootTable to Chances.MEDIUM
     )
+    val LOOT_TABLE = JewelChestLootTable()
 
     fun generate(player: Player): ItemStack {
         val uuid = UUID.randomUUID()

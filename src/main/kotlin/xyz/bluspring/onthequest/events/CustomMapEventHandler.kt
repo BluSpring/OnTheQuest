@@ -8,9 +8,14 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.loot.LootContext
+import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.persistence.PersistentDataType
+import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.generation.JewelChestLootTable
 import xyz.bluspring.onthequest.generation.MapChestManager
 import xyz.bluspring.onthequest.generation.MapChestMetadata
+import java.util.*
 
 class CustomMapEventHandler : Listener {
     @EventHandler
@@ -60,9 +65,13 @@ class CustomMapEventHandler : Listener {
             return
         }
 
-        if (ev.action.isRightClick) {
-            val chest = ev.clickedBlock!!.state as Chest
+        val chest = ev.clickedBlock!!.state as Chest
 
+        if (ev.action.isRightClick && chest.inventory.isEmpty && !chest.hasMetadata("questsmp_chest_generated")) {
+            val context = LootContext.Builder(chest.location).build()
+            MapChestManager.LOOT_TABLE.fillInventory(chest.inventory, Random(kotlin.random.Random.nextLong()), context)
+
+            chest.setMetadata("questsmp_chest_generated", FixedMetadataValue(OnTheQuest.plugin, true))
         }
     }
 }
