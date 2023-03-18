@@ -30,6 +30,12 @@ class CustomMapEventHandler : Listener {
 
         if (item.itemMeta.hasCustomModelData()) {
             if (item.itemMeta.customModelData == 16) {
+                if (ev.player.world.isFixedTime) {
+                    ev.setUseItemInHand(Event.Result.DENY)
+                    ev.player.sendActionBar(Component.text("The map doesn't seem to work here..."))
+                    return
+                }
+
                 ev.setUseItemInHand(Event.Result.ALLOW)
 
                 val stack = MapChestManager.generate(ev.player)
