@@ -9,6 +9,7 @@ import net.minecraft.world.item.Rarity
 import net.minecraft.world.level.saveddata.maps.MapDecoration
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData
 import org.bukkit.*
+import org.bukkit.block.Chest
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -61,6 +62,9 @@ object MapChestManager {
         LootTables.END_CITY_TREASURE.key to Chances.MEDIUM
     )
     val LOOT_TABLE = JewelChestLootTable()
+
+    val MAP_CHEST_UUID = NamespacedKey("questsmp", "map_chest/uuid")
+    val MAP_CHEST_GENERATED = NamespacedKey("questsmp", "map_chest/generated")
 
     fun generate(player: Player): ItemStack {
         val uuid = UUID.randomUUID()
@@ -126,7 +130,8 @@ object MapChestManager {
             throw IllegalStateException("how the fuck")
 
         location.block.type = Material.CHEST
-        location.block.setMetadata("questsmp_map_chest", MapChestMetadata(uuid))
+        val state = location.block.getState(false) as Chest
+        state.persistentDataContainer.set(MAP_CHEST_UUID, PersistentDataType.STRING, uuid.toString())
 
         if (OnTheQuest.debug)
             Bukkit.broadcast(Component.text("[OnTheQuest DEBUG] New chest generated at ${location.blockX} ${location.blockY} ${location.blockZ}"))

@@ -12,9 +12,7 @@ import org.bukkit.loot.LootContext
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
-import xyz.bluspring.onthequest.generation.JewelChestLootTable
 import xyz.bluspring.onthequest.generation.MapChestManager
-import xyz.bluspring.onthequest.generation.MapChestMetadata
 import java.util.*
 
 class CustomMapEventHandler : Listener {
@@ -55,29 +53,40 @@ class CustomMapEventHandler : Listener {
         if (ev.clickedBlock!!.type != Material.CHEST)
             return
 
-        if (!ev.clickedBlock!!.hasMetadata("questsmp_map_chest"))
+        val chest = ev.clickedBlock!!.getState(false) as Chest
+
+        if (!chest.persistentDataContainer.has(MapChestManager.MAP_CHEST_UUID))
             return
 
-        val uuid = ev.clickedBlock!!.getMetadata("questsmp_map_chest")[0] as MapChestMetadata
+        val uuid = chest.persistentDataContainer.get(MapChestManager.MAP_CHEST_UUID, PersistentDataType.STRING)
 
-        if (ev.player.inventory.none {
-                it.type == Material.FILLED_MAP
-                        && it.hasItemMeta()
-                        && it.itemMeta.persistentDataContainer.has(MapChestManager.MAP_ID_KEY)
-                        && it.itemMeta.persistentDataContainer.get(MapChestManager.MAP_ID_KEY, PersistentDataType.STRING) == uuid.toString()
-        }) {
+        var hasMap = false
+        for (itemStack in ev.player.inventory) {
+            if (itemStack == null)
+                continue
+
+            if (itemStack.type != Material.FILLED_MAP)
+                continue
+
+            if (itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(MapChestManager.MAP_ID_KEY)) {
+                if (itemStack.itemMeta.persistentDataContainer.get(MapChestManager.MAP_ID_KEY, PersistentDataType.STRING) == uuid) {
+                    hasMap = true
+                    break
+                }
+            }
+        }
+
+        if (!hasMap) {
             ev.isCancelled = true
             ev.player.sendActionBar(Component.text("You do not hold the key for this chest."))
             return
         }
 
-        val chest = ev.clickedBlock!!.state as Chest
-
-        if (ev.action.isRightClick && chest.inventory.isEmpty && !chest.hasMetadata("questsmp_chest_generated")) {
+        if (chest.inventory.isEmpty && !chest.persistentDataContainer.has(MapChestManager.MAP_CHEST_GENERATED)) {
             val context = LootContext.Builder(chest.location).build()
             MapChestManager.LOOT_TABLE.fillInventory(chest.inventory, Random(kotlin.random.Random.nextLong()), context)
 
-            chest.setMetadata("questsmp_chest_generated", FixedMetadataValue(OnTheQuest.plugin, true))
+            chest.persistentDataContainer.set(MapChestManager.MAP_CHEST_GENERATED, PersistentDataType.BYTE, 1)
         }
     }
 }
