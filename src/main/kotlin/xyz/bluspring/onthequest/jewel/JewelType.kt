@@ -17,7 +17,8 @@ open class JewelType(
     val modelId: Int,
     val slots: List<EquipmentSlot> = listOf(),
     val materials: List<Material> = listOf(),
-    val effectsWhenHeld: Boolean = false
+    val effectsWhenHeld: Boolean = false,
+    val probability: Double = 0.0
 ) : Keyed {
     override fun getKey(): NamespacedKey {
         return id

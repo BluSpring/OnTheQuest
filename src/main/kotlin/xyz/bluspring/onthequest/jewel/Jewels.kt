@@ -6,6 +6,7 @@ import org.bukkit.Registry
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import xyz.bluspring.onthequest.util.Chances
 import xyz.bluspring.onthequest.util.MappedRegistry
 import xyz.bluspring.onthequest.util.ToolType
 
@@ -23,7 +24,8 @@ object Jewels {
             key("earth_jewel"),
             listOf(),
             15,
-            materials = ToolType.HOE.items
+            materials = ToolType.HOE.items,
+            probability = Chances.MEDIUM
         )
     )
 
@@ -37,7 +39,8 @@ object Jewels {
             materials = mutableListOf<Material>().apply {
                 addAll(ToolType.SWORD.items)
                 addAll(ToolType.AXE.items)
-            }
+            },
+            probability = Chances.LOW
         )
     )
 
@@ -58,7 +61,8 @@ object Jewels {
             19,
             slots = listOf(
                 EquipmentSlot.FEET
-            )
+            ),
+            probability = Chances.MEDIUM
         )
     )
 
@@ -71,7 +75,8 @@ object Jewels {
             16,
             slots = listOf(
                 EquipmentSlot.HEAD
-            )
+            ),
+            probability = Chances.MEDIUM
         )
     )
 
@@ -82,7 +87,8 @@ object Jewels {
                 PotionEffect(PotionEffectType.FAST_DIGGING, 5 * 20, 1)
             ),
             17,
-            materials = ToolType.PICKAXE.items
+            materials = ToolType.PICKAXE.items,
+            probability = Chances.MEDIUM
         )
     )
 
@@ -93,7 +99,8 @@ object Jewels {
                 PotionEffect(PotionEffectType.INVISIBILITY, 5 * 20, 0)
             ),
             18,
-            slots = listOf(EquipmentSlot.CHEST)
+            slots = listOf(EquipmentSlot.CHEST),
+            probability = Chances.MEDIUM
         )
     )
 
