@@ -286,7 +286,9 @@ class JewelEffectEventHandler : Listener {
         if (!activeJewels[ev.player]!!.contains(Jewels.EARTH) && !activeJewels[ev.player]!!.contains(Jewels.AVATAR))
             return
 
-        if (!farmable.contains(ev.block.type))
+        val type = ev.blockState.type
+
+        if (!farmable.contains(type))
             return
 
         ev.items.forEach {
