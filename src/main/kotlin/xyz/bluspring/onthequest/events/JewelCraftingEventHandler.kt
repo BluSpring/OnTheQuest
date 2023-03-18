@@ -36,7 +36,7 @@ class JewelCraftingEventHandler : Listener {
 
             val jewelTypes = DataContainerUtil.parseKeys(Jewels.JEWEL_TYPE_KEY, item.itemMeta.persistentDataContainer)
 
-            var resultItem = ev.inventory.firstItem!!
+            var resultItem: ItemStack? = null
 
             for (jewelTypeKey in jewelTypes) {
                 val jewelType = Jewels.REGISTRY.get(jewelTypeKey) ?: continue
@@ -54,6 +54,9 @@ class JewelCraftingEventHandler : Listener {
                     resultItem = applyJewelToItem(ev.inventory.firstItem!!, jewelType)
                 }
             }
+
+            if (resultItem == null)
+                return
 
             val cost = (jewelTypes.size * 1.125).toInt()
             ev.result = resultItem
