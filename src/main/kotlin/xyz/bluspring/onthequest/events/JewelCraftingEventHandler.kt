@@ -199,7 +199,7 @@ class JewelCraftingEventHandler : Listener {
         if (beacons.contains(ev.clickedBlock!!.location))
             return
 
-        val beacon = ev.clickedBlock!! as Beacon
+        val beacon = ev.clickedBlock!!.state as Beacon
         if (beacon.tier > 0) {
             beacons.add(beacon.location)
             scanBeaconForJewels(beacon.location)

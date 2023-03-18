@@ -1,12 +1,16 @@
 package xyz.bluspring.onthequest.events
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.block.Chest
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.generation.MapChestManager
+import xyz.bluspring.onthequest.generation.MapChestMetadata
 
 class CustomMapEventHandler : Listener {
     @EventHandler
@@ -29,6 +33,36 @@ class CustomMapEventHandler : Listener {
                 // map shards
                 ev.setUseItemInHand(Event.Result.DENY)
             }
+        }
+    }
+
+    @EventHandler
+    fun onJewelChestInteract(ev: PlayerInteractEvent) {
+        if (ev.clickedBlock == null)
+            return
+
+        if (ev.clickedBlock!!.type != Material.CHEST)
+            return
+
+        if (!ev.clickedBlock!!.hasMetadata("questsmp_map_chest"))
+            return
+
+        val uuid = ev.clickedBlock!!.getMetadata("questsmp_map_chest")[0] as MapChestMetadata
+
+        if (ev.player.inventory.none {
+                it.type == Material.FILLED_MAP
+                        && it.hasItemMeta()
+                        && it.itemMeta.persistentDataContainer.has(MapChestManager.MAP_ID_KEY)
+                        && it.itemMeta.persistentDataContainer.get(MapChestManager.MAP_ID_KEY, PersistentDataType.STRING) == uuid.toString()
+        }) {
+            ev.isCancelled = true
+            ev.player.sendActionBar(Component.text("You do not hold the key for this chest."))
+            return
+        }
+
+        if (ev.action.isRightClick) {
+            val chest = ev.clickedBlock!!.state as Chest
+
         }
     }
 }
