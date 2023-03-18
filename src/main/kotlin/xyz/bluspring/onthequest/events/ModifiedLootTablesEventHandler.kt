@@ -12,7 +12,7 @@ class ModifiedLootTablesEventHandler : Listener {
         if (ev.isPlugin)
             return
 
-        val probability = MapChestManager.LOOT_TABLE_CHANCES[ev.lootTable] ?: return
+        val probability = MapChestManager.LOOT_TABLE_CHANCES[ev.lootTable.key] ?: return
         val loot = ev.loot
 
         val rng = (1.0 / probability).toInt()

@@ -23,42 +23,42 @@ import kotlin.random.Random
 object MapChestManager {
     val MAP_ID_KEY = NamespacedKey("questsmp", "map_id")
     val LOOT_TABLE_CHANCES = mapOf(
-        LootTables.BASTION_TREASURE.lootTable to Chances.MEDIUM,
+        LootTables.BASTION_TREASURE.key to Chances.MEDIUM,
 
-        LootTables.ANCIENT_CITY.lootTable to Chances.MEDIUM,
-        LootTables.ANCIENT_CITY_ICE_BOX.lootTable to Chances.MEDIUM,
+        LootTables.ANCIENT_CITY.key to Chances.MEDIUM,
+        LootTables.ANCIENT_CITY_ICE_BOX.key to Chances.MEDIUM,
 
-        LootTables.NETHER_BRIDGE.lootTable to Chances.LOW,
+        LootTables.NETHER_BRIDGE.key to Chances.LOW,
 
-        LootTables.STRONGHOLD_CORRIDOR.lootTable to Chances.LOW,
-        LootTables.STRONGHOLD_CROSSING.lootTable to Chances.LOW,
-        LootTables.STRONGHOLD_LIBRARY.lootTable to Chances.LOW,
+        LootTables.STRONGHOLD_CORRIDOR.key to Chances.LOW,
+        LootTables.STRONGHOLD_CROSSING.key to Chances.LOW,
+        LootTables.STRONGHOLD_LIBRARY.key to Chances.LOW,
 
-        LootTables.BURIED_TREASURE.lootTable to Chances.LOW,
+        LootTables.BURIED_TREASURE.key to Chances.LOW,
 
-        LootTables.VILLAGE_TANNERY.lootTable to Chances.SUPER_LOW,
+        LootTables.VILLAGE_TANNERY.key to Chances.SUPER_LOW,
 
-        LootTables.PILLAGER_OUTPOST.lootTable to Chances.SUPER_LOW,
+        LootTables.PILLAGER_OUTPOST.key to Chances.SUPER_LOW,
 
-        LootTables.SIMPLE_DUNGEON.lootTable to Chances.SUPER_LOW,
+        LootTables.SIMPLE_DUNGEON.key to Chances.SUPER_LOW,
 
-        LootTables.WOODLAND_MANSION.lootTable to Chances.HIGH,
+        LootTables.WOODLAND_MANSION.key to Chances.HIGH,
 
-        LootTables.RUINED_PORTAL.lootTable to Chances.SUPER_LOW,
+        LootTables.RUINED_PORTAL.key to Chances.SUPER_LOW,
 
-        LootTables.JUNGLE_TEMPLE.lootTable to Chances.MEDIUM,
+        LootTables.JUNGLE_TEMPLE.key to Chances.MEDIUM,
 
-        LootTables.DESERT_PYRAMID.lootTable to Chances.SUPER_LOW,
+        LootTables.DESERT_PYRAMID.key to Chances.SUPER_LOW,
 
-        LootTables.SHIPWRECK_TREASURE.lootTable to Chances.SUPER_LOW,
-        LootTables.SHIPWRECK_MAP.lootTable to Chances.SUPER_LOW,
+        LootTables.SHIPWRECK_TREASURE.key to Chances.SUPER_LOW,
+        LootTables.SHIPWRECK_MAP.key to Chances.SUPER_LOW,
 
-        LootTables.IGLOO_CHEST.lootTable to Chances.LOW,
+        LootTables.IGLOO_CHEST.key to Chances.LOW,
 
-        LootTables.UNDERWATER_RUIN_SMALL.lootTable to Chances.SUPER_LOW,
-        LootTables.UNDERWATER_RUIN_BIG.lootTable to Chances.SUPER_LOW,
+        LootTables.UNDERWATER_RUIN_SMALL.key to Chances.SUPER_LOW,
+        LootTables.UNDERWATER_RUIN_BIG.key to Chances.SUPER_LOW,
 
-        LootTables.END_CITY_TREASURE.lootTable to Chances.MEDIUM
+        LootTables.END_CITY_TREASURE.key to Chances.MEDIUM
     )
     val LOOT_TABLE = JewelChestLootTable()
 
