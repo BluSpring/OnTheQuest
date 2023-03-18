@@ -11,12 +11,15 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockDispenseArmorEvent
 import org.bukkit.event.block.BlockDropItemEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -38,6 +41,50 @@ class JewelEffectEventHandler : Listener {
                 }
             }
         }, 0L, 10L) // don't need to run this all the damn time
+    }
+
+    @EventHandler
+    fun onPlayerLogin(ev: PlayerJoinEvent) {
+        applyJewelEffectsFromInventory(ev.player)
+    }
+
+    @EventHandler
+    fun onPlayerDeath(ev: PlayerDeathEvent) {
+        activeJewels.remove(ev.player)
+    }
+
+    @EventHandler
+    fun onPlayerRespawn(ev: PlayerRespawnEvent) {
+        applyJewelEffectsFromInventory(ev.player)
+    }
+
+    private fun applyJewelEffectsFromInventory(player: Player) {
+        if (!activeJewels.contains(player))
+            activeJewels[player] = mutableSetOf()
+
+        player.inventory.armorContents.forEach {
+            if (it == null)
+                return@forEach
+
+            val jewelTypes = getJewelTypes(it) ?: return@forEach
+            if (jewelTypes.isEmpty())
+                return@forEach
+
+            activeJewels[player]!!.addAll(jewelTypes)
+        }
+
+        val mainHand = player.inventory.itemInMainHand
+        val mainHandJewelTypes = getJewelTypes(mainHand)
+
+        if (mainHandJewelTypes != null) {
+            activeJewels[player]!!.addAll(mainHandJewelTypes)
+        }
+
+        val offHand = player.inventory.itemInOffHand
+        val offHandJewelTypes = getJewelTypes(offHand)
+        if (offHandJewelTypes != null) {
+            activeJewels[player]!!.addAll(offHandJewelTypes)
+        }
     }
 
     private fun getJewelTypes(item: ItemStack): List<JewelType>? {
