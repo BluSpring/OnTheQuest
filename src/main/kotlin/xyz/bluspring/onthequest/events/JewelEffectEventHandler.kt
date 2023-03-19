@@ -49,6 +49,11 @@ class JewelEffectEventHandler : Listener {
         }, 0L, 10L) // don't need to run this all the damn time
     }
 
+    private fun removeJewel(player: Player, jewelType: JewelType) {
+        activeJewels[player]?.remove(jewelType)
+        jewelType.remove(player)
+    }
+
     @EventHandler
     fun onPlayerLogin(ev: PlayerJoinEvent) {
         applyJewelEffectsFromInventory(ev.player)
@@ -56,6 +61,9 @@ class JewelEffectEventHandler : Listener {
 
     @EventHandler
     fun onPlayerDeath(ev: PlayerDeathEvent) {
+        activeJewels[ev.player]?.forEach {
+            it.remove(ev.player)
+        }
         activeJewels.remove(ev.player)
     }
 
@@ -67,8 +75,12 @@ class JewelEffectEventHandler : Listener {
     private fun applyJewelEffectsFromInventory(player: Player) {
         if (!activeJewels.contains(player))
             activeJewels[player] = mutableSetOf()
-        else
+        else {
+            activeJewels[player]?.forEach {
+                it.remove(player)
+            }
             activeJewels[player]!!.clear()
+        }
 
         player.inventory.armorContents.forEach {
             if (it == null)
@@ -131,7 +143,9 @@ class JewelEffectEventHandler : Listener {
                 if (!activeJewels.contains(ev.player))
                     break
 
-                activeJewels[ev.player]!!.removeAll(jewelTypes.toSet())
+                jewelTypes.forEach {
+                    removeJewel(ev.player, it)
+                }
             }
         } while (false) // don't loop
 
@@ -170,7 +184,9 @@ class JewelEffectEventHandler : Listener {
         if (!activeJewels.contains(player))
             return
 
-        activeJewels[player]!!.removeAll(jewelTypes.toSet())
+        jewelTypes.forEach {
+            removeJewel(player, it)
+        }
     }
 
     @EventHandler
@@ -230,7 +246,7 @@ class JewelEffectEventHandler : Listener {
 
                     jewelTypes.forEach {
                         if (it.effectsWhenHeld)
-                            activeJewels[ev.whoClicked]!!.remove(it)
+                            removeJewel(ev.whoClicked as Player, it)
                     }
                 }
 
@@ -251,7 +267,7 @@ class JewelEffectEventHandler : Listener {
 
                         jewelTypes.forEach {
                             if (it.slots.contains(eqSlot))
-                                activeJewels[ev.whoClicked]!!.remove(it)
+                                removeJewel(ev.whoClicked as Player, it)
                         }
                     } while (false)
                 }
