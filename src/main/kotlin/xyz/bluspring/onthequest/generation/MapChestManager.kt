@@ -34,11 +34,11 @@ object MapChestManager {
         LootTables.ANCIENT_CITY.key to Chances.HIGH,
         LootTables.ANCIENT_CITY_ICE_BOX.key to Chances.MEDIUM,
 
-        LootTables.NETHER_BRIDGE.key to Chances.LOW,
+        LootTables.NETHER_BRIDGE.key to Chances.MEDIUM,
 
-        LootTables.STRONGHOLD_CORRIDOR.key to Chances.LOW,
-        LootTables.STRONGHOLD_CROSSING.key to Chances.LOW,
-        LootTables.STRONGHOLD_LIBRARY.key to Chances.LOW,
+        LootTables.STRONGHOLD_CORRIDOR.key to Chances.MEDIUM,
+        LootTables.STRONGHOLD_CROSSING.key to Chances.MEDIUM,
+        LootTables.STRONGHOLD_LIBRARY.key to Chances.MEDIUM,
 
         LootTables.BURIED_TREASURE.key to Chances.LOW,
 
