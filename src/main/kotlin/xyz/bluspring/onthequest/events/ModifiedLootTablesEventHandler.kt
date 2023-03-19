@@ -7,6 +7,8 @@ import xyz.bluspring.onthequest.generation.MapChestManager
 import kotlin.random.Random
 
 class ModifiedLootTablesEventHandler : Listener {
+    private val random = Random(Random.nextLong())
+
     @EventHandler
     fun onLootGenerate(ev: LootGenerateEvent) {
         if (ev.isPlugin)
@@ -16,8 +18,8 @@ class ModifiedLootTablesEventHandler : Listener {
         val loot = ev.loot
 
         val rng = (1.0 / probability).toInt()
-        if (Random.nextInt(rng) == 0) {
-            val count = Random.nextInt(1, 2)
+        if (random.nextInt(rng) == 0) {
+            val count = random.nextInt(1, 2)
 
             loot.add(MapChestManager.getMapShard(count))
         }
