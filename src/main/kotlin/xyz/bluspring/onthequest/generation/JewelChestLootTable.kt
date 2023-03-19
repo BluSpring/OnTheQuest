@@ -47,13 +47,11 @@ class JewelChestLootTable : LootTable {
 
         // Fill the chest with obsidian, diamonds and/or gold.
         run {
-            for (i in 0..randomGen.nextInt(0, 12)) {
+            for (i in 0..randomGen.nextInt(4, 18)) {
                 if (randomGen.nextInt(5) == 0)
                     continue
 
-                val count = randomGen.nextInt(0, 4)
-                if (count == 0)
-                    continue
+                val count = randomGen.nextInt(1, 9)
 
                 items.add(ItemStack(materials.random(randomGen), count))
             }
