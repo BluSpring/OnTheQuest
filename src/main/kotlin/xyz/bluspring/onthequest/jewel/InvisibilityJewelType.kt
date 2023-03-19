@@ -26,7 +26,7 @@ class InvisibilityJewelType(
     override fun apply(player: Player) {
         super.apply(player)
 
-        val appliedSlots = slots.filter { player.inventory.armorContents[it.ordinal] != null }.map { VanillaEquipmentSlot.valueOf(it.name) }
+        val appliedSlots = slots.map { VanillaEquipmentSlot.valueOf(it.name) }.filter { player.inventory.armorContents[it.index] != null }
         if (appliedSlots.isNotEmpty()) {
             if (player.inventory.armorContents.size != appliedSlots.size)
                 return
@@ -46,7 +46,7 @@ class InvisibilityJewelType(
     }
 
     fun removeHiddenArmorEffects(player: Player) {
-        val appliedSlots = slots.filter { player.inventory.armorContents[it.ordinal] != null }.map { VanillaEquipmentSlot.valueOf(it.name) }
+        val appliedSlots = slots.map { VanillaEquipmentSlot.valueOf(it.name) }.filter { player.inventory.armorContents[it.index] != null }
         if (appliedSlots.isNotEmpty()) {
             if (player.inventory.armorContents.size != appliedSlots.size)
                 return
