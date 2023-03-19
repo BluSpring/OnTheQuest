@@ -96,7 +96,7 @@ object Jewels {
     )
 
     val INVISIBILITY = register(
-        InvisibilityJewelType(
+        JewelType(
             key("invisibility_jewel"),
             listOf(
                 PotionEffect(PotionEffectType.INVISIBILITY, 5 * 20, 0)

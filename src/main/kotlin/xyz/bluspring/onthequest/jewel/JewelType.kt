@@ -28,12 +28,6 @@ open class JewelType(
         player.addPotionEffects(effects)
     }
 
-    open fun remove(player: Player) {
-        effects.forEach {
-            player.removePotionEffect(it.type)
-        }
-    }
-
     open fun getItem(count: Int = 1): ItemStack {
         val itemStack = ItemStack(Material.EMERALD, count)
 
