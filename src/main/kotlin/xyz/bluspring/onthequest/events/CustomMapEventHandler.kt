@@ -7,6 +7,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.loot.LootContext
 import org.bukkit.metadata.FixedMetadataValue
@@ -88,5 +89,10 @@ class CustomMapEventHandler : Listener {
 
             chest.persistentDataContainer.set(MapChestManager.MAP_CHEST_GENERATED, PersistentDataType.BYTE, 1)
         }
+    }
+
+    @EventHandler
+    fun onChunkLoad(ev: ChunkLoadEvent) {
+        MapChestManager.checkGenerationQueue(ev.chunk)
     }
 }

@@ -1,5 +1,8 @@
 package xyz.bluspring.onthequest.generation
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -18,7 +21,9 @@ import org.bukkit.loot.LootTables
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.util.Chances
+import java.io.File
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
 
 object MapChestManager {
@@ -70,13 +75,12 @@ object MapChestManager {
         val uuid = UUID.randomUUID()
 
         val pos = generateChest(uuid, player.world, player.location)
-        val blockPos = BlockPos(pos.blockX, pos.blockY, pos.blockZ)
 
         // Create item
         val nmsLevel = (player.world as CraftWorld).handle
-        val nmsStack = MapItem.create(nmsLevel, pos.blockX, pos.blockZ, 2, true, true)
+        val nmsStack = MapItem.create(nmsLevel, pos.x, pos.z, 2, true, true)
         MapItem.renderBiomePreviewMap(nmsLevel, nmsStack)
-        MapItemSavedData.addTargetDecoration(nmsStack, blockPos, "+", MapDecoration.Type.TARGET_X)
+        MapItemSavedData.addTargetDecoration(nmsStack, pos, "+", MapDecoration.Type.TARGET_X)
 
         val stack = nmsStack.bukkitStack
         val meta = stack.itemMeta
@@ -90,53 +94,19 @@ object MapChestManager {
         return stack
     }
 
-    fun generateChest(uuid: UUID, world: World, loc: Location): Location {
+    fun generateChest(uuid: UUID, world: World, loc: Location): BlockPos {
         // mix the seed to avoid accidental collisions
         val seed = ((world.seed shl 7 or loc.blockX.toLong() + loc.blockZ or loc.blockY.toLong()) xor loc.yaw.toLong()) + Random.nextLong()
         val random = Random(seed)
 
-        var location: Location? = null
-        var foundPos = false
-        do {
-            val x = random.nextInt(loc.blockX - 2048, loc.blockX + 2048)
-            val z = random.nextInt(loc.blockZ - 2048, loc.blockZ + 2048)
+        val x = random.nextInt(loc.blockX - 2048, loc.blockX + 2048)
+        val z = random.nextInt(loc.blockZ - 2048, loc.blockZ + 2048)
 
-            val chunkX = x / 16
-            val chunkZ = z / 16
+        val blockPos = BlockPos(x, 100, z)
 
-            val chunk = world.getChunkAt(chunkX, chunkZ)
+        addChestToGenerationQueue(world, blockPos, uuid)
 
-            for (y in random.nextInt(-53, 37)..42) {
-                val block = chunk.getBlock(x and 0xF, y, z and 0xF)
-                val checkLoc = block.location.clone()
-
-                if (
-                    checkLoc.add(0.0, 1.0, 0.0).block.isSolid
-                    && checkLoc.add(0.0, -1.0, 0.0).block.isSolid
-                    && checkLoc.add(1.0, 0.0, 0.0).block.isSolid
-                    && checkLoc.add(-1.0, 0.0, 0.0).block.isSolid
-                    && checkLoc.add(0.0, 0.0, 1.0).block.isSolid
-                    && checkLoc.add(0.0, 0.0, -1.0).block.isSolid
-                ) {
-                    foundPos = true
-
-                    location = block.location
-                    break
-                }
-            }
-        } while (!foundPos)
-
-        if (location == null)
-            throw IllegalStateException("how the fuck")
-
-        location.block.type = Material.CHEST
-        val state = location.block.getState(false) as Chest
-        state.persistentDataContainer.set(MAP_CHEST_UUID, PersistentDataType.STRING, uuid.toString())
-
-        if (OnTheQuest.debug)
-            Bukkit.broadcast(Component.text("[OnTheQuest DEBUG] New chest generated at ${location.blockX} ${location.blockY} ${location.blockZ}"))
-
-        return location
+        return blockPos
     }
 
     fun getMapShard(count: Int = 1): ItemStack {
@@ -153,5 +123,125 @@ object MapChestManager {
         itemStack.itemMeta = meta
 
         return itemStack
+    }
+
+    private data class QueuedChest(
+        val world: World,
+        val pos: BlockPos,
+        val uuid: UUID
+    )
+
+    private val chestGenerationQueue = ConcurrentLinkedQueue<QueuedChest>()
+
+    fun init() {
+        if (!OnTheQuest.plugin.dataFolder.exists())
+            OnTheQuest.plugin.dataFolder.mkdirs()
+
+        val file = File(OnTheQuest.plugin.dataFolder, "chest_generation.json")
+        if (file.exists()) {
+            val json = JsonParser.parseReader(file.reader()).asJsonArray
+
+            json.forEach {
+                val obj = it.asJsonObject
+
+                val worldUid = UUID.fromString(obj.get("world").asString)
+                val x = obj.get("x").asInt
+                val z = obj.get("z").asInt
+                val uuid = UUID.fromString(obj.get("uuid").asString)
+
+                val world = Bukkit.getWorld(worldUid) ?: return@forEach
+                chestGenerationQueue.add(QueuedChest(world, BlockPos(x, 100, z), uuid))
+            }
+        }
+    }
+
+    private fun save() {
+        if (!OnTheQuest.plugin.dataFolder.exists())
+            OnTheQuest.plugin.dataFolder.mkdirs()
+
+        val file = File(OnTheQuest.plugin.dataFolder, "chest_generation.json")
+
+        if (!file.exists())
+            file.createNewFile()
+
+        val jsonArray = JsonArray()
+        chestGenerationQueue.forEach {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("world", it.world.uid.toString())
+            jsonObject.addProperty("x", it.pos.x)
+            jsonObject.addProperty("z", it.pos.z)
+            jsonObject.addProperty("uuid", it.uuid.toString())
+
+            jsonArray.add(jsonObject)
+        }
+
+        file.writeText(jsonArray.toString())
+    }
+
+    private fun addChestToGenerationQueue(world: World, pos: BlockPos, uuid: UUID) {
+        val chunkX = pos.x / 16
+        val chunkZ = pos.z / 16
+        if (world.isChunkGenerated(chunkX, chunkZ) && world.isChunkLoaded(chunkX, chunkZ)) {
+            val chunk = world.getChunkAt(chunkX, chunkZ)
+            checkGenerationQueue(chunk)
+        } else {
+            chestGenerationQueue.add(QueuedChest(world, pos, uuid))
+            save()
+        }
+    }
+
+    fun checkGenerationQueue(chunk: Chunk) {
+        OnTheQuest.plugin.server.scheduler.runTaskAsynchronously(OnTheQuest.plugin, Runnable {
+            val chests = chestGenerationQueue.filter { it.world.uid == chunk.world.uid && it.pos.x / 16 == chunk.x && it.pos.z / 16 == chunk.z }
+
+            if (chests.isEmpty())
+                return@Runnable
+
+            val chestPlacementQueue = mutableListOf<QueuedChest>()
+
+            chests.forEach {
+                chestGenerationQueue.remove(it)
+                val mutablePos = it.pos.mutable()
+                val x = it.pos.x
+                val z = it.pos.z
+
+                var foundY: Int? = null
+                for (y in Random.nextInt(-53, 37)..42) {
+                    val block = chunk.getBlock(x and 0xF, y, z and 0xF)
+                    val checkLoc = block.location.clone()
+
+                    if (
+                        checkLoc.add(0.0, 1.0, 0.0).block.isSolid
+                        && checkLoc.add(0.0, -1.0, 0.0).block.isSolid
+                        && checkLoc.add(1.0, 0.0, 0.0).block.isSolid
+                        && checkLoc.add(-1.0, 0.0, 0.0).block.isSolid
+                        && checkLoc.add(0.0, 0.0, 1.0).block.isSolid
+                        && checkLoc.add(0.0, 0.0, -1.0).block.isSolid
+                    ) {
+                        foundY = y
+                        break
+                    }
+                }
+
+                if (foundY == null)
+                    foundY = Random.nextInt(-53, 37)
+
+                mutablePos.y = foundY
+
+                chestPlacementQueue.add(QueuedChest(chunk.world, mutablePos, it.uuid))
+            }
+
+            OnTheQuest.plugin.server.scheduler.runTask(OnTheQuest.plugin, Runnable {
+                chestPlacementQueue.forEach {
+                    val block = it.world.getBlockAt(it.pos.x, it.pos.y, it.pos.z)
+
+                    block.type = Material.CHEST
+                    val state = block.getState(false) as Chest
+                    state.persistentDataContainer.set(MAP_CHEST_UUID, PersistentDataType.STRING, it.uuid.toString())
+                }
+            })
+
+            save()
+        })
     }
 }

@@ -19,13 +19,13 @@ import xyz.bluspring.onthequest.util.MappedRegistry
 
 class OnTheQuest : JavaPlugin() {
     override fun onLoad() {
+        plugin = this
         CommandAPI.onLoad(CommandAPIConfig())
+        MapChestManager.init()
     }
 
     override fun onEnable() {
         CommandAPI.onEnable(this)
-
-        plugin = this
 
         this.server.pluginManager.registerEvents(CustomMapEventHandler(), this)
         this.server.pluginManager.registerEvents(JewelEffectEventHandler(), this)
