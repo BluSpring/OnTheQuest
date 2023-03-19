@@ -5,21 +5,27 @@ import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent.SlotType
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.block.data.Ageable
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockDispenseArmorEvent
 import org.bukkit.event.block.BlockDropItemEvent
+import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryInteractEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerRespawnEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -61,6 +67,8 @@ class JewelEffectEventHandler : Listener {
     private fun applyJewelEffectsFromInventory(player: Player) {
         if (!activeJewels.contains(player))
             activeJewels[player] = mutableSetOf()
+        else
+            activeJewels[player]!!.clear()
 
         player.inventory.armorContents.forEach {
             if (it == null)
@@ -294,5 +302,34 @@ class JewelEffectEventHandler : Listener {
         ev.items.forEach {
             it.itemStack.amount = Random.nextInt(it.itemStack.amount, it.itemStack.amount + 5)
         }
+    }
+
+    @EventHandler
+    fun onPlayerSwapItems(ev: PlayerSwapHandItemsEvent) {
+        applyJewelEffectsFromInventory(ev.player)
+    }
+
+    // this is what you call someone who is incredibly done with Bukkit's bullshit
+    @EventHandler
+    fun onPlayerCloseInventory(ev: InventoryCloseEvent) {
+        applyJewelEffectsFromInventory(ev.player as Player)
+    }
+
+    @EventHandler
+    fun onPlayerDropItem(ev: PlayerDropItemEvent) {
+        val droppedStack = ev.itemDrop.itemStack
+
+        if (droppedStack.hasItemMeta() && droppedStack.itemMeta.persistentDataContainer.has(Jewels.JEWEL_TYPE_KEY))
+            applyJewelEffectsFromInventory(ev.player)
+    }
+
+    @EventHandler
+    fun onPlayerPickupItem(ev: EntityPickupItemEvent) {
+        if (ev.entityType != EntityType.PLAYER)
+            return
+
+        val itemStack = ev.item.itemStack
+        if (itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewels.JEWEL_TYPE_KEY))
+            applyJewelEffectsFromInventory(ev.entity as Player)
     }
 }
