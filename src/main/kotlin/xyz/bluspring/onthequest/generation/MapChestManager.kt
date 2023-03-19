@@ -29,9 +29,9 @@ import kotlin.random.Random
 object MapChestManager {
     val MAP_ID_KEY = NamespacedKey("questsmp", "map_id")
     val LOOT_TABLE_CHANCES = mapOf(
-        LootTables.BASTION_TREASURE.key to Chances.MEDIUM,
+        LootTables.BASTION_TREASURE.key to Chances.HIGH,
 
-        LootTables.ANCIENT_CITY.key to Chances.MEDIUM,
+        LootTables.ANCIENT_CITY.key to Chances.HIGH,
         LootTables.ANCIENT_CITY_ICE_BOX.key to Chances.MEDIUM,
 
         LootTables.NETHER_BRIDGE.key to Chances.LOW,
