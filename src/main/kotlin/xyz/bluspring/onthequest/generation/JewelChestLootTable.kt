@@ -27,22 +27,24 @@ class JewelChestLootTable : LootTable {
 
         // Get the jewel
         run {
-            val chosen = mutableSetOf<JewelType>()
-            for (jewelType in Jewels.REGISTRY) {
-                // Literally impossible
-                if (jewelType.probability == 0.0)
-                    continue
+            if (randomGen.nextInt(5) == 0) {
+                val chosen = mutableSetOf<JewelType>()
+                for (jewelType in Jewels.REGISTRY) {
+                    // Literally impossible
+                    if (jewelType.probability == 0.0)
+                        continue
 
-                // Invert
-                val probability = (1.0 / jewelType.probability).toInt()
+                    // Invert
+                    val probability = (1.0 / jewelType.probability).toInt()
 
-                if (randomGen.nextInt(probability) == 0)
-                    chosen.add(jewelType)
+                    if (randomGen.nextInt(probability) == 0)
+                        chosen.add(jewelType)
+                }
+
+                // Only add one
+                if (chosen.isNotEmpty())
+                    items.add(chosen.random(randomGen).getItem(1))
             }
-
-            // Only add one
-            if (chosen.isNotEmpty())
-                items.add(chosen.random(randomGen).getItem(1))
         }
 
         // Fill the chest with obsidian, diamonds and/or gold.
