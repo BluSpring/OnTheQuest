@@ -48,7 +48,7 @@ object MapChestManager {
 
         LootTables.SIMPLE_DUNGEON.key to Chances.SUPER_LOW,
 
-        LootTables.WOODLAND_MANSION.key to Chances.HIGH,
+        LootTables.WOODLAND_MANSION.key to Chances.VERY_HIGH,
 
         LootTables.RUINED_PORTAL.key to Chances.SUPER_LOW,
 
