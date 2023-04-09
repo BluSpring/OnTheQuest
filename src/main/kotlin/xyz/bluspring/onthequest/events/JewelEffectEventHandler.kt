@@ -56,6 +56,10 @@ class JewelEffectEventHandler : Listener {
 
     @EventHandler
     fun onPlayerDeath(ev: PlayerDeathEvent) {
+        activeJewels[ev.player]?.forEach {
+            it.remove(ev.player)
+        }
+
         activeJewels.remove(ev.player)
     }
 
@@ -67,8 +71,13 @@ class JewelEffectEventHandler : Listener {
     private fun applyJewelEffectsFromInventory(player: Player) {
         if (!activeJewels.contains(player))
             activeJewels[player] = mutableSetOf()
-        else
-            activeJewels[player]!!.clear()
+        else {
+            activeJewels[player]!!.forEach {
+                it.remove(player)
+            }
+
+            activeJewels.remove(player)
+        }
 
         player.inventory.armorContents.forEach {
             if (it == null)
@@ -109,6 +118,10 @@ class JewelEffectEventHandler : Listener {
 
     @EventHandler
     fun onPlayerDisconnect(ev: PlayerQuitEvent) {
+        activeJewels[ev.player]?.forEach {
+            it.remove(ev.player)
+        }
+
         activeJewels.remove(ev.player)
     }
 
@@ -130,6 +143,10 @@ class JewelEffectEventHandler : Listener {
 
                 if (!activeJewels.contains(ev.player))
                     break
+
+                jewelTypes.forEach {
+                    it.remove(ev.player)
+                }
 
                 activeJewels[ev.player]!!.removeAll(jewelTypes.toSet())
             }
@@ -170,6 +187,9 @@ class JewelEffectEventHandler : Listener {
         if (!activeJewels.contains(player))
             return
 
+        jewelTypes.forEach {
+            it.remove(player)
+        }
         activeJewels[player]!!.removeAll(jewelTypes.toSet())
     }
 
@@ -229,8 +249,10 @@ class JewelEffectEventHandler : Listener {
                     val jewelTypes = getJewelTypes(ev.currentItem!!) ?: return
 
                     jewelTypes.forEach {
-                        if (it.effectsWhenHeld)
+                        if (it.effectsWhenHeld) {
+                            it.remove(ev.whoClicked as Player)
                             activeJewels[ev.whoClicked]!!.remove(it)
+                        }
                     }
                 }
 
@@ -250,8 +272,10 @@ class JewelEffectEventHandler : Listener {
                         val eqSlot = EquipmentSlot.valueOf(slot.name)
 
                         jewelTypes.forEach {
-                            if (it.slots.contains(eqSlot))
+                            if (it.slots.contains(eqSlot)) {
+                                it.remove(ev.whoClicked as Player)
                                 activeJewels[ev.whoClicked]!!.remove(it)
+                            }
                         }
                     } while (false)
                 }
