@@ -7,5 +7,11 @@
   "item.questsmp.haste_jewel": "Haste Jewel",
   "item.questsmp.avatar_jewel": "Avatar Jewel",
   "item.questsmp.map": "Jewel Locator Map",
-  "item.questsmp.map_shard": "Map Shard"
+  "item.questsmp.map_shard": "Map Shard",
+
+  "item.questsmp.ice_jewel": "Ice Jewel",
+  "item.questsmp.life_jewel": "Life Jewel",
+  "item.questsmp.skeletal_jewel": "Skeletal Jewel",
+  "item.questsmp.void_jewel": "Void Jewel",
+  "item.questsmp.water_jewel": "Water Jewel"
 }

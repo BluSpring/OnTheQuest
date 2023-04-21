@@ -44,7 +44,37 @@
       "predicate": {
         "custom_model_data": 21
       },
-      "model": "questsmp:jewels/avatar"
+    "model": "questsmp:jewels/avatar"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 22
+      },
+      "model": "questsmp:jewels/ice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 23
+      },
+      "model": "questsmp:jewels/life"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 24
+      },
+      "model": "questsmp:jewels/skeletal"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 25
+      },
+      "model": "questsmp:jewels/void"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 26
+      },
+      "model": "questsmp:jewels/water"
     }
   ]
 }

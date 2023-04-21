@@ -12,8 +12,9 @@ abstract class EventedJewelType(
     modelId: Int,
     slots: List<EquipmentSlot> = listOf(),
     materials: List<Material> = listOf(),
-    effectsWhenHeld: Boolean = false
-) : JewelType(id, listOf(), modelId, slots, materials, effectsWhenHeld), Listener {
+    effectsWhenHeld: Boolean = false,
+    probability: Double = 0.0
+) : JewelType(id, listOf(), modelId, slots, materials, effectsWhenHeld, probability), Listener {
     init {
         registerEvent()
     }

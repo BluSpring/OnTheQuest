@@ -1,11 +1,15 @@
 package xyz.bluspring.onthequest.jewel
 
+import net.minecraft.world.entity.ai.attributes.AttributeModifier
+import net.minecraft.world.entity.ai.attributes.Attributes
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
+import org.bukkit.event.Listener
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.util.Chances
 import xyz.bluspring.onthequest.util.MappedRegistry
 import xyz.bluspring.onthequest.util.ToolType
@@ -115,12 +119,59 @@ object Jewels {
         )
     )
 
+    val ICE = register(
+        JewelType(
+            key("ice_jewel"),
+            listOf(),
+            22
+        )
+    )
+
+    val LIFE = register(
+        AttributedJewelType(
+            key("life_jewel"),
+            23,
+            mapOf(
+                Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 2.0, AttributeModifier.Operation.ADDITION)
+            )
+        )
+    )
+
+    val SKELETAL = register(
+        JewelType(
+            key("skeletal_jewel"),
+            listOf(),
+            24
+        )
+    )
+
+    val VOID = registerEvented(
+        VoidJewelType(
+            key("void_jewel"),
+            25
+        )
+    )
+
+    val WATER = registerEvented(
+        WaterJewelType(
+            key("water_jewel"),
+            26
+        )
+    )
+
     private fun key(path: String): NamespacedKey {
         return NamespacedKey("questsmp", path)
     }
 
     fun register(value: JewelType): JewelType {
         (REGISTRY as MappedRegistry<JewelType>).register(value.key, value)
+        return value
+    }
+
+    fun <T> registerEvented(value: T): JewelType where T : JewelType, T : Listener {
+        this.register(value)
+        OnTheQuest.plugin.server.pluginManager.registerEvents(value, OnTheQuest.plugin)
+
         return value
     }
 }
