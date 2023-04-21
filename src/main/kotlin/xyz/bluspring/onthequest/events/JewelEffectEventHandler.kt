@@ -37,8 +37,6 @@ import xyz.bluspring.onthequest.util.StringArrayDataType
 import kotlin.random.Random
 
 class JewelEffectEventHandler : Listener {
-    private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
-
     init {
         OnTheQuest.plugin.server.scheduler.runTaskTimer(OnTheQuest.plugin, Runnable {
             activeJewels.forEach { (player, jewels) ->
@@ -355,5 +353,13 @@ class JewelEffectEventHandler : Listener {
         val itemStack = ev.item.itemStack
         if (itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewels.JEWEL_TYPE_KEY))
             applyJewelEffectsFromInventory(ev.entity as Player)
+    }
+
+    companion object {
+        private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
+
+        fun getActiveJewels(player: Player): Set<JewelType>? {
+            return activeJewels[player]
+        }
     }
 }

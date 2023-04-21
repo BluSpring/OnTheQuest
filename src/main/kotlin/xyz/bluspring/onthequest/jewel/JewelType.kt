@@ -10,6 +10,7 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
+import xyz.bluspring.onthequest.jewel.ability.JewelAbility
 
 open class JewelType(
     private val id: NamespacedKey,
@@ -20,6 +21,16 @@ open class JewelType(
     val effectsWhenHeld: Boolean = false,
     val probability: Double = 0.0
 ) : Keyed {
+    private val abilities: MutableList<JewelAbility> = mutableListOf()
+
+    fun registerAbility(ability: JewelAbility) {
+        abilities.add(ability)
+    }
+
+    fun hasAbility(ability: JewelAbility): Boolean {
+        return abilities.contains(ability)
+    }
+
     override fun getKey(): NamespacedKey {
         return id
     }

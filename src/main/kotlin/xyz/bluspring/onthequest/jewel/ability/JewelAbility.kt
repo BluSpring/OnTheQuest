@@ -1,10 +1,12 @@
 package xyz.bluspring.onthequest.jewel.ability
 
+import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.events.JewelEffectEventHandler
 import java.lang.Long.max
 import java.util.Timer
 import java.util.TimerTask
@@ -13,9 +15,13 @@ import java.util.TimerTask
 abstract class JewelAbility(
     val key: NamespacedKey,
     val cooldown: Long
-) : Listener {
+) : Listener, Keyed {
     init {
         OnTheQuest.plugin.server.pluginManager.registerEvents(this, OnTheQuest.plugin)
+    }
+
+    override fun getKey(): NamespacedKey {
+        return key
     }
 
     private val timer = Timer("onthequest_ability_timer_$key")
@@ -26,6 +32,10 @@ abstract class JewelAbility(
 
     fun timeUntilCooldownFinished(player: Player): Long {
         return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(key, PersistentDataType.LONG) ?: System.currentTimeMillis())))
+    }
+
+    protected fun doesAbilityApply(player: Player): Boolean {
+        return (JewelEffectEventHandler.getActiveJewels(player)?.any { it.hasAbility(this) } ?: false) && timeUntilCooldownFinished(player) <= 0
     }
 
     fun run(player: Player): Boolean {

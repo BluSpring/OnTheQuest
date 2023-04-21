@@ -123,7 +123,8 @@ object Jewels {
         JewelType(
             key("ice_jewel"),
             listOf(),
-            22
+            22,
+            effectsWhenHeld = true
         )
     )
 
@@ -133,7 +134,8 @@ object Jewels {
             23,
             mapOf(
                 Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 2.0, AttributeModifier.Operation.ADDITION)
-            )
+            ),
+            slots = listOf(EquipmentSlot.CHEST)
         )
     )
 
@@ -141,21 +143,24 @@ object Jewels {
         JewelType(
             key("skeletal_jewel"),
             listOf(),
-            24
+            24,
+            effectsWhenHeld = true
         )
     )
 
     val VOID = registerEvented(
         VoidJewelType(
             key("void_jewel"),
-            25
+            25,
+            listOf(EquipmentSlot.LEGS)
         )
     )
 
     val WATER = registerEvented(
         WaterJewelType(
             key("water_jewel"),
-            26
+            26,
+            listOf(EquipmentSlot.HEAD)
         )
     )
 
