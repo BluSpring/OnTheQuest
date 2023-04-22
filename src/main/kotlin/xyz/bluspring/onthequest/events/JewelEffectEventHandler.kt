@@ -2,6 +2,10 @@ package xyz.bluspring.onthequest.events
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent.SlotType
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.block.data.Ageable
@@ -33,8 +37,13 @@ import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.DataContainerUtil
+import xyz.bluspring.onthequest.util.KotlinHelper.ticks
 import xyz.bluspring.onthequest.util.StringArrayDataType
+import java.io.File
+import java.util.UUID
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 class JewelEffectEventHandler : Listener {
     init {
@@ -357,9 +366,86 @@ class JewelEffectEventHandler : Listener {
 
     companion object {
         private val activeJewels = mutableMapOf<Player, MutableSet<JewelType>>()
+        /*private val tempJewels = mutableMapOf<UUID, MutableSet<Pair<Long, JewelType>>>()
+        private val tempJewelStorage = File(OnTheQuest.plugin.dataFolder, "temp_jewels.json")
+
+        init {
+            load()
+
+            Bukkit.getScheduler().runTaskTimerAsynchronously(OnTheQuest.plugin, Runnable {
+                tempJewels.forEach { (uuid, )
+
+                }
+            }, 0L, 1.minutes.ticks.toLong())
+        }
+
+        private fun save() {
+            if (!tempJewelStorage.exists())
+                tempJewelStorage.createNewFile()
+
+            val json = JsonObject()
+            tempJewels.forEach { (uuid, jewels) ->
+                json.add(uuid.toString(), JsonArray().apply {
+                    jewels.forEach { (startTime, jewelType) ->
+                        this.add(JsonObject().apply {
+                            this.addProperty("start_time", startTime)
+                            this.addProperty("jewel_type", jewelType.key.asString())
+                        })
+                    }
+                })
+            }
+
+            tempJewelStorage.writeText(json.toString())
+        }
+
+        private fun load() {
+            if (!tempJewelStorage.exists())
+                return
+
+            val json = JsonParser.parseString(tempJewelStorage.readText()).asJsonObject
+
+            json.keySet().forEach { serializedUuid ->
+                val uuid = UUID.fromString(serializedUuid)
+                val jewels = json.get(serializedUuid).asJsonArray
+
+                val set = mutableSetOf<Pair<Long, JewelType>>()
+
+                jewels.forEach jewelCheck@{
+                    val data = it.asJsonObject
+
+                    val startTime = data.get("start_time").asLong
+                    val jewelType = Jewels.REGISTRY.get(NamespacedKey.fromString(data.get("jewel_type").asString)!!) ?: return@jewelCheck
+
+                    if (System.currentTimeMillis() - startTime >= 24.hours.inWholeMilliseconds)
+                        return@jewelCheck
+
+                    set.add(Pair(startTime, jewelType))
+                }
+
+                tempJewels[uuid] = set
+
+                val player = Bukkit.getPlayer(uuid)
+                if (player != null) {
+
+                }
+            }
+        }*/
 
         fun getActiveJewels(player: Player): Set<JewelType>? {
             return activeJewels[player]
         }
+
+        /*fun applyTemporaryJewel(player: Player, jewel: JewelType) {
+            if (!tempJewels.contains(player.uniqueId))
+                tempJewels[player.uniqueId] = mutableSetOf()
+
+            if (!activeJewels.contains(player))
+                activeJewels[player] = mutableSetOf()
+
+            tempJewels[player.uniqueId]!!.add(Pair(System.currentTimeMillis(), jewel))
+            activeJewels[player]!!.add(jewel)
+
+            save()
+        }*/
     }
 }

@@ -5,6 +5,7 @@ import dev.jorel.commandapi.CommandAPIConfig
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.text.Component
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -62,6 +63,20 @@ class OnTheQuest : JavaPlugin() {
 
                 if (!giveJewelItem(to, player, jewelId, count))
                     throw CommandAPI.failWithString("Invalid jewel type!")
+            }
+        }
+
+        commandAPICommand("jewel-random") {
+            withPermission("otq.admin")
+            playerExecutor { player, _ ->
+                val randomPlayer = Bukkit.getOnlinePlayers().random()
+                val randomJewel = Jewels.REGISTRY.toList().random()
+
+                //JewelEffectEventHandler.applyTemporaryJewel(randomPlayer, randomJewel)
+
+                randomPlayer.world.dropItem(randomPlayer.location, randomJewel.getItem(1))
+
+                player.sendMessage("${randomPlayer.name} was randomly chosen to give the jewel type: ${randomJewel.key}")
             }
         }
 
