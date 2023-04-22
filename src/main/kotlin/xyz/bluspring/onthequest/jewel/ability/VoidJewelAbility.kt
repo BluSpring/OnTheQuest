@@ -1,6 +1,7 @@
 package xyz.bluspring.onthequest.jewel.ability
 
 import org.bukkit.entity.Player
+import org.bukkit.entity.WitherSkull
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import kotlin.time.Duration.Companion.minutes
@@ -22,6 +23,7 @@ class VoidJewelAbility : JewelAbility(
     override fun runAbility(player: Player): Boolean {
         // TODO: fire wither skull
         // 30s effect
+        player.launchProjectile(WitherSkull::class.java).velocity = player.location.direction.multiply(2)
 
         return true
     }
