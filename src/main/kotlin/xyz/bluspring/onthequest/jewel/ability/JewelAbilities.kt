@@ -11,12 +11,21 @@ object JewelAbilities {
 
     val LIFE_PRIMARY = register(LifeJewelAbility())
 
+    val ICE_PRIMARY = register(IceJewelPrimaryAbility())
+    val ICE_SECONDARY = register(IceJewelSecondaryAbility())
+
+    val SKELETAL_PRIMARY = register(SkeletalJewelAbility())
+
+    val VOID_PRIMARY = register(VoidJewelAbility())
+
+    val WATER_PRIMARY = register(WaterJewelAbility())
+
     internal fun key(path: String): NamespacedKey {
         return NamespacedKey("questsmp", path)
     }
 
     fun register(value: JewelAbility): JewelAbility {
-        (Jewels.REGISTRY as MappedRegistry<JewelAbility>).register(value.key, value)
+        (REGISTRY as MappedRegistry<JewelAbility>).register(value.key, value)
         OnTheQuest.plugin.server.pluginManager.registerEvents(value, OnTheQuest.plugin)
         return value
     }

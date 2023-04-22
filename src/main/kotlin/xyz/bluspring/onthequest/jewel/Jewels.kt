@@ -10,6 +10,7 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.jewel.ability.JewelAbilities
 import xyz.bluspring.onthequest.util.Chances
 import xyz.bluspring.onthequest.util.MappedRegistry
 import xyz.bluspring.onthequest.util.ToolType
@@ -125,7 +126,10 @@ object Jewels {
             listOf(),
             22,
             effectsWhenHeld = true
-        )
+        ).apply {
+            registerAbility(JewelAbilities.ICE_PRIMARY)
+            registerAbility(JewelAbilities.ICE_SECONDARY)
+        }
     )
 
     val LIFE = register(
@@ -136,7 +140,9 @@ object Jewels {
                 Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 2.0, AttributeModifier.Operation.ADDITION)
             ),
             slots = listOf(EquipmentSlot.CHEST)
-        )
+        ).apply {
+            registerAbility(JewelAbilities.LIFE_PRIMARY)
+        }
     )
 
     val SKELETAL = register(
@@ -145,7 +151,9 @@ object Jewels {
             listOf(),
             24,
             effectsWhenHeld = true
-        )
+        ).apply {
+            registerAbility(JewelAbilities.SKELETAL_PRIMARY)
+        }
     )
 
     val VOID = registerEvented(
@@ -153,7 +161,9 @@ object Jewels {
             key("void_jewel"),
             25,
             listOf(EquipmentSlot.LEGS)
-        )
+        ).apply {
+            registerAbility(JewelAbilities.VOID_PRIMARY)
+        }
     )
 
     val WATER = registerEvented(
@@ -161,7 +171,9 @@ object Jewels {
             key("water_jewel"),
             26,
             listOf(EquipmentSlot.HEAD)
-        )
+        ).apply {
+            registerAbility(JewelAbilities.WATER_PRIMARY)
+        }
     )
 
     private fun key(path: String): NamespacedKey {
