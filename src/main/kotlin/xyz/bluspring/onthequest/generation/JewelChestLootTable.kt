@@ -36,7 +36,7 @@ class JewelChestLootTable : LootTable {
 
         // Get the jewel
         run {
-            if (randomGen.nextInt(5) == 0) {
+            if (randomGen.nextInt(30) == 0) {
                 val chosen = mutableSetOf<JewelType>()
                 for (jewelType in Jewels.REGISTRY) {
                     // Literally impossible
