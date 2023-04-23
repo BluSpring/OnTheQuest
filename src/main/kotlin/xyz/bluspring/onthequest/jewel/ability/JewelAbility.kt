@@ -13,7 +13,7 @@ import java.util.TimerTask
 
 // cooldown is in ticks
 abstract class JewelAbility(
-    val key: NamespacedKey,
+    private val id: NamespacedKey,
     val cooldown: Long
 ) : Listener, Keyed {
     init {
@@ -21,17 +21,17 @@ abstract class JewelAbility(
     }
 
     override fun getKey(): NamespacedKey {
-        return key
+        return id
     }
 
-    private val timer = Timer("onthequest_ability_timer_$key")
+    private val timer = Timer("onthequest_ability_timer_$id")
 
     fun triggerCooldown(player: Player) {
-        player.persistentDataContainer.set(key, PersistentDataType.LONG, System.currentTimeMillis())
+        player.persistentDataContainer.set(id, PersistentDataType.LONG, System.currentTimeMillis())
     }
 
     fun timeUntilCooldownFinished(player: Player): Long {
-        return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(key, PersistentDataType.LONG) ?: System.currentTimeMillis())))
+        return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(id, PersistentDataType.LONG) ?: System.currentTimeMillis())))
     }
 
     protected fun doesAbilityApply(player: Player): Boolean {

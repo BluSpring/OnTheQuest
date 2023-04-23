@@ -3,7 +3,6 @@ package xyz.bluspring.onthequest.jewel.ability
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
 import xyz.bluspring.onthequest.OnTheQuest
-import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.MappedRegistry
 
 object JewelAbilities {
