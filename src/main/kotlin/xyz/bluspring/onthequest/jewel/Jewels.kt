@@ -137,7 +137,7 @@ object Jewels {
             key("life_jewel"),
             23,
             mapOf(
-                Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 2.0, AttributeModifier.Operation.ADDITION)
+                Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 4.0, AttributeModifier.Operation.ADDITION)
             ),
             slots = listOf(EquipmentSlot.CHEST)
         ).apply {

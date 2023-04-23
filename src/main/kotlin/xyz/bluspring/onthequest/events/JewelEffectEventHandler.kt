@@ -84,6 +84,7 @@ class JewelEffectEventHandler : Listener {
             }
 
             activeJewels.remove(player)
+            activeJewels[player] = mutableSetOf()
         }
 
         player.inventory.armorContents.forEach {

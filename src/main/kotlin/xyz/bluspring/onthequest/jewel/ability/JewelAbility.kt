@@ -31,11 +31,14 @@ abstract class JewelAbility(
     }
 
     fun timeUntilCooldownFinished(player: Player): Long {
-        return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(id, PersistentDataType.LONG) ?: System.currentTimeMillis())))
+        return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(id, PersistentDataType.LONG) ?: 0)))
     }
 
     protected fun doesAbilityApply(player: Player): Boolean {
-        return (JewelEffectEventHandler.getActiveJewels(player)?.any { it.hasAbility(this) } ?: false) && timeUntilCooldownFinished(player) <= 0
+        val timeUntilCooldown = timeUntilCooldownFinished(player)
+        val activeJewels = JewelEffectEventHandler.getActiveJewels(player)
+
+        return (activeJewels?.any { it.hasAbility(this) } ?: false) && timeUntilCooldown <= 0
     }
 
     fun run(player: Player): Boolean {
