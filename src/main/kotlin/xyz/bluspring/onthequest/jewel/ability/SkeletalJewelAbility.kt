@@ -1,5 +1,6 @@
 package xyz.bluspring.onthequest.jewel.ability
 
+import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
@@ -42,6 +43,8 @@ class SkeletalJewelAbility : JewelAbility(
                 it.addPotionEffect(PotionEffect(PotionEffectType.POISON, 10.seconds.ticks, 0))
             }
         }
+
+        player.world.spawnParticle(Particle.ASH, player.location, 250, 1.0, 0.4, 1.0, 15.0)
 
         return true
     }

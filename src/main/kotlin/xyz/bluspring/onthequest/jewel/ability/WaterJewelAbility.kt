@@ -1,5 +1,6 @@
 package xyz.bluspring.onthequest.jewel.ability
 
+import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
@@ -28,6 +29,11 @@ class WaterJewelAbility : JewelAbility(
             PotionEffect(PotionEffectType.ABSORPTION, 30.seconds.ticks, 2),
             PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30.seconds.ticks, 2)
         ))
+
+        player.world.spawnParticle(Particle.BUBBLE_POP,
+            player.location.x, player.location.y + 0.35, player.location.z,
+            50, 0.7, 0.2, 0.7, 0.01
+        )
 
         return true
     }

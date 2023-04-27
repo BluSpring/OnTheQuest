@@ -1,5 +1,7 @@
 package xyz.bluspring.onthequest.jewel.ability
 
+import org.bukkit.Color
+import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.entity.WitherSkull
 import org.bukkit.event.EventHandler
@@ -87,6 +89,18 @@ class VoidJewelAbility : JewelAbility(
 
         })
         skull.velocity = player.location.direction.multiply(2)
+
+        player.world.spawnParticle(
+            Particle.BLOCK_DUST,
+            player.location.x, player.location.y, player.location.z,
+            155, 0.4, 1.4, 0.4, 15.0,
+            Particle.DustOptions(
+                Color.fromRGB(51, 51, 51), // pink
+                1F
+            )
+        )
+
+        player.world.spawnParticle(Particle.WARPED_SPORE, player.location, 50, 0.6, 1.0, 0.6, 0.4)
 
         return true
     }

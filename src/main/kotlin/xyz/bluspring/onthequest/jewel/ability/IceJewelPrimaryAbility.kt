@@ -1,5 +1,6 @@
 package xyz.bluspring.onthequest.jewel.ability
 
+import org.bukkit.Particle
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -37,6 +38,8 @@ class IceJewelPrimaryAbility : JewelAbility(
     }
 
     override fun runAbility(player: Player): Boolean {
+        player.world.spawnParticle(Particle.SNOWFLAKE, player.location, 155, 0.3, 0.3, 0.3, 0.2)
+        player.world.spawnParticle(Particle.DOLPHIN, player.location, 155, 1.0, 1.0, 1.0, 5.0)
         return true
     }
 }
