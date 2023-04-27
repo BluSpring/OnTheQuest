@@ -22,9 +22,9 @@ class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>
             return
 
         ev.player.addPotionEffects(listOf(
-            PotionEffect(PotionEffectType.WATER_BREATHING, 2.seconds.ticks, 15, true, false),
-            PotionEffect(PotionEffectType.NIGHT_VISION, 2.seconds.ticks, 15, true, false),
-            PotionEffect(PotionEffectType.FAST_DIGGING, 5, 2, true, false)
+            PotionEffect(PotionEffectType.WATER_BREATHING, 4.seconds.ticks, 15, true, false),
+            PotionEffect(PotionEffectType.NIGHT_VISION, 4.seconds.ticks, 15, true, false),
+            PotionEffect(PotionEffectType.FAST_DIGGING, 2.seconds.ticks, 2, true, false)
         ))
     }
 

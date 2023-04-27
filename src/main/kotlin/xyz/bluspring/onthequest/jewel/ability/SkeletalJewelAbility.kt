@@ -19,6 +19,10 @@ class SkeletalJewelAbility : JewelAbility(
 
         if (this.run(ev.player)) {
             ev.isCancelled = true
+
+            if (ev.item != null) {
+                ev.player.setCooldown(ev.item!!.type, (this.cooldown / 50).toInt())
+            }
         }
     }
 
@@ -26,6 +30,9 @@ class SkeletalJewelAbility : JewelAbility(
         val entities = player.world.getNearbyLivingEntities(player.location, 100.0)
         entities.forEach {
             if (it !is Player)
+                return@forEach
+
+            if (it.uniqueId == player.uniqueId)
                 return@forEach
 
             it.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 5.minutes.ticks, 0))
