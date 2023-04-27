@@ -3,7 +3,10 @@ package xyz.bluspring.onthequest.jewel
 import io.papermc.paper.event.entity.ElderGuardianAppearanceEvent
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Guardian
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffect
@@ -34,5 +37,19 @@ class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>
             return
 
         ev.isCancelled = true
+    }
+
+    @EventHandler
+    fun onPlayerDamagedByGuardian(ev: EntityDamageByEntityEvent) {
+        val entity = ev.entity
+
+        if (entity !is Player)
+            return
+
+        if (JewelEffectEventHandler.getActiveJewels(entity)?.contains(this) != true)
+            return
+
+        if (ev.damager is Guardian)
+            ev.isCancelled = true
     }
 }
