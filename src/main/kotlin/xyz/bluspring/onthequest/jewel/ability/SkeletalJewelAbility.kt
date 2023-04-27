@@ -7,6 +7,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.util.KotlinHelper.ticks
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 class SkeletalJewelAbility : JewelAbility(
     JewelAbilities.key("skeletal"),
@@ -36,6 +37,10 @@ class SkeletalJewelAbility : JewelAbility(
                 return@forEach
 
             it.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 5.minutes.ticks, 0))
+
+            if (it.location.distance(player.location) <= 32) {
+                it.addPotionEffect(PotionEffect(PotionEffectType.POISON, 10.seconds.ticks, 0))
+            }
         }
 
         return true
