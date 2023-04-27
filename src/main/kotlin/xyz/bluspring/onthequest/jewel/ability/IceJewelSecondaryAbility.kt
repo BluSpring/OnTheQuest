@@ -3,6 +3,7 @@ package xyz.bluspring.onthequest.jewel.ability
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.util.KotlinHelper.ticks
 import kotlin.time.Duration.Companion.minutes
@@ -35,6 +36,24 @@ class IceJewelSecondaryAbility : JewelAbility(
                     applies.remove(entity)
                 }, 5.seconds.ticks.toLong())
             }
+        }
+    }
+
+    @EventHandler
+    fun onPlayerDeath(ev: PlayerDeathEvent) {
+        if (!doesAbilityApply(ev.player))
+            return
+
+        ev.isCancelled = true
+        runAbility(ev.player)
+
+        if (!applies.contains(ev.player)) {
+            applies.add(ev.player)
+
+            OnTheQuest.plugin.server.scheduler.runTaskLater(OnTheQuest.plugin, Runnable {
+                this.run(ev.player)
+                applies.remove(ev.player)
+            }, 5.seconds.ticks.toLong())
         }
     }
 
