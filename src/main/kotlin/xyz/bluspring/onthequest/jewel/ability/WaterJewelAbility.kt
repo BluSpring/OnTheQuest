@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class WaterJewelAbility : JewelAbility(
     JewelAbilities.key("water_primary"),
-    30.minutes.inWholeMilliseconds
+    15.minutes.inWholeMilliseconds
 ) {
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {

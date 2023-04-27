@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class LifeJewelAbility : JewelAbility(
     JewelAbilities.key("life"),
-    30.minutes.inWholeMilliseconds
+    10.minutes.inWholeMilliseconds
 ) {
     @EventHandler
     fun onPlayerDamage(ev: EntityDamageEvent) {

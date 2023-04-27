@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class VoidJewelAbility : JewelAbility(
     JewelAbilities.key("void"),
-    15.minutes.inWholeMilliseconds
+    3.minutes.inWholeMilliseconds
 ) {
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {
