@@ -30,6 +30,9 @@ class IceJewelPrimaryAbility : JewelAbility(
 
         entity.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 5.seconds.ticks, 255))
         entity.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 5.seconds.ticks, 255, true, false))
+
+        entity.world.strikeLightning(entity.location)
+
         this.run(damager)
     }
 
