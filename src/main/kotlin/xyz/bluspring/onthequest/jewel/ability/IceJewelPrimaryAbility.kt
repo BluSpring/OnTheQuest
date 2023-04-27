@@ -28,7 +28,8 @@ class IceJewelPrimaryAbility : JewelAbility(
         if (!doesAbilityApply(damager))
             return
 
-        entity.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 3.seconds.ticks, 255))
+        entity.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 5.seconds.ticks, 255))
+        entity.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 5.seconds.ticks, 255, true, false))
         this.run(damager)
     }
 
