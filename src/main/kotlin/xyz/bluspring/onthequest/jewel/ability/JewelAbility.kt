@@ -31,7 +31,7 @@ abstract class JewelAbility(
     }
 
     @EventHandler
-    fun onPlayerRightClick(ev: PlayerInteractEvent) {
+    fun onJewelCooldownCheck(ev: PlayerInteractEvent) {
         if (!hasAbilityJewel(ev.player))
             return
 
