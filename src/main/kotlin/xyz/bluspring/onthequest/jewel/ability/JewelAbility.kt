@@ -15,6 +15,7 @@ import xyz.bluspring.onthequest.events.JewelEffectEventHandler
 import java.lang.Long.max
 import java.util.Timer
 import java.util.TimerTask
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -23,6 +24,9 @@ abstract class JewelAbility(
     private val id: NamespacedKey,
     val cooldown: Long
 ) : Listener, Keyed {
+    // why is bukkit
+    private val cooldowns = mutableMapOf<UUID, Long>()
+
     init {
         OnTheQuest.plugin.server.pluginManager.registerEvents(this, OnTheQuest.plugin)
     }
@@ -42,7 +46,7 @@ abstract class JewelAbility(
     }
 
     fun notifyCooldown(player: Player) {
-        val cooldownTime = player.persistentDataContainer.get(id, PersistentDataType.LONG) ?: return
+        val cooldownTime = cooldowns[player.uniqueId] ?: return
         val timeUntilEnd = System.currentTimeMillis() - cooldownTime
 
         if (timeUntilEnd >= cooldown)
@@ -63,11 +67,11 @@ abstract class JewelAbility(
     private val timer = Timer("onthequest_ability_timer_$id")
 
     fun triggerCooldown(player: Player) {
-        player.persistentDataContainer.set(id, PersistentDataType.LONG, System.currentTimeMillis())
+        cooldowns[player.uniqueId] = System.currentTimeMillis()
     }
 
     fun timeUntilCooldownFinished(player: Player): Long {
-        return max(0L, cooldown - (System.currentTimeMillis() - (player.persistentDataContainer.get(id, PersistentDataType.LONG) ?: 0)))
+        return max(0L, cooldown - (System.currentTimeMillis() - (cooldowns[player.uniqueId] ?: 0)))
     }
 
     protected fun hasAbilityJewel(player: Player): Boolean {
