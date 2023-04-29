@@ -55,7 +55,7 @@ class JewelChestLootTable : LootTable {
                 if (chosen.isNotEmpty())
                     items.add(chosen.random(randomGen).getItem(1))
                 else
-                    items.add(Jewels.REGISTRY.toList().filter { it.probability > Chances.MEDIUM }.random(randomGen).getItem(1))
+                    items.add(Jewels.REGISTRY.toList().filter { it.probability >= Chances.MEDIUM }.random(randomGen).getItem(1))
             }
         }
 
