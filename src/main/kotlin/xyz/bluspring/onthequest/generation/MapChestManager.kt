@@ -231,6 +231,7 @@ object MapChestManager {
 
                 mutablePos.y = foundY
 
+                OnTheQuest.plugin.logger.info("Generated chest ${it.uuid} at ${mutablePos.x} ${mutablePos.y} ${mutablePos.z}")
                 chestPlacementQueue.add(QueuedChest(chunk.world, mutablePos, it.uuid))
             }
 
@@ -241,6 +242,8 @@ object MapChestManager {
                     block.type = Material.CHEST
                     val state = block.getState(false) as Chest
                     state.persistentDataContainer.set(MAP_CHEST_UUID, PersistentDataType.STRING, it.uuid.toString())
+
+                    OnTheQuest.plugin.logger.info("Placed chest ${it.uuid} at ${it.pos.x} ${it.pos.y} ${it.pos.z}")
                 }
             })
 
