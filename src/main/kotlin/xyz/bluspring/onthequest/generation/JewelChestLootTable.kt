@@ -8,6 +8,7 @@ import org.bukkit.loot.LootContext
 import org.bukkit.loot.LootTable
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
+import xyz.bluspring.onthequest.util.Chances
 import java.util.*
 import kotlin.random.asKotlinRandom
 
@@ -36,7 +37,7 @@ class JewelChestLootTable : LootTable {
 
         // Get the jewel
         run {
-            if (randomGen.nextInt(30) == 0) {
+            if (randomGen.nextInt(4) != 0) {
                 val chosen = mutableSetOf<JewelType>()
                 for (jewelType in Jewels.REGISTRY) {
                     // Literally impossible
@@ -53,6 +54,8 @@ class JewelChestLootTable : LootTable {
                 // Only add one
                 if (chosen.isNotEmpty())
                     items.add(chosen.random(randomGen).getItem(1))
+                else
+                    items.add(Jewels.REGISTRY.toList().filter { it.probability > Chances.MEDIUM }.random(randomGen).getItem(1))
             }
         }
 
