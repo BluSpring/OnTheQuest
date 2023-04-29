@@ -6,6 +6,7 @@ import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.persistence.PersistentDataType
@@ -30,12 +31,12 @@ abstract class JewelAbility(
         return id
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     fun onJewelCooldownCheck(ev: PlayerInteractEvent) {
         if (!hasAbilityJewel(ev.player))
             return
 
-        if (ev.action.isRightClick) {
+        if (ev.action.isRightClick && !ev.isCancelled) {
             notifyCooldown(ev.player)
         }
     }
