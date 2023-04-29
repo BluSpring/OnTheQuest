@@ -53,7 +53,7 @@ abstract class JewelAbility(
             duration.inWholeSeconds - duration.inWholeMinutes.milliseconds.inWholeSeconds}"
 
         player.sendActionBar(
-            Component.translatable("item.${id.namespace}.${id.key}")
+            Component.translatable("abilities.${id.namespace}.${id.key}")
                 .append(Component.text(" is on cooldown: ").color(NamedTextColor.RED))
                 .append(Component.text(str).color(NamedTextColor.YELLOW))
         )

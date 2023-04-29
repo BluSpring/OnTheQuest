@@ -23,10 +23,6 @@ class VoidJewelAbility : JewelAbility(
 
         if (this.run(ev.player)) {
             ev.isCancelled = true
-
-            if (ev.item != null) {
-                ev.player.setCooldown(ev.item!!.type, (this.cooldown / 50).toInt())
-            }
         }
     }
 

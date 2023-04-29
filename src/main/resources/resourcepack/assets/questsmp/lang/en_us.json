@@ -13,5 +13,12 @@
   "item.questsmp.life_jewel": "Life Jewel",
   "item.questsmp.skeletal_jewel": "Skeletal Jewel",
   "item.questsmp.void_jewel": "Void Jewel",
-  "item.questsmp.water_jewel": "Water Jewel"
+  "item.questsmp.water_jewel": "Water Jewel",
+
+  "abilities.questsmp.ice_primary": "Player Freeze",
+  "abilities.questsmp.ice_secondary": "Health Freeze",
+  "abilities.questsmp.life": "Lifeline",
+  "abilities.questsmp.skeletal": "Skeletal Sight",
+  "abilities.questsmp.void": "Void Blast",
+  "abilities.questsmp.water_primary": "Neptune's Grace"
 }
