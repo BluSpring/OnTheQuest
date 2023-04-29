@@ -22,7 +22,8 @@ import kotlin.time.Duration.Companion.milliseconds
 // cooldown is in ticks
 abstract class JewelAbility(
     private val id: NamespacedKey,
-    val cooldown: Long
+    val cooldown: Long,
+    val timeUntilClear: Long = 0L
 ) : Listener, Keyed {
     // why is bukkit
     private val cooldowns = mutableMapOf<UUID, Long>()
@@ -98,7 +99,7 @@ abstract class JewelAbility(
                         clearAbility(player)
                     })
                 }
-            }, cooldown)
+            }, timeUntilClear)
 
             return true
         }
