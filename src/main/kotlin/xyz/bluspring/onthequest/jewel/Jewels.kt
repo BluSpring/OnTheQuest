@@ -125,7 +125,8 @@ object Jewels {
             key("ice_jewel"),
             listOf(),
             22,
-            effectsWhenHeld = true
+            effectsWhenHeld = true,
+            probability = Chances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.ICE_PRIMARY)
             registerAbility(JewelAbilities.ICE_SECONDARY)
@@ -139,7 +140,8 @@ object Jewels {
             mapOf(
                 Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 4.0, AttributeModifier.Operation.ADDITION)
             ),
-            slots = listOf(EquipmentSlot.CHEST)
+            slots = listOf(EquipmentSlot.CHEST),
+            probability = Chances.LOW
         ).apply {
             registerAbility(JewelAbilities.LIFE_PRIMARY)
         }
@@ -150,7 +152,8 @@ object Jewels {
             key("skeletal_jewel"),
             listOf(),
             24,
-            effectsWhenHeld = true
+            effectsWhenHeld = true,
+            probability = Chances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.SKELETAL_PRIMARY)
         }
@@ -160,7 +163,8 @@ object Jewels {
         VoidJewelType(
             key("void_jewel"),
             25,
-            listOf(EquipmentSlot.LEGS)
+            listOf(EquipmentSlot.LEGS),
+            probability = Chances.LOW
         ).apply {
             registerAbility(JewelAbilities.VOID_PRIMARY)
         }
@@ -170,7 +174,8 @@ object Jewels {
         WaterJewelType(
             key("water_jewel"),
             26,
-            listOf(EquipmentSlot.HEAD)
+            listOf(EquipmentSlot.HEAD),
+            probability = Chances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.WATER_PRIMARY)
         }

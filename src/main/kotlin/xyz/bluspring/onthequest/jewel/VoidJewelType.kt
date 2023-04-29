@@ -8,7 +8,7 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.events.JewelEffectEventHandler
 
-class VoidJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>) : EventedJewelType(id, modelId, slots, effectsWhenHeld = true) {
+class VoidJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>, probability: Double) : EventedJewelType(id, modelId, slots, effectsWhenHeld = true, probability = probability) {
     @EventHandler
     fun onPlayerGetEffect(ev: EntityPotionEffectEvent) {
         val entity = ev.entity

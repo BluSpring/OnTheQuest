@@ -15,7 +15,7 @@ import xyz.bluspring.onthequest.events.JewelEffectEventHandler
 import xyz.bluspring.onthequest.util.KotlinHelper.ticks
 import kotlin.time.Duration.Companion.seconds
 
-class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>) : EventedJewelType(id, modelId, slots, effectsWhenHeld = true) {
+class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>, probability: Double) : EventedJewelType(id, modelId, slots, effectsWhenHeld = true, probability = probability) {
     @EventHandler
     fun onPlayerMove(ev: PlayerMoveEvent) {
         if (ev.player.eyeLocation.block.type != Material.WATER)
