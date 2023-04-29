@@ -50,8 +50,8 @@ abstract class JewelAbility(
 
         val duration = timeUntilEnd.milliseconds
 
-        val str = "${duration.inWholeMinutes - duration.inWholeHours.milliseconds.inWholeMinutes}:${
-            duration.inWholeSeconds - duration.inWholeMinutes.milliseconds.inWholeSeconds}"
+        val str = "${duration.inWholeMinutes - (duration.inWholeHours * 60)}:${
+            duration.inWholeSeconds - (duration.inWholeMinutes * 60)}"
 
         player.sendActionBar(
             Component.translatable("abilities.${id.namespace}.${id.key}")
