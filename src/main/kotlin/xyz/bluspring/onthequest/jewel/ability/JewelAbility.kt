@@ -59,12 +59,13 @@ abstract class JewelAbility(
 
     fun notifyCooldown(player: Player) {
         val cooldownTime = cooldowns[player.uniqueId] ?: return
-        val timeUntilEnd = System.currentTimeMillis() - cooldownTime
+        val endTime = cooldownTime + cooldown
+        val timeUntilEnd = endTime - System.currentTimeMillis()
 
         if (timeUntilEnd >= cooldown)
             return
 
-        val duration = (abs(cooldownTime - timeUntilEnd)).milliseconds
+        val duration = timeUntilEnd.milliseconds
 
         val str = "${zeroPad(duration.inWholeMinutes - (duration.inWholeHours * 60))}:${
             zeroPad(duration.inWholeSeconds - (duration.inWholeMinutes * 60))}"
