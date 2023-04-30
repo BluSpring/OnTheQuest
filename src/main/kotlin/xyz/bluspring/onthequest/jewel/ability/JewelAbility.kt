@@ -17,6 +17,7 @@ import java.util.Timer
 import java.util.TimerTask
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
 // cooldown is in ticks
@@ -38,12 +39,22 @@ abstract class JewelAbility(
 
     @EventHandler(priority = EventPriority.LOW)
     fun onJewelCooldownCheck(ev: PlayerInteractEvent) {
-        if (!hasAbilityJewel(ev.player))
+        if (ev.item == null)
             return
 
-        if (ev.action.isRightClick && !ev.isCancelled) {
+        if (JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
+            return
+
+        if (!ev.isCancelled) {
             notifyCooldown(ev.player)
         }
+    }
+
+    private fun zeroPad(num: Long): String {
+        return if (num <= 9)
+            "0$num"
+        else
+            "$num"
     }
 
     fun notifyCooldown(player: Player) {
@@ -53,10 +64,10 @@ abstract class JewelAbility(
         if (timeUntilEnd >= cooldown)
             return
 
-        val duration = timeUntilEnd.milliseconds
+        val duration = (abs(cooldownTime - timeUntilEnd)).milliseconds
 
-        val str = "${duration.inWholeMinutes - (duration.inWholeHours * 60)}:${
-            duration.inWholeSeconds - (duration.inWholeMinutes * 60)}"
+        val str = "${zeroPad(duration.inWholeMinutes - (duration.inWholeHours * 60))}:${
+            zeroPad(duration.inWholeSeconds - (duration.inWholeMinutes * 60))}"
 
         player.sendActionBar(
             Component.translatable("abilities.${id.namespace}.${id.key}")

@@ -112,18 +112,6 @@ class JewelEffectEventHandler : Listener {
         }
     }
 
-    private fun getJewelTypes(item: ItemStack): List<JewelType>? {
-        if (!item.hasItemMeta())
-            return null
-
-        val meta = item.itemMeta
-        val data = meta.persistentDataContainer
-
-        val list = DataContainerUtil.parseKeys(Jewels.JEWEL_TYPE_KEY, data)
-
-        return list.map { Jewels.REGISTRY.get(it)!! }
-    }
-
     @EventHandler
     fun onPlayerDisconnect(ev: PlayerQuitEvent) {
         activeJewels[ev.player]?.forEach {
@@ -448,5 +436,17 @@ class JewelEffectEventHandler : Listener {
 
             save()
         }*/
+
+        fun getJewelTypes(item: ItemStack): List<JewelType>? {
+            if (!item.hasItemMeta())
+                return null
+
+            val meta = item.itemMeta
+            val data = meta.persistentDataContainer
+
+            val list = DataContainerUtil.parseKeys(Jewels.JEWEL_TYPE_KEY, data)
+
+            return list.map { Jewels.REGISTRY.get(it)!! }
+        }
     }
 }
