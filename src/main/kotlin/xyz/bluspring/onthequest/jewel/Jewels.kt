@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.jewel.ability.JewelAbilities
-import xyz.bluspring.onthequest.util.Chances
+import xyz.bluspring.onthequest.util.JewelChances
 import xyz.bluspring.onthequest.util.MappedRegistry
 import xyz.bluspring.onthequest.util.ToolType
 
@@ -33,7 +33,7 @@ object Jewels {
                 addAll(ToolType.HOE.items)
                 addAll(ToolType.AXE.items)
             },
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         )
     )
 
@@ -48,7 +48,7 @@ object Jewels {
                 addAll(ToolType.SWORD.items)
                 addAll(ToolType.AXE.items)
             },
-            probability = Chances.LOW
+            probability = JewelChances.LOW
         )
     )
 
@@ -70,7 +70,7 @@ object Jewels {
             slots = listOf(
                 EquipmentSlot.FEET
             ),
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         )
     )
 
@@ -84,7 +84,7 @@ object Jewels {
             slots = listOf(
                 EquipmentSlot.HEAD
             ),
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         )
     )
 
@@ -96,7 +96,7 @@ object Jewels {
             ),
             17,
             materials = ToolType.PICKAXE.items,
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         )
     )
 
@@ -108,7 +108,7 @@ object Jewels {
             ),
             18,
             slots = listOf(EquipmentSlot.CHEST),
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         )
     )
 
@@ -126,7 +126,7 @@ object Jewels {
             listOf(),
             22,
             effectsWhenHeld = true,
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.ICE_PRIMARY)
             registerAbility(JewelAbilities.ICE_SECONDARY)
@@ -141,7 +141,7 @@ object Jewels {
                 Attributes.MAX_HEALTH to AttributeModifier("otq.lifeJewel", 4.0, AttributeModifier.Operation.ADDITION)
             ),
             slots = listOf(EquipmentSlot.CHEST),
-            probability = Chances.LOW
+            probability = JewelChances.LOW
         ).apply {
             registerAbility(JewelAbilities.LIFE_PRIMARY)
         }
@@ -153,7 +153,7 @@ object Jewels {
             listOf(),
             24,
             effectsWhenHeld = true,
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.SKELETAL_PRIMARY)
         }
@@ -164,7 +164,7 @@ object Jewels {
             key("void_jewel"),
             25,
             listOf(EquipmentSlot.LEGS),
-            probability = Chances.LOW
+            probability = JewelChances.LOW
         ).apply {
             registerAbility(JewelAbilities.VOID_PRIMARY)
         }
@@ -175,7 +175,7 @@ object Jewels {
             key("water_jewel"),
             26,
             listOf(EquipmentSlot.HEAD),
-            probability = Chances.MEDIUM
+            probability = JewelChances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.WATER_PRIMARY)
         }
