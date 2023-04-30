@@ -87,7 +87,7 @@ class VoidJewelAbility : JewelAbility(
         skull.velocity = player.location.direction.multiply(2)
 
         player.world.spawnParticle(
-            Particle.BLOCK_DUST,
+            Particle.REDSTONE,
             player.location.x, player.location.y, player.location.z,
             155, 0.4, 1.4, 0.4, 15.0,
             Particle.DustOptions(

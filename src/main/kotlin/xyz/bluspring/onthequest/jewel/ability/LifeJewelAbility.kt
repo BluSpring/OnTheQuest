@@ -32,7 +32,7 @@ class LifeJewelAbility : JewelAbility(
     override fun runAbility(player: Player): Boolean {
         player.addPotionEffect(PotionEffect(PotionEffectType.ABSORPTION, 5.minutes.ticks, 2))
 
-        player.world.spawnParticle(Particle.BLOCK_DUST,
+        player.world.spawnParticle(Particle.REDSTONE,
             player.location.x, player.location.y, player.location.z,
             155, 1.0, 0.2, 1.0, 2.0,
             Particle.DustOptions(
@@ -41,7 +41,7 @@ class LifeJewelAbility : JewelAbility(
             )
         )
 
-        player.world.spawnParticle(Particle.BLOCK_DUST,
+        player.world.spawnParticle(Particle.REDSTONE,
             player.location.x, player.location.y + 1, player.location.z,
             60, 0.7, 0.2, 0.7, 2.0,
             Particle.DustOptions(
@@ -50,7 +50,7 @@ class LifeJewelAbility : JewelAbility(
             )
         )
 
-        player.world.spawnParticle(Particle.BLOCK_DUST,
+        player.world.spawnParticle(Particle.REDSTONE,
             player.location.x, player.location.y + 1.8, player.location.z,
             30, 0.3, 0.2, 0.3, 2.0,
             Particle.DustOptions(
