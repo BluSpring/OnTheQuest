@@ -29,6 +29,9 @@ class AttributedJewelType(
 
             val attrInstance = craftPlayer.attributes.getInstance(attr) ?: return@forEach
 
+            if (attrInstance.hasModifier(modifier))
+                return@forEach
+
             attrInstance.addTransientModifier(modifier)
         }
     }
