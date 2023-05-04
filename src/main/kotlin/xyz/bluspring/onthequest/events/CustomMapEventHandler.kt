@@ -38,7 +38,12 @@ class CustomMapEventHandler : Listener {
                 ev.setUseItemInHand(Event.Result.ALLOW)
 
                 val stack = MapChestManager.generate(ev.player)
-                ev.player.inventory.setItem(ev.hand ?: EquipmentSlot.HAND, stack)
+
+                if (item.amount > 1) {
+                    ev.player.inventory.setItem(ev.hand ?: EquipmentSlot.HAND, item.subtract(1))
+                    ev.player.inventory.addItem(stack)
+                } else
+                    ev.player.inventory.setItem(ev.hand ?: EquipmentSlot.HAND, stack)
             } else if (item.itemMeta.customModelData == 15) {
                 // map shards
                 ev.setUseItemInHand(Event.Result.DENY)
