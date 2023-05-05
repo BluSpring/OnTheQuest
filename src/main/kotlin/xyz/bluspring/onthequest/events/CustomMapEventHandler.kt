@@ -35,7 +35,7 @@ class CustomMapEventHandler : Listener {
                     return
                 }
 
-                ev.setUseItemInHand(Event.Result.ALLOW)
+                ev.setUseItemInHand(Event.Result.DENY)
 
                 val stack = MapChestManager.generate(ev.player)
 
