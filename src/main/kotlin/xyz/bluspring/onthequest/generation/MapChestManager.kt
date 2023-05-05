@@ -97,13 +97,23 @@ object MapChestManager {
     fun generateChest(uuid: UUID, world: World, loc: Location): BlockPos {
         // mix the seed to avoid accidental collisions
         val salt = Random.nextLong()
-        val seed = ((world.seed shl 7 or loc.blockX.toLong() + loc.blockZ or loc.blockY.toLong()) xor loc.yaw.toLong()) + salt
+        val seed =
+            ((world.seed shl 7 or loc.blockX.toLong() + loc.blockZ or loc.blockY.toLong()) xor loc.yaw.toLong()) + salt
         val random = Random(seed)
 
         OnTheQuest.plugin.logger.info("Generated new map $uuid with seed $seed (${world.seed} ${loc.blockX} ${loc.blockY} ${loc.blockZ} ${loc.yaw.toLong()} $salt)")
 
-        val x = random.nextInt(loc.blockX - 2048, loc.blockX + 2048)
-        val z = random.nextInt(loc.blockZ - 2048, loc.blockZ + 2048)
+        val location = loc.clone()
+
+        var attempts = 0
+
+        var x: Int
+        var z: Int
+        do {
+            x = random.nextInt(loc.blockX - 2048, loc.blockX + 2048)
+            z = random.nextInt(loc.blockZ - 2048, loc.blockZ + 2048)
+            attempts++
+        } while ((!world.worldBorder.isInside(location.set(x.toDouble(), 100.0, z.toDouble()))) && attempts <= 15)
 
         val blockPos = BlockPos(x, 100, z)
 
