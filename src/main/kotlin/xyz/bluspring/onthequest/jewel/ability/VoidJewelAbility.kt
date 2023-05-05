@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.metadata.MetadataValue
 import org.bukkit.plugin.Plugin
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.events.JewelEffectEventHandler
 import kotlin.time.Duration.Companion.minutes
 
 class VoidJewelAbility : JewelAbility(
@@ -18,7 +19,10 @@ class VoidJewelAbility : JewelAbility(
 ) {
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {
-        if (!doesAbilityApply(ev.player))
+        if (ev.item != null)
+            return
+
+        if (!doesAbilityApply(ev.player) || JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
             return
 
         if (this.run(ev.player)) {
