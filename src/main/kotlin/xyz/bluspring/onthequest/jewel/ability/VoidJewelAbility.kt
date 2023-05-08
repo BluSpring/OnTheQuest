@@ -1,6 +1,7 @@
 package xyz.bluspring.onthequest.jewel.ability
 
 import org.bukkit.Color
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.entity.WitherSkull
@@ -19,10 +20,10 @@ class VoidJewelAbility : JewelAbility(
 ) {
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {
-        if (ev.item != null)
+        if (ev.item == null)
             return
 
-        if (!doesAbilityApply(ev.player) || JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
+        if (!doesAbilityApply(ev.player) || ev.item!!.type != Material.EMERALD || JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
             return
 
         if (this.run(ev.player)) {
