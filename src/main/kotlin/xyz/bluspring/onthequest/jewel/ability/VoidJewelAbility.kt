@@ -20,10 +20,9 @@ class VoidJewelAbility : JewelAbility(
 ) {
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {
-        if (ev.item == null)
-            return
+        val item = ev.player.inventory.itemInMainHand
 
-        if (!doesAbilityApply(ev.player) || ev.item!!.type != Material.EMERALD || JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
+        if (!doesAbilityApply(ev.player) || item.type != Material.EMERALD || JewelEffectEventHandler.getJewelTypes(item)?.any { it.hasAbility(this) } != true)
             return
 
         if (this.run(ev.player)) {
