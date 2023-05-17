@@ -118,6 +118,14 @@ object Jewels {
             21,
             effectsWhenHeld = true
         )
+            .apply {
+                JewelAbilities.REGISTRY.forEach {
+                    if (it.key.key.startsWith("dragon"))
+                        return@forEach
+
+                    registerAbility(it)
+                }
+            }
     )
 
     val ICE = register(
@@ -178,6 +186,19 @@ object Jewels {
             probability = JewelChances.MEDIUM
         ).apply {
             registerAbility(JewelAbilities.WATER_PRIMARY)
+        }
+    )
+
+    val DRAGON = register(
+        JewelType(
+            key("dragon_jewel"),
+            listOf(),
+            27,
+            probability = 0.0,
+            effectsWhenHeld = true
+        ).apply {
+            registerAbility(JewelAbilities.DRAGON_PRIMARY)
+            registerAbility(JewelAbilities.DRAGON_SECONDARY)
         }
     )
 

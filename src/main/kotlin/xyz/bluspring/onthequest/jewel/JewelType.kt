@@ -1,6 +1,7 @@
 package xyz.bluspring.onthequest.jewel
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Keyed
 import org.bukkit.Material
@@ -49,6 +50,7 @@ open class JewelType(
         meta.displayName(
             Component
                 .translatable("item.${key.namespace}.${key.key}")
+                .color(NamedTextColor.DARK_PURPLE)
                 .decoration(TextDecoration.ITALIC, false)
         )
         meta.setCustomModelData(modelId)

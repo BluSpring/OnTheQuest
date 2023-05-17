@@ -143,7 +143,7 @@ class JewelCraftingEventHandler : Listener {
             val jewelTypeId = NamespacedKey.fromString(meta.persistentDataContainer.get(Jewels.JEWEL_TYPE_KEY, PersistentDataType.STRING)!!) ?: return@forEach
             val jewelType = Jewels.REGISTRY.get(jewelTypeId) ?: return@forEach
 
-            if (jewelType == Jewels.AVATAR)
+            if (jewelType == Jewels.AVATAR || jewelType == Jewels.DRAGON)
                 return@forEach
 
             if (!foundJewelTypes.contains(jewelType)) {

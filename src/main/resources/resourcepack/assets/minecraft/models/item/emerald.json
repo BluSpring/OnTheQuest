@@ -75,6 +75,12 @@
         "custom_model_data": 26
       },
       "model": "questsmp:jewels/water"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 27
+      },
+      "model": "questsmp:jewels/dragon"
     }
   ]
 }

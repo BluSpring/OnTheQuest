@@ -8,6 +8,9 @@ import xyz.bluspring.onthequest.util.MappedRegistry
 object JewelAbilities {
     val REGISTRY: Registry<JewelAbility> = MappedRegistry()
 
+    val DRAGON_PRIMARY = register(DragonJewelPrimaryAbility())
+    val DRAGON_SECONDARY = register(DragonJewelSecondaryAbility())
+
     val LIFE_PRIMARY = register(LifeJewelAbility())
 
     val ICE_PRIMARY = register(IceJewelPrimaryAbility())

@@ -10,6 +10,7 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
 import xyz.bluspring.onthequest.events.*
@@ -93,6 +94,20 @@ class OnTheQuest : JavaPlugin() {
             mapRecipe.addIngredient(4, mapShard)
 
             this.server.addRecipe(mapRecipe)
+        }
+
+        run {
+            val itemStack = Jewels.DRAGON.getItem(1)
+
+            val dragonJewelRecipe = ShapedRecipe(NamespacedKey("questsmp", "dragon_jewel"), itemStack)
+                .apply {
+                    shape("GDG", "DED", "GDG")
+                    setIngredient('G', Material.GOLD_BLOCK)
+                    setIngredient('D', Material.DIAMOND_BLOCK)
+                    setIngredient('E', Material.DRAGON_EGG)
+                }
+
+            this.server.addRecipe(dragonJewelRecipe)
         }
     }
 

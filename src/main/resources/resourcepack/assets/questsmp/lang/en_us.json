@@ -15,6 +15,10 @@
   "item.questsmp.void_jewel": "Void Jewel",
   "item.questsmp.water_jewel": "Water Jewel",
 
+  "item.questsmp.dragon_jewel": "Dragon Jewel",
+
+  "abilities.questsmp.dragon_primary": "Fireball",
+  "abilities.questsmp.dragon_secondary": "Dragon's Breath",
   "abilities.questsmp.ice_primary": "Player Freeze",
   "abilities.questsmp.ice_secondary": "Health Freeze",
   "abilities.questsmp.life": "Lifeline",
