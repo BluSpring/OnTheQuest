@@ -37,12 +37,18 @@ abstract class JewelAbility(
         return id
     }
 
+    open fun doCooldownCheck(ev: PlayerInteractEvent): Boolean {
+        return true
+    }
+
     @EventHandler(priority = EventPriority.LOW)
     fun onJewelCooldownCheck(ev: PlayerInteractEvent) {
-        if (ev.item == null)
+        val item = ev.player.inventory.itemInMainHand
+
+        if (JewelEffectEventHandler.getJewelTypes(item)?.any { it.hasAbility(this) } != true)
             return
 
-        if (JewelEffectEventHandler.getJewelTypes(ev.item!!)?.any { it.hasAbility(this) } != true)
+        if (!doCooldownCheck(ev))
             return
 
         if (!ev.isCancelled) {
@@ -60,7 +66,7 @@ abstract class JewelAbility(
     fun notifyCooldown(player: Player) {
         val cooldownTime = cooldowns[player.uniqueId] ?: return
         val endTime = cooldownTime + cooldown
-        val timeUntilEnd = endTime - System.currentTimeMillis()
+        val timeUntilEnd = (endTime - System.currentTimeMillis()).coerceAtLeast(0L)
 
         if (timeUntilEnd >= cooldown)
             return

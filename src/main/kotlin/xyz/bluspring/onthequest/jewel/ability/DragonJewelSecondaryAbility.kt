@@ -13,6 +13,10 @@ class DragonJewelSecondaryAbility : JewelAbility(
     JewelAbilities.key("dragon_secondary"),
     5.seconds.inWholeMilliseconds
 ) {
+    override fun doCooldownCheck(ev: PlayerInteractEvent): Boolean {
+        return ev.action.isRightClick
+    }
+
     @EventHandler
     fun onPlayerRightClick(ev: PlayerInteractEvent) {
         val item = ev.player.inventory.itemInMainHand
