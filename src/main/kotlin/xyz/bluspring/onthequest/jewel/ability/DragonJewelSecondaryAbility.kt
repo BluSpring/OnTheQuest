@@ -7,11 +7,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import xyz.bluspring.onthequest.events.JewelEffectEventHandler
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.minutes
 
 class DragonJewelSecondaryAbility : JewelAbility(
     JewelAbilities.key("dragon_secondary"),
-    5.seconds.inWholeMilliseconds
+    10.minutes.inWholeMilliseconds
 ) {
     override fun doCooldownCheck(ev: PlayerInteractEvent): Boolean {
         return ev.action.isRightClick
