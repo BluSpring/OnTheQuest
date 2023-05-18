@@ -424,6 +424,10 @@ class JewelEffectEventHandler : Listener {
             return activeJewels[player]
         }
 
+        fun containsJewel(player: Player, jewelType: JewelType): Boolean {
+            return getActiveJewels(player)?.contains(jewelType) == true || getActiveJewels(player)?.contains(Jewels.AVATAR) == true
+        }
+
         /*fun applyTemporaryJewel(player: Player, jewel: JewelType) {
             if (!tempJewels.contains(player.uniqueId))
                 tempJewels[player.uniqueId] = mutableSetOf()

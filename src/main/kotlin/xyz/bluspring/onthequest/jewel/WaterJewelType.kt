@@ -21,7 +21,7 @@ class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>
         if (ev.player.eyeLocation.block.type != Material.WATER)
             return
 
-        if (JewelEffectEventHandler.getActiveJewels(ev.player)?.contains(this) != true)
+        if (!JewelEffectEventHandler.containsJewel(ev.player, this))
             return
 
         ev.player.addPotionEffects(listOf(
@@ -33,7 +33,7 @@ class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>
 
     @EventHandler
     fun onPlayerAffectedByElderGuardian(ev: ElderGuardianAppearanceEvent) {
-        if (JewelEffectEventHandler.getActiveJewels(ev.affectedPlayer)?.contains(this) != true)
+        if (!JewelEffectEventHandler.containsJewel(ev.affectedPlayer, this))
             return
 
         ev.isCancelled = true
@@ -46,7 +46,7 @@ class WaterJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>
         if (entity !is Player)
             return
 
-        if (JewelEffectEventHandler.getActiveJewels(entity)?.contains(this) != true)
+        if (!JewelEffectEventHandler.containsJewel(entity, this))
             return
 
         if (ev.damager is Guardian)

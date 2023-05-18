@@ -16,7 +16,7 @@ class VoidJewelType(id: NamespacedKey, modelId: Int, slots: List<EquipmentSlot>,
         if (entity !is Player)
             return
 
-        if (JewelEffectEventHandler.getActiveJewels(entity)?.contains(this) != true)
+        if (!JewelEffectEventHandler.containsJewel(entity, this))
             return
 
         if (ev.action != EntityPotionEffectEvent.Action.ADDED)
