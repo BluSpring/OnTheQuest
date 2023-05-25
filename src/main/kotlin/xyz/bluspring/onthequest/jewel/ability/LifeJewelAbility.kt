@@ -2,9 +2,12 @@ package xyz.bluspring.onthequest.jewel.ability
 
 import org.bukkit.Color
 import org.bukkit.Particle
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.util.KotlinHelper.ticks
@@ -27,6 +30,28 @@ class LifeJewelAbility : JewelAbility(
         if (entity.health - ev.finalDamage <= 6) {
             run(entity)
         }
+    }
+
+    @EventHandler
+    fun onEffectAdd(ev: EntityPotionEffectEvent) {
+        if (ev.entityType != EntityType.PLAYER)
+            return
+
+        if (ev.cause != EntityPotionEffectEvent.Cause.FOOD)
+            return
+
+        if (ev.action != EntityPotionEffectEvent.Action.CHANGED)
+            return
+
+        if (ev.newEffect?.type != PotionEffectType.ABSORPTION)
+            return
+
+        val player = ev.entity as Player
+
+        if (player.absorptionAmount > 2F)
+            return
+
+        ev.isOverride = true
     }
 
     override fun runAbility(player: Player): Boolean {
