@@ -1,9 +1,10 @@
 {
-  "type": "questsmp:entities_in_area",
+  "type": "questsmp:attack/area",
   "cooldown": "5m",
   "data": {
-    "entity": "minecraft:player",
+    "entity_types": [ "minecraft:player" ],
     "ignore_self": true,
+    "max_radius": 10,
     "ability": {
       "type": "questsmp:effects/add",
       "data": {
