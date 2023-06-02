@@ -3,7 +3,6 @@ package xyz.bluspring.onthequest.jewel.ability
 import org.bukkit.Material
 import org.bukkit.entity.Fireball
 import org.bukkit.entity.Player
-import org.bukkit.entity.WitherSkull
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import xyz.bluspring.onthequest.events.JewelEffectEventHandler
