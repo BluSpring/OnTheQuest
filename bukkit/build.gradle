@@ -1,0 +1,51 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+    id "xyz.jpenilla.run-paper" version "2.0.1"
+    id "io.papermc.paperweight.userdev" version "1.5.3"
+}
+
+runServer {
+    minecraftVersion "1.19"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        name = "CodeMC"
+        url = "https://repo.codemc.org/repository/maven-public/"
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    paperweightDevelopmentBundle "io.papermc.paper:dev-bundle:1.19-R0.1-SNAPSHOT"
+
+    implementation(project(path: ":common", configuration: "namedElements"))
+
+    implementation "dev.jorel:commandapi-kotlin:8.8.0"
+    implementation "dev.jorel:commandapi-shade:8.8.0"
+}
+
+shadowJar {
+    relocate "org.jetbrains", "xyz.bluspring.shade.onthequest.jetbrains"
+    relocate "kotlin", "xyz.bluspring.shade.onthequest.kotlin"
+    relocate "kotlinx", "xyz.bluspring.shade.onthequest.kotlinx"
+    relocate "dev.jorel", "xyz.bluspring.shade.onthequest.jorel"
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
