@@ -1,0 +1,42 @@
+{
+  "type": "questsmp:effects/add",
+  "conditions": [
+    {
+      "type": "questsmp:submerged_in",
+      "fluid": "minecraft:water"
+    }
+  ],
+  "ability_events": {
+    "condition_unfulfilled": {
+      "type": "questsmp:effects/clear",
+      "data": {
+        "effects": ["minecraft:haste", "minecraft:night_vision", "minecraft:water_breathing"]
+      }
+    }
+  },
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:haste",
+        "duration": 3600,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      },
+      {
+        "id": "minecraft:night_vision",
+        "duration": 3600,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      },
+      {
+        "id": "minecraft:water_breathing",
+        "duration": 3600,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  }
+}

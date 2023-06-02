@@ -1,0 +1,9 @@
+{
+  "model": {
+    "path": "questsmp:jewels/earth"
+  },
+  "items": ["#minecraft:hoes", "#minecraft:axes"],
+  "abilities": {
+    "passive": ["questsmp:earth/farmers_glitch"]
+  }
+}

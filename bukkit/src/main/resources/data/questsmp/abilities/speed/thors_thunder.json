@@ -1,0 +1,16 @@
+{
+  "type": "questsmp:ammunition",
+  "cooldown": "5m",
+  "data": {
+    "max_ammo": 5,
+    "ability": {
+      "type": "questsmp:spawn/look_pos",
+      "data": {
+        "entity": "minecraft:lightning_bolt"
+      }
+    }
+  },
+  "keybind": {
+    "key": "key.questsmp.secondary_ability"
+  }
+}

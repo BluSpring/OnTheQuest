@@ -1,0 +1,10 @@
+{
+  "model": {
+    "path": "questsmp:jewels/water"
+  },
+  "items": ["#minecraft:swords", "#minecraft:axes"],
+  "abilities": {
+    "passive": ["questsmp:water/amphibious"],
+    "active": ["questsmp:water/puffer_zone", "questsmp:water/neptunes_grace"]
+  }
+}

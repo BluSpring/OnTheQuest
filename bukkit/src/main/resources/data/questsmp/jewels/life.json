@@ -1,0 +1,9 @@
+{
+  "model": {
+    "path": "questsmp:jewels/life"
+  },
+  "slots": ["CHEST"],
+  "abilities": {
+    "passive": ["questsmp:life/from_the_dead", "questsmp:life/up_the_life"]
+  }
+}

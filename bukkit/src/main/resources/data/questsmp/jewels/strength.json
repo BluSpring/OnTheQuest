@@ -1,0 +1,10 @@
+{
+  "model": {
+    "path": "questsmp:jewels/strength"
+  },
+  "items": ["#minecraft:swords", "#minecraft:axes"],
+  "abilities": {
+    "passive": ["questsmp:strength/furious_power"],
+    "active": ["questsmp:strength/durability"]
+  }
+}

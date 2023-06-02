@@ -1,0 +1,25 @@
+{
+  "type": "questsmp:entities_in_area",
+  "cooldown": "5m",
+  "data": {
+    "entity": "minecraft:player",
+    "ignore_self": true,
+    "ability": {
+      "type": "questsmp:effects/add",
+      "data": {
+        "effects": [
+          {
+            "id": "minecraft:poison",
+            "duration": 2400,
+            "amplifier": 1,
+            "ambient": true,
+            "particles": false
+          }
+        ]
+      }
+    }
+  },
+  "keybind": {
+    "key": "key.questsmp.primary_ability"
+  }
+}

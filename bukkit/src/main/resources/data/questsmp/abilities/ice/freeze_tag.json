@@ -1,0 +1,42 @@
+{
+  "type": "questsmp:attack/apply_ability",
+  "cooldown": "5m",
+  "data": {
+    "type": "questsmp:multiple",
+    "abilities": [
+      {
+        "type": "questsmp:effects/add",
+        "data": {
+          "effects": [
+            {
+              "id": "minecraft:slowness",
+              "duration": 100,
+              "amplifier": 255,
+              "ambient": true,
+              "particles": true
+            }
+          ]
+        }
+      },
+      {
+        "type": "questsmp:run_command",
+        "data": {
+          "command": "execute at @s run summon area_effect_cloud ~ ~ ~ {Tags:[\"otq_particle_workaround\"],Particle:\"dust 0 0.9 0.9 1.0\",Radius:0.3f,Duration:2000,Effects:[{Id:8,Amplifier:200,Duration:100}]}"
+        }
+      },
+      {
+        "type": "questsmp:delay_ability",
+        "data": {
+          "delay": 1,
+          "ability": {
+            "type": "questsmp:run_command",
+            "data": {
+              "command": "execute at @s run kill @e[tag=otq_particle_workaround,distance=..2]"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "particles": []
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "path": "questsmp:jewels/speed"
+  },
+  "slots": ["FEET"],
+  "abilities": {
+    "passive": ["questsmp:speed/ultimate_speed"],
+    "active": ["questsmp:speed/haste", "questsmp:speed/thors_thunder"]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "path": "questsmp:jewels/fire"
+  },
+  "slots": ["HEAD"],
+  "abilities": {
+    "passive": ["questsmp:fire/fire_immunity", "questsmp:fire/auto_fire"],
+    "active": ["questsmp:fire/fireball"]
+  }
+}

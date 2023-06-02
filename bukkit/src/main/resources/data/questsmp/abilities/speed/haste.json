@@ -1,0 +1,18 @@
+{
+  "type": "questsmp:effects/add",
+  "cooldown": "5m",
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:haste",
+        "duration": 3600,
+        "amplifier": 1,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  },
+  "keybind": {
+    "key": "key.questsmp.primary_ability"
+  }
+}

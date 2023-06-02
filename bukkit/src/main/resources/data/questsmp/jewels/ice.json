@@ -1,0 +1,9 @@
+{
+  "model": {
+    "path": "questsmp:jewels/ice"
+  },
+  "held": true,
+  "abilities": {
+    "active": ["questsmp:ice/freeze_tag", "questsmp:ice/ice_barrage"]
+  }
+}
