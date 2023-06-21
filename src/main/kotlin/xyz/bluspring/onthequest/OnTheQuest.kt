@@ -13,17 +13,30 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
+import org.slf4j.Logger
+import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.events.*
 import xyz.bluspring.onthequest.generation.MapChestManager
 import xyz.bluspring.onthequest.jewel.JewelType
 import xyz.bluspring.onthequest.jewel.Jewels
 import xyz.bluspring.onthequest.util.MappedRegistry
+import java.io.File
 
 class OnTheQuest : JavaPlugin() {
     override fun onLoad() {
+        if (debug) {
+            slF4JLogger.info("Debug mode has been enabled! If you are seeing this, the developer has likely completely forgotten to turn this off!")
+        }
+
         plugin = this
         CommandAPI.onLoad(CommandAPIConfig())
         MapChestManager.init()
+
+        QuestDatapackManager.reload()
+    }
+
+    fun getPluginFile(): File {
+        return this.file
     }
 
     override fun onEnable() {
@@ -33,6 +46,7 @@ class OnTheQuest : JavaPlugin() {
         this.server.pluginManager.registerEvents(JewelEffectEventHandler(), this)
         this.server.pluginManager.registerEvents(JewelCraftingEventHandler(), this)
         this.server.pluginManager.registerEvents(ModifiedLootTablesEventHandler(), this)
+        this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
         Jewels.init()
 
         commandAPICommand("give-jewel") {
@@ -132,6 +146,9 @@ class OnTheQuest : JavaPlugin() {
 
     companion object {
         lateinit var plugin: OnTheQuest
-        val debug = System.getProperty("otq.debugMode", "false") == "true"
+        val debug = true
+
+        val logger: Logger
+            get() = plugin.slF4JLogger
     }
 }

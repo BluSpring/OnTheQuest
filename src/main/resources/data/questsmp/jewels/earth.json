@@ -1,0 +1,24 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 5
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "passive": [ "questsmp:earth/farmers_glitch" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "active": [
+        "questsmp:earth/gaias_blessing/show_marked",
+        "questsmp:earth/gaias_blessing/toggle_mark",
+        "questsmp:earth/gaias_blessing/heal_radius"
+      ]
+    }
+  ]
+}
