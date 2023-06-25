@@ -1,0 +1,30 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 10
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "passive": [ "questsmp:fire/immunity" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "passive": [
+        "questsmp:fire/auto_smelt"
+      ]
+    },
+    {
+      "level": {
+        "min": 3
+      },
+      "active": [
+        "questsmp:fire/fireball"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 20
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "active": [ "questsmp:life/resurrection" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "passive": [
+        "questsmp:life/life_up"
+      ]
+    }
+  ]
+}

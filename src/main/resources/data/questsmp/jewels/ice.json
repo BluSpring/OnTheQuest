@@ -1,0 +1,22 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 15
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "active": [ "questsmp:ice/freeze_tag" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "active": [
+        "questsmp:ice/ice_barrage"
+      ]
+    }
+  ]
+}

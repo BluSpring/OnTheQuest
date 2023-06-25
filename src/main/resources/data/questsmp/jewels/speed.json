@@ -1,0 +1,30 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 25
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "passive": [ "questsmp:speed/ultimate_speed" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "active": [
+        "questsmp:speed/fast_dig"
+      ]
+    },
+    {
+      "level": {
+        "min": 3
+      },
+      "active": [
+        "questsmp:speed/thors_thunder"
+      ]
+    }
+  ]
+}

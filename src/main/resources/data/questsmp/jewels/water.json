@@ -1,0 +1,30 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 35
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "passive": [ "questsmp:water/amphibious" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "active": [
+        "questsmp:water/puffer_zone"
+      ]
+    },
+    {
+      "level": {
+        "min": 3
+      },
+      "active": [
+        "questsmp:water/neptunes_might"
+      ]
+    }
+  ]
+}

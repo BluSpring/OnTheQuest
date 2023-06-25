@@ -1,0 +1,22 @@
+{
+  "model": {
+    "item": "minecraft:emerald",
+    "id": 30
+  },
+  "abilities": [
+    {
+      "level": {
+        "min": 1
+      },
+      "passive": [ "questsmp:strength/furious_power" ]
+    },
+    {
+      "level": {
+        "min": 2
+      },
+      "active": [
+        "questsmp:strength/durability"
+      ]
+    }
+  ]
+}
