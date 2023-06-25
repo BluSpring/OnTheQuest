@@ -1,7 +1,10 @@
 package xyz.bluspring.onthequest.data
 
+import com.google.gson.JsonParser
 import io.papermc.paper.event.server.ServerResourcesReloadedEvent
+import net.minecraft.core.Registry
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackCompatibility
 import net.minecraft.server.packs.repository.PackRepository
@@ -9,6 +12,7 @@ import net.minecraft.server.packs.repository.PackSource
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.jpenilla.reflectionremapper.ReflectionRemapper
 import java.lang.reflect.Field
 import java.util.concurrent.CompletableFuture
@@ -62,6 +66,23 @@ object QuestDatapackManager {
                 if (OnTheQuest.debug) {
                     check()
                 }
+            }
+        }
+    }
+
+    fun loadAllResources() {
+        val server = (Bukkit.getServer() as CraftServer).handle.server
+        server.resourceManager.listResources("jewels") {
+            it.path.endsWith(".json")
+        }.forEach { (location, resource) ->
+            try {
+                val json = JsonParser.parseReader(resource.openAsReader()).asJsonObject
+                val id = ResourceLocation(location.namespace, location.path.split("/").last())
+
+                Registry.register(QuestRegistries.JEWEL, id, Jewel.deserialize(json, id))
+            } catch (e: Exception) {
+                OnTheQuest.logger.error("Failed to load jewel resource $location!")
+                e.printStackTrace()
             }
         }
     }

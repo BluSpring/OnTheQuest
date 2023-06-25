@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.ability.AbilityType
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
+import xyz.bluspring.onthequest.data.jewel.Jewel
+import xyz.bluspring.onthequest.data.util.ReloadableMappedRegistry
 import java.util.function.Supplier
 
 object QuestRegistries {
@@ -21,9 +23,28 @@ object QuestRegistries {
         AbilityTypes.EMPTY
     }
 
+    val JEWEL_REGISTRY: ResourceKey<Registry<Jewel>> = createRegistryKey("jewels")
+    val JEWEL = registerReloadable(JEWEL_REGISTRY) {
+        Jewel.EMPTY
+    }
+
     private fun <T : Any> registerSimple(key: ResourceKey<out Registry<T>>, defaultEntryGetter: RegistryBootstrap<T>): Registry<T> {
         val location = key.location()
         val registry = MappedRegistry(key, Lifecycle.experimental(), null)
+
+        loaders[location] = Supplier {
+            defaultEntryGetter.run(registry)
+        }
+
+        (Registry.REGISTRY as WritableRegistry<WritableRegistry<*>>)
+            .register(key as ResourceKey<WritableRegistry<*>>, registry, Lifecycle.experimental())
+
+        return registry
+    }
+
+    private fun <T : Any> registerReloadable(key: ResourceKey<out Registry<T>>, defaultEntryGetter: RegistryBootstrap<T>): Registry<T> {
+        val location = key.location()
+        val registry = ReloadableMappedRegistry(key, Lifecycle.experimental(), null)
 
         loaders[location] = Supplier {
             defaultEntryGetter.run(registry)

@@ -5,21 +5,16 @@ import dev.jorel.commandapi.CommandAPIConfig
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.text.Component
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.util.RandomSource
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.ShapedRecipe
-import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
 import org.slf4j.Logger
 import xyz.bluspring.onthequest.data.QuestDatapackManager
-import xyz.bluspring.onthequest.events.*
-import xyz.bluspring.onthequest.generation.MapChestManager
-import xyz.bluspring.onthequest.jewel.JewelType
-import xyz.bluspring.onthequest.jewel.Jewels
-import xyz.bluspring.onthequest.util.MappedRegistry
+import xyz.bluspring.onthequest.data.QuestRegistries
+import xyz.bluspring.onthequest.events.QuestPackEventHandler
 import java.io.File
 
 class OnTheQuest : JavaPlugin() {
@@ -30,7 +25,6 @@ class OnTheQuest : JavaPlugin() {
 
         plugin = this
         CommandAPI.onLoad(CommandAPIConfig())
-        MapChestManager.init()
 
         QuestDatapackManager.reload()
     }
@@ -42,18 +36,13 @@ class OnTheQuest : JavaPlugin() {
     override fun onEnable() {
         CommandAPI.onEnable(this)
 
-        this.server.pluginManager.registerEvents(CustomMapEventHandler(), this)
-        this.server.pluginManager.registerEvents(JewelEffectEventHandler(), this)
-        this.server.pluginManager.registerEvents(JewelCraftingEventHandler(), this)
-        this.server.pluginManager.registerEvents(ModifiedLootTablesEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
-        Jewels.init()
 
         commandAPICommand("give-jewel") {
             withPermission("otq.admin")
             entitySelectorArgumentOnePlayer("player")
             namespacedKeyArgument("jewel_type") {
-                replaceSuggestions(ArgumentSuggestions.strings((Jewels.REGISTRY as MappedRegistry<JewelType>).keys().map { it.toString() }))
+                replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.JEWEL.keySet().map { it.toString() }))
             }
             playerExecutor { player, args ->
                 val to = args[0] as Player
@@ -68,7 +57,7 @@ class OnTheQuest : JavaPlugin() {
             withPermission("otq.admin")
             entitySelectorArgumentOnePlayer("player")
             namespacedKeyArgument("jewel_type") {
-                replaceSuggestions(ArgumentSuggestions.strings((Jewels.REGISTRY as MappedRegistry<JewelType>).keys().map { it.toString() }))
+                replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.JEWEL.keySet().map { it.toString() }))
             }
             integerArgument("count", 1)
             playerExecutor { player, args ->
@@ -81,54 +70,27 @@ class OnTheQuest : JavaPlugin() {
             }
         }
 
+        val randomSource = RandomSource.create()
+
         commandAPICommand("jewel-random") {
             withPermission("otq.admin")
             playerExecutor { player, _ ->
                 val randomPlayer = Bukkit.getOnlinePlayers().random()
-                val randomJewel = Jewels.REGISTRY.toList().random()
+                val randomJewel = QuestRegistries.JEWEL.getRandom(randomSource).get().value()
 
                 //JewelEffectEventHandler.applyTemporaryJewel(randomPlayer, randomJewel)
 
-                randomPlayer.world.dropItem(randomPlayer.location, randomJewel.getItem(1))
+                randomPlayer.world.dropItem(randomPlayer.location, randomJewel.item.asBukkitCopy())
 
-                player.sendMessage("${randomPlayer.name} was randomly chosen to give the jewel type: ${randomJewel.key}")
+                player.sendMessage("${randomPlayer.name} was randomly chosen to give the jewel type: ${randomJewel.id}")
             }
-        }
-
-        run {
-            val itemStack = ItemStack(Material.MAP, 1).apply {
-                val meta = this.itemMeta
-                meta.setCustomModelData(16)
-                this.itemMeta = meta
-            }
-
-            val mapShard = MapChestManager.getMapShard(1)
-
-            val mapRecipe = ShapelessRecipe(NamespacedKey("questsmp", "map"), itemStack)
-            mapRecipe.addIngredient(4, mapShard)
-
-            this.server.addRecipe(mapRecipe)
-        }
-
-        run {
-            val itemStack = Jewels.DRAGON.getItem(1)
-
-            val dragonJewelRecipe = ShapedRecipe(NamespacedKey("questsmp", "dragon_jewel"), itemStack)
-                .apply {
-                    shape("GDG", "DED", "GDG")
-                    setIngredient('G', Material.GOLD_BLOCK)
-                    setIngredient('D', Material.DIAMOND_BLOCK)
-                    setIngredient('E', Material.DRAGON_EGG)
-                }
-
-            this.server.addRecipe(dragonJewelRecipe)
         }
     }
 
     private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, count: Int = 1): Boolean {
-        val jewelType = Jewels.REGISTRY.get(key) ?: return false
+        val jewelType = QuestRegistries.JEWEL.get(ResourceLocation(key.namespace, key.key)) ?: return false
 
-        to.inventory.addItem(jewelType.getItem(count))
+        to.inventory.addItem(jewelType.item.asBukkitCopy().asQuantity(count))
 
         player.sendMessage(
             Component.text("Successfully gave ")
