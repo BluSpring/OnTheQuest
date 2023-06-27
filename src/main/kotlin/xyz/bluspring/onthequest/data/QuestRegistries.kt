@@ -7,8 +7,10 @@ import net.minecraft.core.WritableRegistry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
+import xyz.bluspring.onthequest.data.ability.EmptyAbility
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.util.ReloadableMappedRegistry
 import java.util.function.Supplier
@@ -21,6 +23,11 @@ object QuestRegistries {
     val ABILITY_TYPE_REGISTRY: ResourceKey<Registry<AbilityType>> = createRegistryKey("ability_type")
     val ABILITY_TYPE = registerSimple(ABILITY_TYPE_REGISTRY) {
         AbilityTypes.EMPTY
+    }
+
+    val ABILITY_REGISTRY: ResourceKey<Registry<Ability>> = createRegistryKey("ability")
+    val ABILITY = registerReloadable(ABILITY_REGISTRY) {
+        EmptyAbility()
     }
 
     val JEWEL_REGISTRY: ResourceKey<Registry<Jewel>> = createRegistryKey("jewels")

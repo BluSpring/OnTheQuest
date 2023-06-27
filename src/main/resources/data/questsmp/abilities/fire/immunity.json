@@ -1,0 +1,14 @@
+{
+  "type": "questsmp:effects/add",
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:fire_resistance",
+        "duration": 1000000,
+        "amplifier": 255,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  }
+}

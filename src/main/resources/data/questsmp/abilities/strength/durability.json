@@ -1,0 +1,12 @@
+{
+  "type": "questsmp:effects/disable",
+  "cooldown": "7m",
+  "data": {
+    "effects": ["minecraft:blindness", "minecraft:slowness", "minecraft:weakness", "minecraft:nausea"],
+    "duration": "5m"
+  },
+  "keybind": {
+    "key": "key.questsmp.primary_ability"
+  },
+  "particles": []
+}

@@ -1,0 +1,15 @@
+{
+  "type": "questsmp:effects/add",
+  "cooldown": "5m",
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:strength",
+        "duration": 1000000,
+        "amplifier": 1,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  }
+}

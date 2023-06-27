@@ -1,0 +1,17 @@
+{
+  "type": "questsmp:ammunition",
+  "cooldown": "5m",
+  "data": {
+    "max_ammo": 5,
+    "ability": {
+      "type": "questsmp:attack/pellet",
+      "data": {
+        "max_distance": 40
+      }
+    }
+  },
+  "particles": [],
+  "keybind": {
+    "key": "key.questsmp.primary_ability"
+  }
+}

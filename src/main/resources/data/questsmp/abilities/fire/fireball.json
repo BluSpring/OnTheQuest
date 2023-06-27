@@ -1,0 +1,16 @@
+{
+  "type": "questsmp:spawn/projectile",
+  "cooldown": "5m",
+  "data": {
+    "entity": "minecraft:fireball",
+    "velocity_multiplier": 2,
+    "damage_modifier": {
+      "type": "add",
+      "modifier": 6
+    }
+  },
+  "keybind": {
+    "key": "key.questsmp.primary_ability"
+  },
+  "particles": []
+}

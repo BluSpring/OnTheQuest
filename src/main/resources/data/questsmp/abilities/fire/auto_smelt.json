@@ -1,0 +1,6 @@
+{
+  "type": "questsmp:loot/recipe",
+  "data": {
+    "recipe_type": "minecraft:smelting"
+  }
+}

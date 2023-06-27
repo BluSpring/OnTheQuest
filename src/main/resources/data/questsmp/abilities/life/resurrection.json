@@ -1,0 +1,26 @@
+{
+  "type": "questsmp:effects/add",
+  "cooldown": "10m",
+  "conditions": [
+    {
+      "type": "questsmp:compare",
+      "data": {
+        "input": "questsmp:player_health",
+        "comparison": "<=",
+        "value": 6
+      }
+    }
+  ],
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:absorption",
+        "duration": 400,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  },
+  "particles": []
+}

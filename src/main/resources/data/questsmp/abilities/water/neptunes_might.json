@@ -1,0 +1,25 @@
+{
+  "type": "questsmp:effects/add",
+  "cooldown": "5m",
+  "data": {
+    "effects": [
+      {
+        "id": "minecraft:absorption",
+        "duration": 600,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      },
+      {
+        "id": "minecraft:resistance",
+        "duration": 600,
+        "amplifier": 2,
+        "ambient": true,
+        "particles": false
+      }
+    ]
+  },
+  "keybind": {
+    "key": "key.questsmp.secondary_ability"
+  }
+}

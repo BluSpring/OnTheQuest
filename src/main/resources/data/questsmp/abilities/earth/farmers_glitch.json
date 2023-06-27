@@ -1,0 +1,11 @@
+{
+  "type": "questsmp:loot/harvest",
+  "data": {
+    "apply": ["#questsmp:harvestable"],
+    "modifier": {
+      "type": "add",
+      "min": 0,
+      "max": 5
+    }
+  }
+}

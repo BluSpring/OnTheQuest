@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataType
+import xyz.bluspring.onthequest.data.QuestRegistries
+import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.util.predicates.RangePredicate
 
 data class Jewel(
@@ -46,8 +48,8 @@ data class Jewel(
 
     data class JewelAbility(
         val level: RangePredicate.IntPredicate,
-        val passive: List<ResourceLocation>,
-        val active: List<ResourceLocation>
+        val passive: List<Ability>,
+        val active: List<Ability>
     ) {
         companion object {
             fun deserialize(json: JsonObject): JewelAbility {
@@ -59,17 +61,17 @@ data class Jewel(
                 return JewelAbility(
                     range,
                     if (json.has("passive"))
-                        mutableListOf<ResourceLocation>().apply {
+                        mutableListOf<Ability>().apply {
                             json.getAsJsonArray("passive").forEach {
-                                this.add(ResourceLocation.tryParse(it.asString)!!)
+                                this.add(QuestRegistries.ABILITY.get(ResourceLocation.tryParse(it.asString)!!)!!)
                             }
                         }
                     else
                         listOf(),
                     if (json.has("active"))
-                        mutableListOf<ResourceLocation>().apply {
+                        mutableListOf<Ability>().apply {
                             json.getAsJsonArray("active").forEach {
-                                this.add(ResourceLocation.tryParse(it.asString)!!)
+                                this.add(QuestRegistries.ABILITY.get(ResourceLocation.tryParse(it.asString)!!)!!)
                             }
                         }
                     else
