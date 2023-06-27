@@ -1,0 +1,59 @@
+{
+  "providers": [
+    {
+      "type": "space",
+      "advances": {
+        " ": 4, "‌": 0
+      }
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/earth.png",
+      "chars": ["\ue001"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/fire.png",
+      "chars": ["\ue002"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/ice.png",
+      "chars": ["\ue003"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/life.png",
+      "chars": ["\ue004"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/speed.png",
+      "chars": ["\ue005"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/strength.png",
+      "chars": ["\ue006"],
+      "ascent": 10,
+      "height": 10
+    },
+    {
+      "type": "bitmap",
+      "file": "questsmp:item/jewels/water.png",
+      "chars": ["\ue007"],
+      "ascent": 10,
+      "height": 10
+    }
+  ]
+}
