@@ -1,6 +1,6 @@
 {
   "type": "questsmp:effects/add",
-  "cooldown": "10m",
+  "cooldown": 12000,
   "conditions": [
     {
       "type": "questsmp:compare",

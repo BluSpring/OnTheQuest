@@ -1,6 +1,6 @@
 {
   "type": "questsmp:ammunition",
-  "cooldown": "5m",
+  "cooldown": 6000,
   "data": {
     "max_ammo": 5,
     "ability": {
