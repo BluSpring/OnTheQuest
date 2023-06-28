@@ -12,6 +12,8 @@ import xyz.bluspring.onthequest.data.ability.AbilityType
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.ability.EmptyAbility
 import xyz.bluspring.onthequest.data.jewel.Jewel
+import xyz.bluspring.onthequest.data.particle.ParticleSpawn
+import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.data.util.ReloadableMappedRegistry
 import java.util.function.Supplier
 
@@ -33,6 +35,11 @@ object QuestRegistries {
     val JEWEL_REGISTRY: ResourceKey<Registry<Jewel>> = createRegistryKey("jewels")
     val JEWEL = registerReloadable(JEWEL_REGISTRY) {
         Jewel.EMPTY
+    }
+
+    val PARTICLE_SPAWN_TYPE_REGISTRY: ResourceKey<Registry<ParticleSpawn<ParticleSpawn.SpawnData>>> = createRegistryKey("particle_types")
+    val PARTICLE_SPAWN_TYPE = registerSimple(PARTICLE_SPAWN_TYPE_REGISTRY) {
+        ParticleSpawnTypes.EMPTY
     }
 
     private fun <T : Any> registerSimple(key: ResourceKey<out Registry<T>>, defaultEntryGetter: RegistryBootstrap<T>): Registry<T> {

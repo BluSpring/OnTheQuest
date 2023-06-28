@@ -2,12 +2,15 @@ package xyz.bluspring.onthequest.data.ability
 
 import com.google.gson.JsonObject
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.level.ServerLevel
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
+import xyz.bluspring.onthequest.data.particle.ParticleSpawn
 import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -19,6 +22,8 @@ abstract class Ability(val cooldownTicks: Long) {
     protected val cooldowns = ConcurrentHashMap<Player, Long>()
     var keybindType: KeybindType = KeybindType.NONE
     private val isActivated = ConcurrentLinkedDeque<Player>()
+
+    private val particles = mutableListOf<AbilityParticles>()
 
     fun markActive(player: Player) {
         isActivated.add(player)
@@ -66,6 +71,22 @@ abstract class Ability(val cooldownTicks: Long) {
         return false
     }
 
+    open fun triggerParticles(player: Player) {
+        val serverPlayer = (player as CraftPlayer).handle
+        val level = serverPlayer.level as ServerLevel
+
+        particles.forEach { particle ->
+            val spawn = particle.particleSpawn
+            val spawnData = particle.spawnData
+            spawn.spawnParticles(serverPlayer, level, spawnData)
+        }
+    }
+
+    private data class AbilityParticles(
+        val particleSpawn: ParticleSpawn<ParticleSpawn.SpawnData>,
+        val spawnData: ParticleSpawn.SpawnData
+    )
+
     companion object {
         fun parse(json: JsonObject): Ability {
             val abilityType = QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
@@ -79,7 +100,17 @@ abstract class Ability(val cooldownTicks: Long) {
                     json.get("cooldown").asLong
                 else
                     0L
-            )
+            ).apply {
+                if (json.has("particles")) {
+                    json.getAsJsonArray("particles").forEach {
+                        val data = it.asJsonObject
+
+                        val spawnType = QuestRegistries.PARTICLE_SPAWN_TYPE.get(ResourceLocation.tryParse(data.get("type").asString))!!
+                        val spawnData = spawnType.createSpawnData(data)
+                        this.particles.add(AbilityParticles(spawnType, spawnData))
+                    }
+                }
+            }
         }
     }
 }
