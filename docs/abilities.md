@@ -61,10 +61,10 @@ abstract class AbilityData
 data class Keybind(
     // Key type.
     // Valid types:
-    // key.questsmp.primary_ability - Right click
-    // key.questsmp.secondary_ability - Left click
-    // key.questsmp.ternary_ability - Sneak + Right click
-    // key.questsmp.quaternary_ability - Sneak + Left click
+    // key.questsmp.primary_ability - Left click
+    // key.questsmp.secondary_ability - Right click
+    // key.questsmp.ternary_ability - Sneak + Left click
+    // key.questsmp.quaternary_ability - Sneak + Right click
     val key: String
 )
 ```

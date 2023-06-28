@@ -72,7 +72,7 @@ class AbilityEventHandler : Listener {
 
     @EventHandler
     fun onClickEvent(ev: PlayerInteractEvent) {
-        val keybindType = KeybindType.get(ev.action.isRightClick, ev.player.isSneaking)
+        val keybindType = KeybindType.get(ev.action.isLeftClick, ev.player.isSneaking)
 
         if (!ev.hasItem())
             return
