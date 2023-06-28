@@ -5,6 +5,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class Ability(val cooldownTicks: Long) {
@@ -12,6 +13,7 @@ abstract class Ability(val cooldownTicks: Long) {
     // The trigger time is when the cooldown has been triggered,
     // which is based off of the server's current tick.
     protected val cooldowns = ConcurrentHashMap<Player, Long>()
+    var keybindType: KeybindType = KeybindType.NONE
 
     open fun triggerCooldown(player: Player) {
         cooldowns[player] = Bukkit.getServer().currentTick.toLong()
@@ -39,7 +41,7 @@ abstract class Ability(val cooldownTicks: Long) {
         return canTrigger(player)
     }
 
-    open fun trigger(player: Player, location: Location): Boolean {
+    open fun trigger(player: Player, location: Location?): Boolean {
         return false
     }
 

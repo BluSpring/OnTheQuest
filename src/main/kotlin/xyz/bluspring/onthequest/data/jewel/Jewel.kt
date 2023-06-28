@@ -30,6 +30,44 @@ data class Jewel(
         }
     val minLevel = -2
 
+    fun getPassiveAbilitiesInLevelRange(level: Int): List<Ability> {
+        val abilities = mutableListOf<Ability>()
+        val jewelAbilities = this.abilities.filter { it.level.isInRange(level) }
+
+        jewelAbilities.forEach { jewelAbility ->
+            abilities.addAll(jewelAbility.passive)
+        }
+
+        return abilities
+    }
+
+    fun getActiveAbilitiesInLevelRange(level: Int): List<Ability> {
+        val abilities = mutableListOf<Ability>()
+        val jewelAbilities = this.abilities.filter { it.level.isInRange(level) }
+
+        jewelAbilities.forEach { jewelAbility ->
+            abilities.addAll(jewelAbility.active)
+        }
+
+        return abilities
+    }
+
+    fun getAbilitiesInLevelRange(level: Int): List<Ability> {
+        val abilities = mutableListOf<Ability>()
+        val jewelAbilities = this.abilities.filter { it.level.isInRange(level) }
+
+        jewelAbilities.forEach { jewelAbility ->
+            abilities.addAll(jewelAbility.active)
+            abilities.addAll(jewelAbility.passive)
+        }
+
+        return abilities
+    }
+
+    fun isAbilityInLevelRange(level: Int, ability: Ability): Boolean {
+        return getAbilitiesInLevelRange(level).contains(ability)
+    }
+
     fun getItem(level: Int): ItemStack {
         return ItemStack(item, 1).apply {
             val meta = this.bukkitStack.itemMeta

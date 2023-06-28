@@ -14,7 +14,7 @@ class EffectClearAbility(
     cooldownTicks: Long,
     val effects: List<MobEffect>
 ) : Ability(cooldownTicks) {
-    override fun trigger(player: Player, location: Location): Boolean {
+    override fun trigger(player: Player, location: Location?): Boolean {
         if (effects.isEmpty()) {
             (player as CraftPlayer).handle.removeAllEffects()
             return true
@@ -36,9 +36,7 @@ class EffectClearAbility(
                     effects.add(Registry.MOB_EFFECT.get(ResourceLocation.tryParse(it.asString))!!)
                 }
 
-            return EffectClearAbility(cooldownTicks, effects).apply {
-                abilities.add(this)
-            }
+            return EffectClearAbility(cooldownTicks, effects)
         }
     }
 }

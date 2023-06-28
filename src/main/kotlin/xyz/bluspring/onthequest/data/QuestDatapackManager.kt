@@ -14,6 +14,7 @@ import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
+import xyz.bluspring.onthequest.data.util.KeybindType
 import xyz.jpenilla.reflectionremapper.ReflectionRemapper
 import java.lang.reflect.Field
 import java.util.concurrent.CompletableFuture
@@ -72,7 +73,12 @@ object QuestDatapackManager {
     }
 
     fun loadAllResources() {
+        QuestRegistries.ABILITY_TYPE.forEach {
+            it.clear()
+        }
+
         val server = (Bukkit.getServer() as CraftServer).handle.server
+
         server.resourceManager.listResources("abilities") {
             it.path.endsWith(".json")
         }.forEach { (location, resource) ->
@@ -81,7 +87,7 @@ object QuestDatapackManager {
 
                 val abilityType = QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
 
-                Registry.register(QuestRegistries.ABILITY, location, abilityType.create(
+                val ability = Registry.register(QuestRegistries.ABILITY, location, abilityType.create(
                     if (json.has("data"))
                         json.getAsJsonObject("data")
                     else
@@ -90,7 +96,15 @@ object QuestDatapackManager {
                         json.get("cooldown").asLong
                     else
                         0L
-                ))
+                ).apply {
+                    if (json.has("keybind")) {
+                        val keybindData = json.getAsJsonObject("keybind")
+
+                        this.keybindType = KeybindType.fromKey(keybindData.get("key").asString)
+                    }
+                })
+
+                abilityType.abilities.add(ability)
             } catch (e: Exception) {
                 OnTheQuest.logger.error("Failed to load ability resource $location!")
                 e.printStackTrace()

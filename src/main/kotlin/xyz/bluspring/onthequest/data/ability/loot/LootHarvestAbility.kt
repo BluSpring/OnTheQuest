@@ -70,9 +70,7 @@ class LootHarvestAbility(
                 cooldownTicks,
                 blocks,
                 modifier
-            ).apply {
-                abilities.add(this)
-            }
+            )
         }
     }
 }

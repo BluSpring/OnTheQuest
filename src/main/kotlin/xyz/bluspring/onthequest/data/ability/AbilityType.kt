@@ -3,7 +3,7 @@ package xyz.bluspring.onthequest.data.ability
 import com.google.gson.JsonObject
 
 abstract class AbilityType {
-    protected val abilities = mutableListOf<Ability>()
+    val abilities = mutableListOf<Ability>()
 
     open fun all(): List<Ability> {
         return abilities

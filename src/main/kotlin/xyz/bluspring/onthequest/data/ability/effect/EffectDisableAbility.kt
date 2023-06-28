@@ -42,7 +42,7 @@ class EffectDisableAbility(
         return false
     }
 
-    override fun trigger(player: Player, location: Location): Boolean {
+    override fun trigger(player: Player, location: Location?): Boolean {
         if (effects.isEmpty()) {
             (player as CraftPlayer).handle.removeAllEffects()
             return true
@@ -69,9 +69,7 @@ class EffectDisableAbility(
             else
                 0L
 
-            return EffectDisableAbility(cooldownTicks, effects, duration).apply {
-                abilities.add(this)
-            }
+            return EffectDisableAbility(cooldownTicks, effects, duration)
         }
     }
 }

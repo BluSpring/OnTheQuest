@@ -14,7 +14,7 @@ class EffectAddAbility(
     cooldownTicks: Long,
     val effects: List<MobEffectInstance>
 ) : Ability(cooldownTicks) {
-    override fun trigger(player: Player, location: Location): Boolean {
+    override fun trigger(player: Player, location: Location?): Boolean {
         effects.forEach {
             (player as CraftPlayer).handle.addEffect(it)
         }
@@ -39,9 +39,7 @@ class EffectAddAbility(
                 effects.add(MobEffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon))
             }
 
-            return EffectAddAbility(cooldownTicks, effects).apply {
-                abilities.add(this)
-            }
+            return EffectAddAbility(cooldownTicks, effects)
         }
     }
 }
