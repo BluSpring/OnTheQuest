@@ -64,6 +64,7 @@ class AbilityEventHandler : Listener {
             if (ability.canTriggerForEvent(player, event)) {
                 // Check if the trigger causes a cooldown.
                 if (ability.triggerForEvent(player, event)) {
+                    ability.triggerParticles(player)
                     ability.triggerCooldown(player)
                 }
             }
@@ -95,6 +96,7 @@ class AbilityEventHandler : Listener {
 
             if (ability.canTrigger(ev.player)) {
                 if (ability.trigger(ev.player, ev.interactionPoint)) {
+                    ability.triggerParticles(ev.player)
                     ability.triggerCooldown(ev.player)
                 }
             }
