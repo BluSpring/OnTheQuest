@@ -12,12 +12,13 @@ import org.bukkit.event.Event
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
+import xyz.bluspring.onthequest.data.ability.TimedAbility
 
 class EffectDisableAbility(
     cooldownTicks: Long,
     val effects: List<MobEffect>,
-    val duration: Long
-) : Ability(cooldownTicks) {
+    duration: Long
+) : TimedAbility(cooldownTicks, duration) {
     override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
         return event is EntityPotionEffectEvent && super.canTriggerForEvent(player, event)
     }

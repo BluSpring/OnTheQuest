@@ -4,22 +4,31 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import xyz.bluspring.onthequest.OnTheQuest
+import java.util.concurrent.ConcurrentHashMap
 
 abstract class Ability(val cooldownTicks: Long) {
     // This is stored by (player: triggerTime)
     // The trigger time is when the cooldown has been triggered,
     // which is based off of the server's current tick.
-    protected val cooldowns = mutableMapOf<Player, Long>()
+    protected val cooldowns = ConcurrentHashMap<Player, Long>()
 
     open fun triggerCooldown(player: Player) {
         cooldowns[player] = Bukkit.getServer().currentTick.toLong()
+
+        Bukkit.getScheduler().runTaskLater(OnTheQuest.plugin, Runnable {
+            resetCooldown(player)
+        }, cooldownTicks)
     }
 
     open fun resetCooldown(player: Player) {
-        cooldowns[player] = 0
+        cooldowns.remove(player)
     }
 
     open fun canTrigger(player: Player): Boolean {
+        if (!cooldowns.contains(player))
+            return true
+
         if (cooldowns.contains(player) && Bukkit.getServer().currentTick.toLong() - cooldowns[player]!! >= cooldownTicks)
             return true
 
