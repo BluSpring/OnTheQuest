@@ -14,9 +14,11 @@
       "level": {
         "min": 2
       },
-      "active": [
+      "passive": [
         "questsmp:earth/gaias_blessing/show_marked",
-        "questsmp:earth/gaias_blessing/toggle_mark",
+        "questsmp:earth/gaias_blessing/toggle_mark"
+      ],
+      "active": [
         "questsmp:earth/gaias_blessing/heal_radius"
       ]
     }

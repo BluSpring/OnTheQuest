@@ -7,6 +7,7 @@ import xyz.bluspring.onthequest.data.ability.attack.AttackApplyAbility
 import xyz.bluspring.onthequest.data.ability.attack.AttackAreaAbility
 import xyz.bluspring.onthequest.data.ability.attack.AttackPelletAbility
 import xyz.bluspring.onthequest.data.ability.attack.AttackPelletApplyAbility
+import xyz.bluspring.onthequest.data.ability.custom.CustomAbilities
 import xyz.bluspring.onthequest.data.ability.effect.EffectAddAbility
 import xyz.bluspring.onthequest.data.ability.effect.EffectClearAbility
 import xyz.bluspring.onthequest.data.ability.effect.EffectDisableAbility
@@ -35,7 +36,9 @@ object AbilityTypes {
     val MULTIPLE = register("multiple", MultipleAbility.Type())
     val RUN_COMMAND = register("run_command", RunCommandAbility.Type())
 
-    fun init() {}
+    fun init() {
+        CustomAbilities.init()
+    }
 
     private fun register(key: String, type: AbilityType): AbilityType {
         return Registry.register(QuestRegistries.ABILITY_TYPE, ResourceLocation("questsmp", key), type)
