@@ -15,7 +15,7 @@ import org.slf4j.Logger
 import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
-import xyz.bluspring.onthequest.event.AbilityEventHandler
+import xyz.bluspring.onthequest.events.AbilityEventHandler
 import xyz.bluspring.onthequest.events.QuestPackEventHandler
 import java.io.File
 

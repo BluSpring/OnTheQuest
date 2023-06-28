@@ -1,4 +1,4 @@
-package xyz.bluspring.onthequest.event
+package xyz.bluspring.onthequest.events
 
 import com.destroystokyo.paper.event.block.TNTPrimeEvent
 import org.bukkit.entity.Player
