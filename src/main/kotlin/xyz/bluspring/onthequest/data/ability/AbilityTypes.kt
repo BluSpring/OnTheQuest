@@ -8,6 +8,7 @@ import xyz.bluspring.onthequest.data.ability.effect.EffectClearAbility
 import xyz.bluspring.onthequest.data.ability.effect.EffectDisableAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootHarvestAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootRecipeAbility
+import xyz.bluspring.onthequest.data.ability.meta.AmmunitionAbility
 import xyz.bluspring.onthequest.data.ability.meta.MultipleAbility
 import xyz.bluspring.onthequest.data.ability.meta.RunCommandAbility
 
@@ -21,6 +22,7 @@ object AbilityTypes {
     val EFFECT_CLEAR = register("effects/clear", EffectClearAbility.Type())
     val EFFECT_DISABLE = register("effects/disable", EffectDisableAbility.Type())
 
+    val AMMUNITION = register("ammunition", AmmunitionAbility.Type())
     val MULTIPLE = register("multiple", MultipleAbility.Type())
     val RUN_COMMAND = register("run_command", RunCommandAbility.Type())
 

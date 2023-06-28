@@ -1,10 +1,13 @@
 package xyz.bluspring.onthequest.data.ability
 
+import com.google.gson.JsonObject
+import net.minecraft.resources.ResourceLocation
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -61,5 +64,22 @@ abstract class Ability(val cooldownTicks: Long) {
 
     open fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
         return false
+    }
+
+    companion object {
+        fun parse(json: JsonObject): Ability {
+            val abilityType = QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
+
+            return abilityType.create(
+                if (json.has("data"))
+                    json.getAsJsonObject("data")
+                else
+                    JsonObject(),
+                if (json.has("cooldown"))
+                    json.get("cooldown").asLong
+                else
+                    0L
+            )
+        }
     }
 }

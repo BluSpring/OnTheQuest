@@ -33,19 +33,8 @@ class MultipleAbility(cooldownTicks: Long, val abilities: List<Ability>) : Abili
             data.getAsJsonArray("abilities").forEach { abilityData ->
                 if (abilityData.isJsonObject) {
                     val json = abilityData.asJsonObject
-                    val abilityType = QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
 
-                    val ability = abilityType.create(
-                        if (json.has("data"))
-                            json.getAsJsonObject("data")
-                        else
-                            JsonObject(),
-                        if (json.has("cooldown"))
-                            json.get("cooldown").asLong
-                        else
-                            0L
-                    )
-                    abilities.add(ability)
+                    abilities.add(Ability.parse(json))
                 } else {
                     val resourcePath = ResourceLocation.tryParse(abilityData.asString)!!
                     abilities.add(QuestRegistries.ABILITY.get(resourcePath)!!)
