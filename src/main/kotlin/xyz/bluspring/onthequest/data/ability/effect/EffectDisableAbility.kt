@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.effect.MobEffect
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_19_R1.potion.CraftPotionEffectType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.entity.EntityPotionEffectEvent
@@ -25,7 +26,19 @@ class EffectDisableAbility(
         if (event !is EntityPotionEffectEvent)
             return false
 
-        return true
+        if (event.action != EntityPotionEffectEvent.Action.ADDED)
+            return false
+
+        if (event.newEffect == null)
+            return false
+
+        if (effects.contains((event.newEffect!!.type as CraftPotionEffectType).handle)) {
+            event.isCancelled = true
+
+            return true
+        }
+
+        return false
     }
 
     override fun trigger(player: Player, location: Location): Boolean {
