@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 
@@ -20,6 +21,10 @@ class EffectAddAbility(
         }
 
         return true
+    }
+
+    override fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
+        return trigger(player, null)
     }
 
     class Type : AbilityType() {

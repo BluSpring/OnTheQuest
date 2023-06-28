@@ -8,12 +8,15 @@ import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 
-class AttackAreaAbility(cooldownTicks: Long, val radius: Double, val ability: Ability) : Ability(cooldownTicks) {
+class AttackAreaAbility(cooldownTicks: Long, val ignoreSelf: Boolean, val radius: Double, val ability: Ability) : Ability(cooldownTicks) {
     override fun trigger(player: Player, location: Location?): Boolean {
         val entities = player.world.getNearbyLivingEntities(player.location, radius)
 
         entities.forEach {
             if (it !is Player)
+                return@forEach
+
+            if (ignoreSelf && it == player)
                 return@forEach
 
             ability.trigger(it, it.location)
@@ -24,7 +27,11 @@ class AttackAreaAbility(cooldownTicks: Long, val radius: Double, val ability: Ab
 
     class Type : AbilityType() {
         override fun create(data: JsonObject, cooldownTicks: Long): Ability {
-            val radius = data.get("radius").asDouble
+            val radius = data.get("max_radius").asDouble
+
+            val ignoreSelf = if (data.has("ignore_self"))
+                data.get("ignore_self").asBoolean
+            else true
 
             val abilityData = data.getAsJsonObject("ability")
             val ability = if (abilityData.isJsonObject)
@@ -32,7 +39,7 @@ class AttackAreaAbility(cooldownTicks: Long, val radius: Double, val ability: Ab
             else
                 QuestRegistries.ABILITY.get(ResourceLocation.tryParse(abilityData.asString))!!
 
-            return AttackAreaAbility(cooldownTicks, radius, ability)
+            return AttackAreaAbility(cooldownTicks, ignoreSelf, radius, ability)
         }
     }
 }

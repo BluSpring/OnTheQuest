@@ -2,7 +2,6 @@
   "type": "questsmp:attack/area",
   "cooldown": 6000,
   "data": {
-    "entity_types": [ "minecraft:player" ],
     "ignore_self": true,
     "max_radius": 10,
     "ability": {
