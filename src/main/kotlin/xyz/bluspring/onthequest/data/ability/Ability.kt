@@ -7,6 +7,7 @@ import org.bukkit.event.Event
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
 
 abstract class Ability(val cooldownTicks: Long) {
     // This is stored by (player: triggerTime)
@@ -14,6 +15,19 @@ abstract class Ability(val cooldownTicks: Long) {
     // which is based off of the server's current tick.
     protected val cooldowns = ConcurrentHashMap<Player, Long>()
     var keybindType: KeybindType = KeybindType.NONE
+    private val isActivated = ConcurrentLinkedDeque<Player>()
+
+    fun markActive(player: Player) {
+        isActivated.add(player)
+    }
+
+    fun isActive(player: Player): Boolean {
+        return isActivated.contains(player)
+    }
+
+    fun clearActive(player: Player) {
+        isActivated.remove(player)
+    }
 
     open fun triggerCooldown(player: Player) {
         cooldowns[player] = Bukkit.getServer().currentTick.toLong()
@@ -38,7 +52,7 @@ abstract class Ability(val cooldownTicks: Long) {
     }
 
     open fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
-        return canTrigger(player)
+        return (keybindType.isNone() || isActive(player)) && canTrigger(player)
     }
 
     open fun trigger(player: Player, location: Location?): Boolean {

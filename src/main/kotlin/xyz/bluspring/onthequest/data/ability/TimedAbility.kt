@@ -12,11 +12,17 @@ abstract class TimedAbility(cooldownTicks: Long, val duration: Long) : Ability(c
         if (enabledTimes.contains(player))
             return
 
+        markActive(player)
         enabledTimes[player] = Bukkit.getServer().currentTick.toLong()
         Bukkit.getScheduler().runTaskLater(OnTheQuest.plugin, Runnable {
             super.triggerCooldown(player)
+            resetState(player)
             enabledTimes.remove(player)
         }, duration)
+    }
+
+    open fun resetState(player: Player) {
+        clearActive(player)
     }
 
     override fun canTrigger(player: Player): Boolean {
