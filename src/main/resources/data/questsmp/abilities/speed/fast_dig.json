@@ -14,5 +14,18 @@
   },
   "keybind": {
     "key": "key.questsmp.primary_ability"
-  }
+  },
+  "particles": [
+    {
+      "type": "questsmp:circle",
+      "particle_type": "minecraft:dust",
+      "particle_data": {
+        "color": [1.0, 0.8470588235294118, 0.0],
+        "scale": 0.3
+      },
+      "y": 0.2,
+      "count": 3,
+      "speed": 0.7
+    }
+  ]
 }

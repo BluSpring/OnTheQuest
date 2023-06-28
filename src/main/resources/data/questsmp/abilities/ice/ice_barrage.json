@@ -11,7 +11,20 @@
       }
     }
   },
-  "particles": [],
+  "particles": [
+    {
+      "type": "questsmp:ray",
+      "particle_type": "minecraft:dust",
+      "particle_data": {
+        "color": [ 0.6549019607843137, 1.0, 1.0 ],
+        "scale": 0.2
+      },
+      "speed": 0.2,
+      "count": 3,
+      "max_distance": 40,
+      "increment": 0.65
+    }
+  ],
   "keybind": {
     "key": "key.questsmp.primary_ability"
   }

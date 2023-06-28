@@ -38,5 +38,20 @@
       }
     ]
   },
-  "particles": []
+  "particles": [
+    {
+      "type": "questsmp:simple",
+      "particle_type": "minecraft:dust",
+      "particle_data": {
+        "color": [ 0.6549019607843137, 1.0, 1.0 ],
+        "scale": 0.2
+      },
+      "y": 0.2,
+      "dx": 1.4,
+      "dz": 1.4,
+      "dy": 0.3,
+      "speed": 0.4,
+      "count": 35
+    }
+  ]
 }

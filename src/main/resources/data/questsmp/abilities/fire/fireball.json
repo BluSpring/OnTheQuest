@@ -8,5 +8,16 @@
   "keybind": {
     "key": "key.questsmp.primary_ability"
   },
-  "particles": []
+  "particles": [
+    {
+      "type": "questsmp:simple",
+      "y": 1.335,
+      "dx": 1.43,
+      "dz": 1.43,
+      "dy": 0.2,
+      "count": 15,
+      "speed": 0.2,
+      "particle_type": "minecraft:flame"
+    }
+  ]
 }
