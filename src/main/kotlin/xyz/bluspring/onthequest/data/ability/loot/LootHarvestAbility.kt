@@ -19,17 +19,23 @@ class LootHarvestAbility(
     val applyTo: List<Block>,
     val modifier: AbilityModifier.IntModifier
 ) : Ability(cooldownTicks) {
-    override fun <T : Event> triggerForEvent(player: Player, event: T) {
+    override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
+        return event is BlockDropItemEvent && super.canTriggerForEvent(player, event)
+    }
+
+    override fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
         if (event !is BlockDropItemEvent)
-            return
+            return false
 
         val nmsBlockState = (event.blockState as CraftBlockState).handle
         if (!applyTo.contains(nmsBlockState.block))
-            return
+            return false
 
         event.items.forEach {
             it.itemStack.amount = modifier.get(it.itemStack.amount)
         }
+
+        return true
     }
 
     class Type : AbilityType() {

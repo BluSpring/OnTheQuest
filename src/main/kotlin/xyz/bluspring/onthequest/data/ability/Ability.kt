@@ -19,15 +19,22 @@ abstract class Ability(val cooldownTicks: Long) {
         cooldowns[player] = 0
     }
 
-    open fun canTrigger(player: Player, location: Location): Boolean {
+    open fun canTrigger(player: Player): Boolean {
         if (cooldowns.contains(player) && Bukkit.getServer().currentTick.toLong() - cooldowns[player]!! >= cooldownTicks)
             return true
 
         return false
     }
 
-    open fun runEffects(player: Player, location: Location) {}
+    open fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
+        return canTrigger(player)
+    }
 
-    open fun trigger(player: Player, location: Location) {}
-    open fun <T : Event> triggerForEvent(player: Player, event: T) {}
+    open fun trigger(player: Player, location: Location): Boolean {
+        return false
+    }
+
+    open fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
+        return false
+    }
 }

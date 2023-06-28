@@ -7,6 +7,7 @@ import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.util.Mth
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -39,7 +40,7 @@ data class Jewel(
                     .color(color)
                     .decoration(TextDecoration.ITALIC, false)
             )
-            meta.setCustomModelData(startingModelId + level)
+            meta.setCustomModelData(Mth.clamp(startingModelId + level, minLevel, maxLevel))
             meta.persistentDataContainer.set(JEWEL_TYPE_KEY, PersistentDataType.STRING, id.toString())
 
             this.bukkitStack.itemMeta = meta

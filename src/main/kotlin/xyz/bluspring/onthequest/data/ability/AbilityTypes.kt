@@ -4,6 +4,8 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.effect.EffectAddAbility
+import xyz.bluspring.onthequest.data.ability.effect.EffectClearAbility
+import xyz.bluspring.onthequest.data.ability.effect.EffectDisableAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootHarvestAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootRecipeAbility
 
@@ -14,6 +16,8 @@ object AbilityTypes {
     val LOOT_RECIPE = register("loot/recipe", LootRecipeAbility.Type())
 
     val EFFECT_ADD = register("effects/add", EffectAddAbility.Type())
+    val EFFECT_CLEAR = register("effects/clear", EffectClearAbility.Type())
+    val EFFECT_DISABLE = register("effects/disable", EffectDisableAbility.Type())
 
     fun init() {}
 

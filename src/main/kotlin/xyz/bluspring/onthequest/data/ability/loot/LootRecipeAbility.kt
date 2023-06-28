@@ -4,7 +4,6 @@ import com.google.gson.JsonObject
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeType
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
@@ -20,20 +19,24 @@ import java.util.concurrent.ConcurrentHashMap
 class LootRecipeAbility(cooldownTicks: Long, val recipeType: RecipeType<*>) : Ability(cooldownTicks) {
     private val recipeCache: ConcurrentHashMap<Material, Material> = ConcurrentHashMap()
 
-    override fun canTrigger(player: Player, location: Location): Boolean {
+    override fun canTrigger(player: Player): Boolean {
         if (!player.persistentDataContainer.has(LOOT_RECIPE_ACTIVE))
             player.persistentDataContainer.set(LOOT_RECIPE_ACTIVE, PersistentDataType.BYTE, 1)
 
-        return super.canTrigger(player, location) && player.persistentDataContainer.get(LOOT_RECIPE_ACTIVE, PersistentDataType.BYTE) == (1).toByte()
+        return super.canTrigger(player) && player.persistentDataContainer.get(LOOT_RECIPE_ACTIVE, PersistentDataType.BYTE) == (1).toByte()
     }
 
-    override fun <T : Event> triggerForEvent(player: Player, event: T) {
+    override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
+        return (event is BlockDropItemEvent || event is EntityDropItemEvent) && super.canTriggerForEvent(player, event)
+    }
+
+    override fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
         if (event !is BlockDropItemEvent && event !is EntityDropItemEvent)
-            return
+            return false
 
-        val recipes = (player.server as CraftServer).handle.server.recipeManager.recipes[recipeType] ?: return
+        val recipes = (player.server as CraftServer).handle.server.recipeManager.recipes[recipeType] ?: return false
 
-        if (event is BlockDropItemEvent) {
+        return if (event is BlockDropItemEvent) {
             event.items.forEach {
                 if (!recipeCache.contains(it.itemStack.type)) {
                     val recipe = recipes.values.firstOrNull { recipe ->
@@ -57,6 +60,8 @@ class LootRecipeAbility(cooldownTicks: Long, val recipeType: RecipeType<*>) : Ab
 
                 it.itemStack.type = recipeCache[it.itemStack.type]!!
             }
+
+            true
         } else if (event is EntityDropItemEvent) {
             val it = event.itemDrop
 
@@ -71,17 +76,18 @@ class LootRecipeAbility(cooldownTicks: Long, val recipeType: RecipeType<*>) : Ab
 
                 if (recipe == null) {
                     recipeCache[it.itemStack.type] = it.itemStack.type
-                    return
+                    return false
                 }
 
                 recipeCache[it.itemStack.type] = recipe.resultItem.bukkitStack.type
                 it.itemStack.type = recipe.resultItem.bukkitStack.type
 
-                return
+                return false
             }
 
             it.itemStack.type = recipeCache[it.itemStack.type]!!
-        }
+            true
+        } else false
     }
 
     class Type : AbilityType() {

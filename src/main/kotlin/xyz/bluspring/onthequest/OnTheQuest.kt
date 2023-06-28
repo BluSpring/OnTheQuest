@@ -15,6 +15,7 @@ import org.slf4j.Logger
 import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
+import xyz.bluspring.onthequest.event.AbilityEventHandler
 import xyz.bluspring.onthequest.events.QuestPackEventHandler
 import java.io.File
 
@@ -40,6 +41,7 @@ class OnTheQuest : JavaPlugin() {
         CommandAPI.onEnable(this)
 
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
+        this.server.pluginManager.registerEvents(AbilityEventHandler(), this)
 
         commandAPICommand("give-jewel") {
             withPermission("otq.admin")
@@ -47,11 +49,13 @@ class OnTheQuest : JavaPlugin() {
             namespacedKeyArgument("jewel_type") {
                 replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.JEWEL.keySet().map { it.toString() }))
             }
+            integerArgument("level", -2)
             playerExecutor { player, args ->
                 val to = args[0] as Player
                 val jewelId = args[1] as NamespacedKey
+                val level = args[2] as Int
 
-                if (!giveJewelItem(to, player, jewelId))
+                if (!giveJewelItem(to, player, jewelId, level))
                     throw CommandAPI.failWithString("Invalid jewel type!")
             }
         }
@@ -62,13 +66,15 @@ class OnTheQuest : JavaPlugin() {
             namespacedKeyArgument("jewel_type") {
                 replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.JEWEL.keySet().map { it.toString() }))
             }
+            integerArgument("level", -2)
             integerArgument("count", 1)
             playerExecutor { player, args ->
                 val to = args[0] as Player
                 val jewelId = args[1] as NamespacedKey
-                val count = args[2] as Int
+                val level = args[2] as Int
+                val count = args[3] as Int
 
-                if (!giveJewelItem(to, player, jewelId, count))
+                if (!giveJewelItem(to, player, jewelId, level, count))
                     throw CommandAPI.failWithString("Invalid jewel type!")
             }
         }
@@ -83,17 +89,17 @@ class OnTheQuest : JavaPlugin() {
 
                 //JewelEffectEventHandler.applyTemporaryJewel(randomPlayer, randomJewel)
 
-                randomPlayer.world.dropItem(randomPlayer.location, randomJewel.item.asBukkitCopy())
+                randomPlayer.world.dropItem(randomPlayer.location, randomJewel.getItem(0).asBukkitCopy())
 
                 player.sendMessage("${randomPlayer.name} was randomly chosen to give the jewel type: ${randomJewel.id}")
             }
         }
     }
 
-    private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, count: Int = 1): Boolean {
+    private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
         val jewelType = QuestRegistries.JEWEL.get(ResourceLocation(key.namespace, key.key)) ?: return false
 
-        to.inventory.addItem(jewelType.item.asBukkitCopy().asQuantity(count))
+        to.inventory.addItem(jewelType.getItem(level).asBukkitCopy().asQuantity(count))
 
         player.sendMessage(
             Component.text("Successfully gave ")
