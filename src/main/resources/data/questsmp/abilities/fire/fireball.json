@@ -3,11 +3,7 @@
   "cooldown": 6000,
   "data": {
     "entity": "minecraft:fireball",
-    "velocity_multiplier": 2,
-    "damage_modifier": {
-      "type": "add",
-      "modifier": 6
-    }
+    "speed": 2
   },
   "keybind": {
     "key": "key.questsmp.primary_ability"

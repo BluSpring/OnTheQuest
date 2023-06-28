@@ -16,6 +16,8 @@ import xyz.bluspring.onthequest.data.ability.loot.LootRecipeAbility
 import xyz.bluspring.onthequest.data.ability.meta.AmmunitionAbility
 import xyz.bluspring.onthequest.data.ability.meta.MultipleAbility
 import xyz.bluspring.onthequest.data.ability.meta.RunCommandAbility
+import xyz.bluspring.onthequest.data.ability.spawn.SpawnAtLookPosAbility
+import xyz.bluspring.onthequest.data.ability.spawn.SpawnProjectileAbility
 
 object AbilityTypes {
     val EMPTY = register("empty", EmptyAbilityType())
@@ -31,6 +33,9 @@ object AbilityTypes {
     val EFFECT_ADD = register("effects/add", EffectAddAbility.Type())
     val EFFECT_CLEAR = register("effects/clear", EffectClearAbility.Type())
     val EFFECT_DISABLE = register("effects/disable", EffectDisableAbility.Type())
+
+    val SPAWN_LOOK_POS = register("spawn/look_pos", SpawnAtLookPosAbility.Type())
+    val SPAWN_PROJECTILE = register("spawn/projectile", SpawnProjectileAbility.Type())
 
     val AMMUNITION = register("ammunition", AmmunitionAbility.Type())
     val MULTIPLE = register("multiple", MultipleAbility.Type())
