@@ -14,6 +14,7 @@ import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
+import xyz.bluspring.onthequest.data.quests.QuestManager
 import xyz.bluspring.onthequest.data.util.KeybindType
 import xyz.jpenilla.reflectionremapper.ReflectionRemapper
 import java.lang.reflect.Field
@@ -78,6 +79,17 @@ object QuestDatapackManager {
         }
 
         val server = (Bukkit.getServer() as CraftServer).handle.server
+
+        server.resourceManager.getResource(ResourceLocation("questsmp", "quests.json")).ifPresent {
+            try {
+                val json = JsonParser.parseReader(it.openAsReader()).asJsonObject
+
+                QuestManager.parseFromJson(json)
+            } catch (e: Exception) {
+                OnTheQuest.logger.error("Failed to load quests.json!")
+                e.printStackTrace()
+            }
+        }
 
         server.resourceManager.listResources("abilities") {
             it.path.endsWith(".json")

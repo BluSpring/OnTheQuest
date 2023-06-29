@@ -17,6 +17,7 @@ import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.events.AbilityEventHandler
+import xyz.bluspring.onthequest.events.JewelEventHandler
 import xyz.bluspring.onthequest.events.QuestPackEventHandler
 import java.io.File
 
@@ -42,6 +43,7 @@ class OnTheQuest : JavaPlugin() {
     override fun onEnable() {
         CommandAPI.onEnable(this)
 
+        this.server.pluginManager.registerEvents(JewelEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
         this.server.pluginManager.registerEvents(AbilityEventHandler(), this)
 
