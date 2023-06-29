@@ -30,6 +30,8 @@ data class Jewel(
         }
     val minLevel = -2
 
+    val translationKey = "jewels.${id.namespace}.${id.path}"
+
     fun getPassiveAbilitiesInLevelRange(level: Int): List<Ability> {
         val abilities = mutableListOf<Ability>()
         val jewelAbilities = this.abilities.filter { it.level.isInRange(level) }

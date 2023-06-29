@@ -53,6 +53,7 @@ object JewelManager {
             val currentLevel = player.persistentDataContainer.get(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER)!!
 
             playerLevels[player.uniqueId] = currentLevel
+            player.persistentDataContainer.set(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER, currentLevel)
             return currentLevel
         }
 
@@ -64,6 +65,8 @@ object JewelManager {
         val new = currentLevel + amount
 
         playerLevels[player.uniqueId] = new
+        player.persistentDataContainer.set(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER, new)
+
         return new
     }
 
