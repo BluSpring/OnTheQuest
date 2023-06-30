@@ -55,6 +55,7 @@ object QuestDatapackManager {
                 val json = JsonParser.parseReader(it.openAsReader()).asJsonObject
 
                 QuestManager.parseFromJson(json)
+                OnTheQuest.logger.info("Loaded quests.json")
             } catch (e: Exception) {
                 OnTheQuest.logger.error("Failed to load quests.json!")
                 e.printStackTrace()
@@ -87,6 +88,7 @@ object QuestDatapackManager {
                 })
 
                 abilityType.abilities.add(ability)
+                OnTheQuest.logger.info("Registered ability $location")
             } catch (e: Exception) {
                 OnTheQuest.logger.error("Failed to load ability resource $location!")
                 e.printStackTrace()
@@ -101,6 +103,7 @@ object QuestDatapackManager {
                 val id = ResourceLocation(location.namespace, location.path.split("/").last())
 
                 Registry.register(QuestRegistries.JEWEL, id, Jewel.deserialize(json, id))
+                OnTheQuest.logger.info("Registered jewel $id")
             } catch (e: Exception) {
                 OnTheQuest.logger.error("Failed to load jewel resource $location!")
                 e.printStackTrace()

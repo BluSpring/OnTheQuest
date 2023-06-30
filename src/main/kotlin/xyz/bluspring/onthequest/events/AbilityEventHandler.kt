@@ -2,9 +2,7 @@ package xyz.bluspring.onthequest.events
 
 import com.destroystokyo.paper.event.block.TNTPrimeEvent
 import org.bukkit.entity.Player
-import org.bukkit.event.Event
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
+import org.bukkit.event.*
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockCanBuildEvent
 import org.bukkit.event.block.BlockPlaceEvent
@@ -16,12 +14,23 @@ import org.bukkit.event.inventory.InventoryInteractEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.plugin.RegisteredListener
+import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.util.KeybindType
 
 class AbilityEventHandler : Listener {
-    @EventHandler
+    init {
+        val listener = RegisteredListener(this, { _, event ->
+            onAllEvents(event)
+        }, EventPriority.NORMAL, OnTheQuest.plugin, false)
+
+        HandlerList.getHandlerLists().forEach {
+            it.register(listener)
+        }
+    }
+
     fun onAllEvents(event: Event) {
         // If any player-related event that is to be handled by an ability isn't handled here,
         // just add it in.

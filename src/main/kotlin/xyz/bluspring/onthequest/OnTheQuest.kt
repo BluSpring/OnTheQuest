@@ -46,6 +46,8 @@ class OnTheQuest : JavaPlugin() {
     override fun onEnable() {
         CommandAPI.onEnable(this)
 
+        QuestDatapackManager.loadAllResources()
+
         this.server.pluginManager.registerEvents(JewelEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
