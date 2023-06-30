@@ -35,7 +35,7 @@ class EffectAddAbility(
                 val effectData = it.asJsonObject
 
                 val effect = Registry.MOB_EFFECT.get(ResourceLocation.tryParse(effectData.get("id").asString))
-                val duration = effectData.get("duration_tick").asInt
+                val duration = effectData.get("duration").asInt
                 val amplifier = effectData.get("amplifier").asInt
                 val ambient = if (effectData.has("ambient")) effectData.get("ambient").asBoolean else false
                 val showParticles = if (effectData.has("particles")) effectData.get("particles").asBoolean else true

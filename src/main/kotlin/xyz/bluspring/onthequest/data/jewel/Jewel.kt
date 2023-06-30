@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataType
+import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.util.predicates.RangePredicate
@@ -104,7 +105,14 @@ data class Jewel(
                     if (json.has("passive"))
                         mutableListOf<Ability>().apply {
                             json.getAsJsonArray("passive").forEach {
-                                this.add(QuestRegistries.ABILITY.get(ResourceLocation.tryParse(it.asString)!!)!!)
+                                val id = ResourceLocation.tryParse(it.asString)!!
+
+                                try {
+                                    this.add(QuestRegistries.ABILITY.get(id)!!)
+                                } catch (e: Exception) {
+                                    OnTheQuest.logger.error("Failed to load passive ability $id")
+                                    e.printStackTrace()
+                                }
                             }
                         }
                     else
@@ -112,7 +120,14 @@ data class Jewel(
                     if (json.has("active"))
                         mutableListOf<Ability>().apply {
                             json.getAsJsonArray("active").forEach {
-                                this.add(QuestRegistries.ABILITY.get(ResourceLocation.tryParse(it.asString)!!)!!)
+                                val id = ResourceLocation.tryParse(it.asString)!!
+
+                                try {
+                                    this.add(QuestRegistries.ABILITY.get(id)!!)
+                                } catch (e: Exception) {
+                                    OnTheQuest.logger.error("Failed to load active ability $id")
+                                    e.printStackTrace()
+                                }
                             }
                         }
                     else

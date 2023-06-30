@@ -9,6 +9,7 @@ import net.minecraft.server.packs.PackType
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.quests.QuestManager
 import xyz.bluspring.onthequest.data.util.KeybindType
@@ -50,6 +51,8 @@ object QuestDatapackManager {
             it.clear()
         }
 
+        AbilityTypes.init()
+
         val server = (Bukkit.getServer() as CraftServer).handle.server
 
         server.resourceManager.listPacks().forEach { pack ->
@@ -59,17 +62,19 @@ object QuestDatapackManager {
 
     private fun loadFromPack(pack: PackResources) {
         try {
-            pack.getResource(PackType.SERVER_DATA, ResourceLocation("questsmp", "quests.json")).run {
-                try {
-                    val json = JsonParser.parseReader(this.reader()).asJsonObject
+            val q = ResourceLocation("questsmp", "quests.json")
+            if (pack.hasResource(PackType.SERVER_DATA, q))
+                pack.getResource(PackType.SERVER_DATA, q).run {
+                    try {
+                        val json = JsonParser.parseReader(this.reader()).asJsonObject
 
-                    QuestManager.parseFromJson(json)
-                    OnTheQuest.logger.info("Loaded quests.json")
-                } catch (e: Exception) {
-                    OnTheQuest.logger.error("Failed to load quests.json!")
-                    e.printStackTrace()
+                        QuestManager.parseFromJson(json)
+                        OnTheQuest.logger.info("Loaded quests.json")
+                    } catch (e: Exception) {
+                        OnTheQuest.logger.error("Failed to load quests.json!")
+                        e.printStackTrace()
+                    }
                 }
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -81,11 +86,12 @@ object QuestDatapackManager {
                         val resource = pack.getResource(PackType.SERVER_DATA, location)
 
                         val json = JsonParser.parseReader(resource.reader()).asJsonObject
+                        val id = ResourceLocation(location.namespace, location.path.removePrefix("abilities/").removeSuffix(".json"))
 
                         val abilityType =
                             QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
 
-                        val ability = Registry.register(QuestRegistries.ABILITY, location, abilityType.create(
+                        val ability = Registry.register(QuestRegistries.ABILITY, id, abilityType.create(
                             if (json.has("data"))
                                 json.getAsJsonObject("data")
                             else
@@ -103,7 +109,7 @@ object QuestDatapackManager {
                         })
 
                         abilityType.abilities.add(ability)
-                        OnTheQuest.logger.info("Registered ability $location")
+                        OnTheQuest.logger.info("Registered ability $id")
                     } catch (e: Exception) {
                         OnTheQuest.logger.error("Failed to load ability resource $location!")
                         e.printStackTrace()
@@ -114,12 +120,12 @@ object QuestDatapackManager {
         }
 
         try {
-            pack.getResources(PackType.SERVER_DATA, "questsmp", "abilities") { it.path.endsWith(".json") }
+            pack.getResources(PackType.SERVER_DATA, "questsmp", "jewels") { it.path.endsWith(".json") }
                 .forEach { location ->
                     val resource = pack.getResource(PackType.SERVER_DATA, location)
                     try {
                         val json = JsonParser.parseReader(resource.reader()).asJsonObject
-                        val id = ResourceLocation(location.namespace, location.path.split("/").last())
+                        val id = ResourceLocation(location.namespace, location.path.removePrefix("jewels/").removeSuffix(".json"))
 
                         Registry.register(QuestRegistries.JEWEL, id, Jewel.deserialize(json, id))
                         OnTheQuest.logger.info("Registered jewel $id")

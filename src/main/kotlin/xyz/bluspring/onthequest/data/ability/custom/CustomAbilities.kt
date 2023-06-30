@@ -11,7 +11,7 @@ import xyz.bluspring.onthequest.data.ability.custom.earth.GaiasBlessingAbility
 object CustomAbilities {
     val GAIAS_BLESSING_SHOW_MARKED = register("earth/gaias_blessing/show_marked", GaiasBlessingAbility.ShowMarked())
     val GAIAS_BLESSING_TOGGLE_MARK = register("earth/gaias_blessing/toggle_mark", GaiasBlessingAbility.ToggleMark())
-    val GAIAS_BLESSING_HEAL_AREA = register("earth/gaias_blessing/heal_area", GaiasBlessingAbility.HealArea())
+    val GAIAS_BLESSING_HEAL_AREA = register("earth/gaias_blessing/heal_radius", GaiasBlessingAbility.HealArea())
 
     fun init() {}
 

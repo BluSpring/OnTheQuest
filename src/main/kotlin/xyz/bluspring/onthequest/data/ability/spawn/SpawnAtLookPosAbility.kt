@@ -25,7 +25,7 @@ class SpawnAtLookPosAbility(cooldownTicks: Long, val entityType: EntityType<*>) 
 
     class Type : AbilityType() {
         override fun create(data: JsonObject, cooldownTicks: Long): Ability {
-            val entityType = ResourceLocation.tryParse(data.get("entity_type").asString)!!
+            val entityType = ResourceLocation.tryParse(data.get("entity").asString)!!
 
             return SpawnAtLookPosAbility(cooldownTicks, Registry.ENTITY_TYPE.get(entityType))
         }
