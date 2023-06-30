@@ -13,85 +13,96 @@
     "announce_to_chat": false
   },
   "criteria": {
+    "hasTag": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "nbt": "{\"Tags\":[\"otq_get_all_leaf_types\"]}"
+        }
+      }
+    },
     "welp": {
       "trigger": "minecraft:inventory_changed",
-      "items": [
-        {
-          "count": {
-            "min": 1
+      "conditions": {
+        "items": [
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:oak_leaves"
+            ]
           },
-          "items": [
-            "minecraft:oak_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:spruce_leaves"
+            ]
           },
-          "items": [
-            "minecraft:spruce_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:birch_leaves"
+            ]
           },
-          "items": [
-            "minecraft:birch_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:jungle_leaves"
+            ]
           },
-          "items": [
-            "minecraft:jungle_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:acacia_leaves"
+            ]
           },
-          "items": [
-            "minecraft:acacia_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:dark_oak_leaves"
+            ]
           },
-          "items": [
-            "minecraft:dark_oak_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:mangrove_leaves"
+            ]
           },
-          "items": [
-            "minecraft:mangrove_leaves"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:nether_wart_block"
+            ]
           },
-          "items": [
-            "minecraft:nether_wart_block"
-          ]
-        },
-        {
-          "count": {
-            "min": 1
-          },
-          "items": [
-            "minecraft:warped_wart_block"
-          ]
-        }
-      ]
+          {
+            "count": {
+              "min": 1
+            },
+            "items": [
+              "minecraft:warped_wart_block"
+            ]
+          }
+        ]
+      }
     }
   },
   "requirements": [
-    "welp"
+    "welp",
+    "hasTag"
   ]
 }

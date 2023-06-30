@@ -15,6 +15,14 @@
     "show_toast": false
   },
   "criteria": {
+    "hasTag": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "nbt": "{\"Tags\":[\"otq_open_20_shipwreck_chests\"]}"
+        }
+      }
+    },
     "shipwreck": {
       "conditions": {
         "loot_tables": [
@@ -27,7 +35,8 @@
     }
   },
   "requirements": [
-    "shipwreck"
+    "shipwreck",
+    "hasTag"
   ],
   "rewards": {
     "function": "questsmp:increment/found_shipwreck_chest"

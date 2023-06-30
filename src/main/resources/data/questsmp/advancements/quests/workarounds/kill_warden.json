@@ -15,6 +15,14 @@
     "show_toast": false
   },
   "criteria": {
+    "hasTag": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "nbt": "{\"Tags\":[\"otq_kill_warden_twice\"]}"
+        }
+      }
+    },
     "warden_kill": {
       "conditions": {
         "entity": {
@@ -25,7 +33,8 @@
     }
   },
   "requirements": [
-    "warden_kill"
+    "warden_kill",
+    "hasTag"
   ],
   "rewards": {
     "function": "questsmp:increment/kill_warden"

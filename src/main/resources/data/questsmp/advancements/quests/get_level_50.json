@@ -13,6 +13,14 @@
     "announce_to_chat": false
   },
   "criteria": {
+    "hasTag": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "nbt": "{\"Tags\":[\"otq_get_level_50\"]}"
+        }
+      }
+    },
     "xp_increase": {
       "conditions": {
         "player": [
@@ -30,6 +38,7 @@
     }
   },
   "requirements": [
-    "xp_increase"
+    "xp_increase",
+    "hasTag"
   ]
 }
