@@ -81,7 +81,7 @@ data class Jewel(
                     .color(color)
                     .decoration(TextDecoration.ITALIC, false)
             )
-            meta.setCustomModelData(Mth.clamp(startingModelId + level, minLevel, maxLevel))
+            meta.setCustomModelData(Mth.clamp(startingModelId + level, startingModelId + minLevel, startingModelId + maxLevel))
             meta.persistentDataContainer.set(JEWEL_TYPE_KEY, PersistentDataType.STRING, id.toString())
 
             this.bukkitStack.itemMeta = meta

@@ -15,6 +15,7 @@ import org.slf4j.Logger
 import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
+import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.data.quests.QuestCustomCriterias
 import xyz.bluspring.onthequest.events.AbilityEventHandler
@@ -109,7 +110,7 @@ class OnTheQuest : JavaPlugin() {
     private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
         val jewelType = QuestRegistries.JEWEL.get(ResourceLocation(key.namespace, key.key)) ?: return false
 
-        to.inventory.addItem(jewelType.getItem(level).asBukkitCopy().asQuantity(count))
+        JewelManager.setJewel(to, jewelType)
 
         player.sendMessage(
             Component.text("Successfully gave ")
