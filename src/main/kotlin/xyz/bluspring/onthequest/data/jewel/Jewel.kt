@@ -80,6 +80,7 @@ data class Jewel(
                     .translatable("jewels.${id.namespace}.${id.path.replace("/", ".")}")
                     .color(color)
                     .decoration(TextDecoration.ITALIC, false)
+                    .append(Component.text(" [Lv. $level]").color(NamedTextColor.GOLD))
             )
             meta.setCustomModelData(Mth.clamp(startingModelId + level, startingModelId + minLevel, startingModelId + maxLevel))
             meta.persistentDataContainer.set(JEWEL_TYPE_KEY, PersistentDataType.STRING, id.toString())

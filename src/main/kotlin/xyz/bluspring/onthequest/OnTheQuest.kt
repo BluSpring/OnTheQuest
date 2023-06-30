@@ -116,7 +116,7 @@ class OnTheQuest : JavaPlugin() {
             Component.text("Successfully gave ")
                 .append(to.name())
                 .append(Component.text(" ${count}x "))
-                .append(Component.translatable("item.${key.namespace}.${key.key}"))
+                .append(Component.translatable("jewel.${key.namespace}.${key.key}"))
         )
 
         return true
