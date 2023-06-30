@@ -6,81 +6,237 @@
   "overrides": [
     {
       "predicate": {
-        "custom_model_data": 15
+        "custom_model_data": 8
       },
       "model": "questsmp:jewels/earth"
     },
     {
       "predicate": {
-        "custom_model_data": 16
+        "custom_model_data": 9
+      },
+      "model": "questsmp:jewels/earth"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10
+      },
+      "model": "questsmp:jewels/earth"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 11
+      },
+      "model": "questsmp:jewels/earth"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 12
+      },
+      "model": "questsmp:jewels/earth"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 18
       },
       "model": "questsmp:jewels/fire"
     },
     {
       "predicate": {
-        "custom_model_data": 17
-      },
-      "model": "questsmp:jewels/haste"
-    },
-    {
-      "predicate": {
-        "custom_model_data": 18
-      },
-      "model": "questsmp:jewels/invisibility"
-    },
-    {
-      "predicate": {
         "custom_model_data": 19
       },
-      "model": "questsmp:jewels/speed"
+      "model": "questsmp:jewels/fire"
     },
     {
       "predicate": {
         "custom_model_data": 20
       },
-      "model": "questsmp:jewels/strength"
+      "model": "questsmp:jewels/fire"
     },
     {
       "predicate": {
         "custom_model_data": 21
       },
-    "model": "questsmp:jewels/avatar"
+      "model": "questsmp:jewels/fire"
     },
     {
       "predicate": {
         "custom_model_data": 22
       },
-      "model": "questsmp:jewels/ice"
+      "model": "questsmp:jewels/fire"
     },
     {
       "predicate": {
         "custom_model_data": 23
       },
+      "model": "questsmp:jewels/fire"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 28
+      },
+      "model": "questsmp:jewels/ice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 29
+      },
+      "model": "questsmp:jewels/ice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 30
+      },
+      "model": "questsmp:jewels/ice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31
+      },
+      "model": "questsmp:jewels/ice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 32
+      },
+      "model": "questsmp:jewels/ice"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 38
+      },
       "model": "questsmp:jewels/life"
     },
     {
       "predicate": {
-        "custom_model_data": 24
+        "custom_model_data": 39
       },
-      "model": "questsmp:jewels/skeletal"
+      "model": "questsmp:jewels/life"
     },
     {
       "predicate": {
-        "custom_model_data": 25
+        "custom_model_data": 40
       },
-      "model": "questsmp:jewels/void"
+      "model": "questsmp:jewels/life"
     },
     {
       "predicate": {
-        "custom_model_data": 26
+        "custom_model_data": 41
+      },
+      "model": "questsmp:jewels/life"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 42
+      },
+      "model": "questsmp:jewels/life"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 48
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 49
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 50
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 51
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 52
+      },
+      "model": "questsmp:jewels/speed"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 53
+      },
+      "model": "questsmp:jewels/speed"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 58
+      },
+      "model": "questsmp:jewels/strength"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 59
+      },
+      "model": "questsmp:jewels/strength"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 60
+      },
+      "model": "questsmp:jewels/strength"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 61
+      },
+      "model": "questsmp:jewels/strength"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 62
+      },
+      "model": "questsmp:jewels/strength"
+    },
+
+    {
+      "predicate": {
+        "custom_model_data": 68
       },
       "model": "questsmp:jewels/water"
     },
     {
       "predicate": {
-        "custom_model_data": 27
+        "custom_model_data": 69
       },
-      "model": "questsmp:jewels/dragon"
+      "model": "questsmp:jewels/water"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 70
+      },
+      "model": "questsmp:jewels/water"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 71
+      },
+      "model": "questsmp:jewels/water"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 72
+      },
+      "model": "questsmp:jewels/water"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 73
+      },
+      "model": "questsmp:jewels/water"
     }
   ]
 }
