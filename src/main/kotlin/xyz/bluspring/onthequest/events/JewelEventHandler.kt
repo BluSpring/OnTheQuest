@@ -10,6 +10,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerAdvancementDoneEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.quests.QuestManager
 import xyz.bluspring.onthequest.util.KotlinHelper
@@ -59,6 +60,8 @@ class JewelEventHandler : Listener {
         if (ev.isCancelled)
             return
 
+        ev.drops.removeIf { JewelManager.isJewel(it) }
+
         val jewel = JewelManager.getOrCreateJewel(ev.player)
         val newLevel = JewelManager.addToLevel(ev.player, -1)
         ev.player.sendMessage("${ChatColor.RED}>> You have died, and so your jewel level has dropped to ${ChatColor.GOLD}Level $newLevel${ChatColor.RED}!")
@@ -70,5 +73,11 @@ class JewelEventHandler : Listener {
                 ev.player.banPlayer("Your jewel level has dropped below Level ${jewel.minLevel}!")
             }
         }
+    }
+
+    @EventHandler
+    fun onPlayerRespawn(ev: PlayerRespawnEvent) {
+        val jewel = JewelManager.getOrCreateJewel(ev.player)
+        JewelManager.setJewel(ev.player, jewel)
     }
 }

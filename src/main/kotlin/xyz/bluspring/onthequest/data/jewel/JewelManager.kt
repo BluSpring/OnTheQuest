@@ -19,6 +19,10 @@ object JewelManager {
     private val playerJewels = mutableMapOf<UUID, Jewel>()
     private val playerLevels = mutableMapOf<UUID, Int>()
 
+    fun isJewel(itemStack: ItemStack): Boolean {
+        return itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY)
+    }
+
     fun replaceOldJewel(player: Player, jewel: Jewel) {
         val jewelSlots = mutableListOf<ItemStack>()
         val level = getOrCreateLevel(player)
@@ -27,7 +31,7 @@ object JewelManager {
             if (itemStack == null)
                 return@forEachIndexed
 
-            if (itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY)) {
+            if (isJewel(itemStack)) {
                 jewelSlots.add(itemStack)
             }
         }
