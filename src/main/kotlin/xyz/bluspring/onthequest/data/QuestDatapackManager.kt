@@ -2,72 +2,45 @@ package xyz.bluspring.onthequest.data
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import io.papermc.paper.event.server.ServerResourcesReloadedEvent
 import net.minecraft.core.Registry
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.packs.repository.Pack
-import net.minecraft.server.packs.repository.PackCompatibility
-import net.minecraft.server.packs.repository.PackRepository
-import net.minecraft.server.packs.repository.PackSource
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.quests.QuestManager
 import xyz.bluspring.onthequest.data.util.KeybindType
-import xyz.bluspring.onthequest.util.ReflectionHelper
-import java.lang.reflect.Field
-import java.util.concurrent.CompletableFuture
+import java.io.File
 
 object QuestDatapackManager {
-    private const val PACK_NAME = "onthequest_data"
-    private val availableField: Field = PackRepository::class.java.getDeclaredField(ReflectionHelper.reflectionRemapper.remapFieldName(PackRepository::class.java, "available"))
-
-    init {
-        availableField.isAccessible = true
-    }
-
-    val builtinPack = Pack(PACK_NAME, true, {
-        PluginPackResources()
-    }, Component.literal("QuestSMP Built-in Datapack"), Component.literal("Built-in datapack resources for QuestSMP"),
-        PackCompatibility.COMPATIBLE, Pack.Position.TOP, false, PackSource.BUILT_IN
-    )
-
-    fun load(): CompletableFuture<Void> {
-        val server = (Bukkit.getServer() as CraftServer).handle.server
-        val packRepository = server.packRepository
-
-        // y'know, it would be fantastic if i had access to mixins.
-        // but alas, i do not have that luxury with bukkit.
-        // so i need to do this fuckin' stupid reflection hack instead.
-        val availableMap = availableField.get(packRepository) as Map<String, Pack>
-
-        val newAvailable = HashMap<String, Pack>(availableMap)
-        newAvailable[builtinPack.id] = builtinPack
-
-        // hoping and praying this works fine.
-        availableField.set(packRepository, newAvailable)
-
-        packRepository.setSelected(packRepository.selectedIds.toMutableList().apply {
-            add(PACK_NAME)
-        })
-
-        return server.reloadResources(server.packRepository.selectedIds, ServerResourcesReloadedEvent.Cause.PLUGIN)
-    }
+    const val CURRENT_PACK_VERSION = 1
 
     fun reload() {
-        val server = (Bukkit.getServer() as CraftServer).handle.server
+        val server = (OnTheQuest.plugin.server as CraftServer).handle.server
+        val mainWorldDir = server.storageSource.levelDirectory.dataFile().toFile().parentFile
 
-        // if the pack name got reset,
-        // force load the datapack back in.
-        if (!server.packRepository.isAvailable(PACK_NAME)) {
-            load().thenAcceptAsync {
-                if (OnTheQuest.debug) {
-                    check()
-                }
-            }
-        }
+        val datapackDir = File(mainWorldDir, "datapacks")
+        if (!datapackDir.exists())
+            datapackDir.mkdirs()
+
+        val versionFile = File(datapackDir, "OTQ_CURRENT_VERSION")
+
+        val currentVersion = if (versionFile.exists())
+            versionFile.readText().toInt()
+        else
+            0
+
+        if (currentVersion == CURRENT_PACK_VERSION)
+            return
+
+        val rootFile = OnTheQuest::class.java.getResource("/otq_DONOTMODIFY.zip")
+        val datapack = File(datapackDir, "otq_DONOTMODIFY.zip")
+
+        if (!datapack.exists())
+            datapack.createNewFile()
+
+        datapack.writeBytes(rootFile!!.readBytes())
+        versionFile.writeText("$CURRENT_PACK_VERSION")
     }
 
     fun loadAllResources() {
@@ -132,14 +105,6 @@ object QuestDatapackManager {
                 OnTheQuest.logger.error("Failed to load jewel resource $location!")
                 e.printStackTrace()
             }
-        }
-    }
-
-    private fun check() {
-        val server = (Bukkit.getServer() as CraftServer).handle.server
-
-        server.resourceManager.listPacks().forEach {
-            OnTheQuest.plugin.slF4JLogger.info("Loaded pack ${it.name}")
         }
     }
 }

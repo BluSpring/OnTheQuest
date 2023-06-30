@@ -1,3 +1,7 @@
+import java.nio.file.Files
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.8.21'
@@ -64,6 +68,43 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+tasks.register("createDatapack") {
+    it.doFirst {
+        File path = new File(project.buildDir, "otq_DONOTMODIFY.zip")
+        ZipOutputStream output = new ZipOutputStream(new FileOutputStream(path))
+
+        var root = new File(project.rootDir, "src/main/resources/data");
+        Files.walk(root.toPath())
+                .forEach {
+                    if (!it.toFile().isFile())
+                        return
+
+                    output.putNextEntry(new ZipEntry("/data/" + it.toString().replace(root.toString(), "")))
+
+                    InputStream input = new FileInputStream(it.toFile())
+                    output.write(input.readAllBytes())
+                    output.closeEntry()
+                    input.close()
+                }
+
+        output.putNextEntry(new ZipEntry("pack.mcmeta"))
+
+        var text = "{\"pack\": {\"pack_format\": 10, \"description\": \"OnTheQuest internal datapack. DO NOT MODIFY.\"}}"
+        output.write(text.getBytes("UTF-8"))
+        output.closeEntry()
+
+        output.close()
+    }
+
+    it.doLast {
+        File path = new File(project.buildDir, "otq_DONOTMODIFY.zip")
+        File move = new File(project.rootDir, "src/main/resources/otq_DONOTMODIFY.zip")
+        if (move.exists())
+            move.delete()
+        Files.copy(path.toPath(), move.toPath())
+    }
+}
+
 compileKotlin {
     kotlinOptions.jvmTarget = "17"
 }
@@ -72,6 +113,7 @@ compileTestKotlin {
 }
 
 processResources {
+    dependsOn("createDatapack")
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'

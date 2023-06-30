@@ -9,8 +9,14 @@ import xyz.bluspring.onthequest.util.ReflectionHelper
 object QuestCustomCriterias {
     private val CRITERIA_FIELD = CriteriaTriggers::class.java.getDeclaredField(
         ReflectionHelper.reflectionRemapper.remapFieldName(
-            CriteriaTriggers::class.java, "CRITERIAS"))
-    private val criterias: HashMap<ResourceLocation, CriterionTrigger<*>> = CRITERIA_FIELD.get(null) as HashMap<ResourceLocation, CriterionTrigger<*>>
+            CriteriaTriggers::class.java, "CRITERIA"))
+
+    private val criterias: HashMap<ResourceLocation, CriterionTrigger<*>>
+
+    init {
+        CRITERIA_FIELD.isAccessible = true
+        criterias = CRITERIA_FIELD.get(null) as HashMap<ResourceLocation, CriterionTrigger<*>>
+    }
 
     private fun <T : CriterionTrigger<*>> register(criteria: T): T {
         criterias[criteria.id] = criteria
