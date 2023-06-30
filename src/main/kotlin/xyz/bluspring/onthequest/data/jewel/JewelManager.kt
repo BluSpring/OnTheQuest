@@ -28,9 +28,7 @@ object JewelManager {
                 return@forEachIndexed
 
             if (itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY)) {
-                if (itemStack.itemMeta.persistentDataContainer.get(Jewel.JEWEL_TYPE_KEY, PersistentDataType.STRING) != jewel.id.toString()) {
-                    jewelSlots.add(itemStack)
-                }
+                jewelSlots.add(itemStack)
             }
         }
 

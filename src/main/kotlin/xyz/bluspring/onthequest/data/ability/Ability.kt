@@ -25,6 +25,13 @@ abstract class Ability(val cooldownTicks: Long) {
 
     private val particles = mutableListOf<AbilityParticles>()
 
+    fun getCooldown(player: Player): Long {
+        if (!cooldowns.contains(player))
+            return 0L
+
+        return (Bukkit.getServer().currentTick.toLong() - cooldowns[player]!!).coerceAtLeast(0L)
+    }
+
     fun markActive(player: Player) {
         isActivated.add(player)
     }

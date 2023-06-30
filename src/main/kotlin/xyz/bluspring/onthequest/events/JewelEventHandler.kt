@@ -61,7 +61,7 @@ class JewelEventHandler : Listener {
 
         val jewel = JewelManager.getOrCreateJewel(ev.player)
         val newLevel = JewelManager.addToLevel(ev.player, -1)
-        ev.player.sendMessage(">> You have died, and so your jewel level has dropped to Level $newLevel!")
+        ev.player.sendMessage("${ChatColor.RED}>> You have died, and so your jewel level has dropped to ${ChatColor.GOLD}Level $newLevel${ChatColor.RED}!")
 
         if (newLevel < jewel.minLevel) {
             ev.player.spigot().respawn()

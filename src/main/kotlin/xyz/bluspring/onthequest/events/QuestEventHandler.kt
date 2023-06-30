@@ -60,7 +60,8 @@ class QuestEventHandler : Listener {
 
         val quests = QuestManager.getAllPossibleQuests(JewelManager.getOrCreateJewel(ev.player))
             .filter {
-                !ev.player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.fromString(it.toString())!!)!!).isDone
+                val advancement = Bukkit.getAdvancement(NamespacedKey.fromString(it.toString())!!)
+                advancement != null && !ev.player.getAdvancementProgress(advancement).isDone
                         && !ev.player.scoreboardTags.contains("otq_${it.path.replace("/", "_")}")
             }
 

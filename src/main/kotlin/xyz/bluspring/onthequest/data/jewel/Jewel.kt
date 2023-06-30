@@ -2,6 +2,7 @@ package xyz.bluspring.onthequest.data.jewel
 
 import com.google.gson.JsonObject
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -12,10 +13,12 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
+import xyz.bluspring.onthequest.data.util.CooldownUtil
 import xyz.bluspring.onthequest.data.util.predicates.RangePredicate
 
 data class Jewel(
@@ -23,7 +26,8 @@ data class Jewel(
     val item: Item,
     val startingModelId: Int,
     val abilities: List<JewelAbility>,
-    val color: TextColor
+    val color: TextColor,
+    val char: Char
 ) {
     val maxLevel: Int
         get() {
@@ -32,6 +36,43 @@ data class Jewel(
     val minLevel = -2
 
     val translationKey = "jewels.${id.namespace}.${id.path}"
+
+    fun displayCooldowns(player: Player) {
+        val text = mutableListOf<Component>()
+
+        var index = 0
+        abilities.forEach {
+            it.active.forEach active@{ ability ->
+                index++
+                val cooldown = ability.getCooldown(player)
+
+                if (cooldown == 0L)
+                    return@active
+
+                text.add(
+                    Component.text("$char")
+                        .append(Component.text(CooldownUtil.getSubscriptOfNumber(index)))
+                        .append(Component.text("  ${CooldownUtil.getTimeString(cooldown * 50)}"))
+                )
+            }
+
+            it.passive.forEach active@{ ability ->
+                index++
+                val cooldown = ability.getCooldown(player)
+
+                if (cooldown == 0L)
+                    return@active
+
+                text.add(
+                    Component.text("$char")
+                        .append(Component.text(CooldownUtil.getSubscriptOfNumber(index)))
+                        .append(Component.text("  ${CooldownUtil.getTimeString(cooldown * 50)}"))
+                )
+            }
+        }
+
+        player.sendActionBar(Component.join(JoinConfiguration.separator(Component.text(" | ")), text))
+    }
 
     fun getPassiveAbilitiesInLevelRange(level: Int): List<Ability> {
         val abilities = mutableListOf<Ability>()
@@ -141,7 +182,7 @@ data class Jewel(
     companion object {
         val JEWEL_TYPE_KEY = NamespacedKey("questsmp", "jewel_type")
 
-        val EMPTY = Jewel(ResourceLocation("questsmp", "empty"), Items.AIR, 0, listOf(), NamedTextColor.WHITE)
+        val EMPTY = Jewel(ResourceLocation("questsmp", "empty"), Items.AIR, 0, listOf(), NamedTextColor.WHITE, 'U')
 
         fun deserialize(json: JsonObject, id: ResourceLocation): Jewel {
             val modelData = json.getAsJsonObject("model")
@@ -158,7 +199,11 @@ data class Jewel(
                 if (json.has("color"))
                     TextColor.fromCSSHexString(json.get("color").asString)!!
                 else
-                    NamedTextColor.WHITE
+                    NamedTextColor.WHITE,
+                if (json.has("char"))
+                    json.get("char").asCharacter
+                else
+                    'J'
             )
         }
     }

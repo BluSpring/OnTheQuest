@@ -105,6 +105,13 @@ class OnTheQuest : JavaPlugin() {
                 player.sendMessage("${randomPlayer.name} was randomly chosen to give the jewel type: ${randomJewel.id}")
             }
         }
+
+        this.server.scheduler.runTaskTimer(this, Runnable {
+            this.server.onlinePlayers.forEach {
+                val jewel = JewelManager.getOrCreateJewel(it)
+                jewel.displayCooldowns(it)
+            }
+        }, 0L, 20L)
     }
 
     private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
