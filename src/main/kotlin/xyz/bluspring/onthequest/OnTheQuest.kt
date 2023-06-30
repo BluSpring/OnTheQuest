@@ -16,8 +16,10 @@ import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
+import xyz.bluspring.onthequest.data.quests.QuestCustomCriterias
 import xyz.bluspring.onthequest.events.AbilityEventHandler
 import xyz.bluspring.onthequest.events.JewelEventHandler
+import xyz.bluspring.onthequest.events.QuestEventHandler
 import xyz.bluspring.onthequest.events.QuestPackEventHandler
 import java.io.File
 
@@ -30,6 +32,7 @@ class OnTheQuest : JavaPlugin() {
         plugin = this
         CommandAPI.onLoad(CommandAPIConfig())
 
+        QuestCustomCriterias.init()
         ParticleSpawnTypes.init()
         AbilityTypes.init()
 
@@ -44,6 +47,7 @@ class OnTheQuest : JavaPlugin() {
         CommandAPI.onEnable(this)
 
         this.server.pluginManager.registerEvents(JewelEventHandler(), this)
+        this.server.pluginManager.registerEvents(QuestEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
         this.server.pluginManager.registerEvents(AbilityEventHandler(), this)
 

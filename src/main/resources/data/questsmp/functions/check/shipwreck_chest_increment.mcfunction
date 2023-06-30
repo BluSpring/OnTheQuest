@@ -1,0 +1,1 @@
+execute as @a[scores={otq_foundShipwrecks=20..}] run advancement grant @s only questsmp:quests/open_20_shipwreck_chests

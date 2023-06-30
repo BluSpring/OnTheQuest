@@ -3,7 +3,6 @@ package xyz.bluspring.onthequest.data.quests
 import com.google.gson.JsonObject
 import net.minecraft.advancements.Advancement
 import net.minecraft.resources.ResourceLocation
-import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
 
 object QuestManager {
@@ -24,7 +23,6 @@ object QuestManager {
                         questsByJewel[jewelId] = mutableListOf()
 
                     questsByJewel[jewelId]?.add(ResourceLocation.tryParse(id.asString)!!)
-                    OnTheQuest.logger.info("")
                 }
             }
         }

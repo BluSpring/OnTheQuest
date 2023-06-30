@@ -16,18 +16,15 @@ import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.quests.QuestManager
 import xyz.bluspring.onthequest.data.util.KeybindType
-import xyz.jpenilla.reflectionremapper.ReflectionRemapper
+import xyz.bluspring.onthequest.util.ReflectionHelper
 import java.lang.reflect.Field
 import java.util.concurrent.CompletableFuture
 
 object QuestDatapackManager {
     private const val PACK_NAME = "onthequest_data"
-    private val availableField: Field
+    private val availableField: Field = PackRepository::class.java.getDeclaredField(ReflectionHelper.reflectionRemapper.remapFieldName(PackRepository::class.java, "available"))
 
     init {
-        val reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar()
-
-        availableField = PackRepository::class.java.getDeclaredField(reflectionRemapper.remapFieldName(PackRepository::class.java, "available"))
         availableField.isAccessible = true
     }
 

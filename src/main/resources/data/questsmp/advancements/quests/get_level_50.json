@@ -1,0 +1,35 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "text": "Get Level 50"
+    },
+    "description": {
+      "text": "Get Experience Level 50"
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "xp_increase": {
+      "conditions": {
+        "player": [
+          {
+            "type_specific": {
+              "type": "player",
+              "level": {
+                "min": 50
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    "xp_increase"
+  ]
+}

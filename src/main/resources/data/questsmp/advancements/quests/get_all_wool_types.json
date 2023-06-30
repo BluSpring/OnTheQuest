@@ -1,0 +1,153 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:white_wool"
+    },
+    "title": {
+      "text": "Get Every Wool"
+    },
+    "description": {
+      "text": "Collect every colour of wool, and hold it in your inventory."
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "welp": {
+      "trigger": "minecraft:inventory_changed",
+      "items": [
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:black_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:red_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:green_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:brown_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:blue_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:purple_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:cyan_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:light_gray_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:gray_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:pink_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:lime_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:yellow_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:light_blue_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:magenta_wool"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:orange_wool"
+          ]
+        },{
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:white_wool"
+          ]
+        }
+
+      ]
+    }
+  },
+  "requirements": [
+    "welp"
+  ]
+}

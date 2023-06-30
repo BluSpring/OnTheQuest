@@ -1,0 +1,32 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:empty_map"
+    },
+    "title": {
+      "text": "QuestSMP"
+    },
+    "description": {
+      "text": "QuestsMP Quests"
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "crafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    "crafting_table"
+  ]
+}

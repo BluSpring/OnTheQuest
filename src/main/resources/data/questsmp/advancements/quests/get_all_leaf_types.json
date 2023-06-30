@@ -1,0 +1,97 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:oak_leaves"
+    },
+    "title": {
+      "text": "Collect Every Leaf"
+    },
+    "description": {
+      "text": "Collect every leaf type, and have them in your inventory."
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "welp": {
+      "trigger": "minecraft:inventory_changed",
+      "items": [
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:oak_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:spruce_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:birch_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:jungle_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:acacia_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:dark_oak_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:mangrove_leaves"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:nether_wart_block"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:warped_wart_block"
+          ]
+        }
+      ]
+    }
+  },
+  "requirements": [
+    "welp"
+  ]
+}

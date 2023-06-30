@@ -1,0 +1,35 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:chest"
+    },
+    "title": {
+      "text": "Open a Shipwreck Chest"
+    },
+    "description": {
+      "text": "open shipwreck chest"
+    },
+    "announce_to_chat": false,
+    "hidden": true,
+    "show_toast": false
+  },
+  "criteria": {
+    "shipwreck": {
+      "conditions": {
+        "loot_tables": [
+          "minecraft:chests/shipwreck_map",
+          "minecraft:chests/shipwreck_supply",
+          "minecraft:chests/shipwreck_treasure"
+        ]
+      },
+      "trigger": "questsmp:player_open_new_loot_chest"
+    }
+  },
+  "requirements": [
+    "shipwreck"
+  ],
+  "rewards": {
+    "function": "questsmp:increment/found_shipwreck_chest"
+  }
+}

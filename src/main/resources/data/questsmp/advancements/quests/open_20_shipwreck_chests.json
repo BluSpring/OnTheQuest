@@ -1,0 +1,23 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:chest"
+    },
+    "title": {
+      "text": "Open 20 Shipwreck Chests"
+    },
+    "description": {
+      "text": "Open a total of 20 shipwreck chests."
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "shipwreck": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    "shipwreck"
+  ]
+}

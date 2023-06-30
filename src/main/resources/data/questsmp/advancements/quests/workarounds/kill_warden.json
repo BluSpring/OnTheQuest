@@ -1,0 +1,33 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:sculk_sensor"
+    },
+    "title": {
+      "text": "Kill Warden"
+    },
+    "description": {
+      "text": "kill the warden"
+    },
+    "announce_to_chat": false,
+    "hidden": true,
+    "show_toast": false
+  },
+  "criteria": {
+    "warden_kill": {
+      "conditions": {
+        "entity": {
+          "type": "minecraft:warden"
+        }
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "requirements": [
+    "warden_kill"
+  ],
+  "rewards": {
+    "function": "questsmp:increment/kill_warden"
+  }
+}

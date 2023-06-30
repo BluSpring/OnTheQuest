@@ -1,0 +1,1 @@
+execute as @a[scores={otq_killWarden=2..}] run advancement grant @s only questsmp:quests/kill_warden_twice

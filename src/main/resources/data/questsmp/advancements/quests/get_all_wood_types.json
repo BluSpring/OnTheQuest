@@ -1,0 +1,97 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:oak_log"
+    },
+    "title": {
+      "text": "Collect Every Log"
+    },
+    "description": {
+      "text": "Collect every log, and have them in your inventory."
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "welp": {
+      "trigger": "minecraft:inventory_changed",
+      "items": [
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:oak_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:spruce_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:birch_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:jungle_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:acacia_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:dark_oak_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:mangrove_log"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:crimson_stem"
+          ]
+        },
+        {
+          "count": {
+            "min": 1
+          },
+          "items": [
+            "minecraft:warped_stem"
+          ]
+        }
+      ]
+    }
+  },
+  "requirements": [
+    "welp"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "parent": "questsmp:quests/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:sculk_sensor"
+    },
+    "title": {
+      "text": "Kill 2 Wardens"
+    },
+    "description": {
+      "text": "have fun"
+    },
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "welp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    "welp"
+  ]
+}
