@@ -1,6 +1,11 @@
 {
   "*": [
-
+    "questsmp:quests/get_all_leaf_types",
+    "questsmp:quests/get_all_wood_types",
+    "questsmp:quests/get_all_wool_types",
+    "questsmp:quests/get_level_50",
+    "questsmp:quests/kill_warden_twice",
+    "questsmp:quests/open_20_shipwreck_chests"
   ],
   "questsmp:earth": [
 
