@@ -4,6 +4,8 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.packs.PackResources
+import net.minecraft.server.packs.PackType
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
@@ -33,7 +35,7 @@ object QuestDatapackManager {
         if (currentVersion == CURRENT_PACK_VERSION)
             return
 
-        val rootFile = OnTheQuest::class.java.getResource("/otq_DONOTMODIFY.zip")
+        val rootFile = OnTheQuest::class.java.getResource("/resources.zip")
         val datapack = File(datapackDir, "otq_DONOTMODIFY.zip")
 
         if (!datapack.exists())
@@ -50,64 +52,82 @@ object QuestDatapackManager {
 
         val server = (Bukkit.getServer() as CraftServer).handle.server
 
-        server.resourceManager.getResource(ResourceLocation("questsmp", "quests.json")).ifPresent {
-            try {
-                val json = JsonParser.parseReader(it.openAsReader()).asJsonObject
+        server.resourceManager.listPacks().forEach { pack ->
+            loadFromPack(pack)
+        }
+    }
 
-                QuestManager.parseFromJson(json)
-                OnTheQuest.logger.info("Loaded quests.json")
-            } catch (e: Exception) {
-                OnTheQuest.logger.error("Failed to load quests.json!")
-                e.printStackTrace()
+    private fun loadFromPack(pack: PackResources) {
+        try {
+            pack.getResource(PackType.SERVER_DATA, ResourceLocation("questsmp", "quests.json")).run {
+                try {
+                    val json = JsonParser.parseReader(this.reader()).asJsonObject
+
+                    QuestManager.parseFromJson(json)
+                    OnTheQuest.logger.info("Loaded quests.json")
+                } catch (e: Exception) {
+                    OnTheQuest.logger.error("Failed to load quests.json!")
+                    e.printStackTrace()
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
-        server.resourceManager.listResources("abilities") {
-            it.path.endsWith(".json")
-        }.forEach { (location, resource) ->
-            try {
-                val json = JsonParser.parseReader(resource.openAsReader()).asJsonObject
+        try {
+            pack.getResources(PackType.SERVER_DATA, "questsmp", "abilities") { it.path.endsWith(".json") }
+                .forEach { location ->
+                    try {
+                        val resource = pack.getResource(PackType.SERVER_DATA, location)
 
-                val abilityType = QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
+                        val json = JsonParser.parseReader(resource.reader()).asJsonObject
 
-                val ability = Registry.register(QuestRegistries.ABILITY, location, abilityType.create(
-                    if (json.has("data"))
-                        json.getAsJsonObject("data")
-                    else
-                        JsonObject(),
-                    if (json.has("cooldown"))
-                        json.get("cooldown").asLong
-                    else
-                        0L
-                ).apply {
-                    if (json.has("keybind")) {
-                        val keybindData = json.getAsJsonObject("keybind")
+                        val abilityType =
+                            QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
 
-                        this.keybindType = KeybindType.fromKey(keybindData.get("key").asString)
+                        val ability = Registry.register(QuestRegistries.ABILITY, location, abilityType.create(
+                            if (json.has("data"))
+                                json.getAsJsonObject("data")
+                            else
+                                JsonObject(),
+                            if (json.has("cooldown"))
+                                json.get("cooldown").asLong
+                            else
+                                0L
+                        ).apply {
+                            if (json.has("keybind")) {
+                                val keybindData = json.getAsJsonObject("keybind")
+
+                                this.keybindType = KeybindType.fromKey(keybindData.get("key").asString)
+                            }
+                        })
+
+                        abilityType.abilities.add(ability)
+                        OnTheQuest.logger.info("Registered ability $location")
+                    } catch (e: Exception) {
+                        OnTheQuest.logger.error("Failed to load ability resource $location!")
+                        e.printStackTrace()
                     }
-                })
-
-                abilityType.abilities.add(ability)
-                OnTheQuest.logger.info("Registered ability $location")
-            } catch (e: Exception) {
-                OnTheQuest.logger.error("Failed to load ability resource $location!")
-                e.printStackTrace()
-            }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
-        server.resourceManager.listResources("jewels") {
-            it.path.endsWith(".json")
-        }.forEach { (location, resource) ->
-            try {
-                val json = JsonParser.parseReader(resource.openAsReader()).asJsonObject
-                val id = ResourceLocation(location.namespace, location.path.split("/").last())
+        try {
+            pack.getResources(PackType.SERVER_DATA, "questsmp", "abilities") { it.path.endsWith(".json") }
+                .forEach { location ->
+                    val resource = pack.getResource(PackType.SERVER_DATA, location)
+                    try {
+                        val json = JsonParser.parseReader(resource.reader()).asJsonObject
+                        val id = ResourceLocation(location.namespace, location.path.split("/").last())
 
-                Registry.register(QuestRegistries.JEWEL, id, Jewel.deserialize(json, id))
-                OnTheQuest.logger.info("Registered jewel $id")
-            } catch (e: Exception) {
-                OnTheQuest.logger.error("Failed to load jewel resource $location!")
-                e.printStackTrace()
-            }
-        }
+                        Registry.register(QuestRegistries.JEWEL, id, Jewel.deserialize(json, id))
+                        OnTheQuest.logger.info("Registered jewel $id")
+                    } catch (e: Exception) {
+                        OnTheQuest.logger.error("Failed to load jewel resource $location!")
+                        e.printStackTrace()
+                    }
+                }
+        } catch (_: Exception) {}
     }
 }

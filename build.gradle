@@ -79,12 +79,10 @@ tasks.register("createDatapack") {
                     if (!it.toFile().isFile())
                         return
 
-                    output.putNextEntry(new ZipEntry("/data/" + it.toString().replace(root.toString(), "")))
+                    output.putNextEntry(new ZipEntry("data/" + it.toString().replace(root.toString(), "")))
 
-                    InputStream input = new FileInputStream(it.toFile())
-                    output.write(input.readAllBytes())
+                    output.write(it.toFile().readBytes())
                     output.closeEntry()
-                    input.close()
                 }
 
         output.putNextEntry(new ZipEntry("pack.mcmeta"))
@@ -113,7 +111,6 @@ compileTestKotlin {
 }
 
 processResources {
-    dependsOn("createDatapack")
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'
