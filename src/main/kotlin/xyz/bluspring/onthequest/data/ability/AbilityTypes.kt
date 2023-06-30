@@ -14,6 +14,7 @@ import xyz.bluspring.onthequest.data.ability.effect.EffectDisableAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootHarvestAbility
 import xyz.bluspring.onthequest.data.ability.loot.LootRecipeAbility
 import xyz.bluspring.onthequest.data.ability.meta.AmmunitionAbility
+import xyz.bluspring.onthequest.data.ability.meta.DelayAbility
 import xyz.bluspring.onthequest.data.ability.meta.MultipleAbility
 import xyz.bluspring.onthequest.data.ability.meta.RunCommandAbility
 import xyz.bluspring.onthequest.data.ability.spawn.SpawnAtLookPosAbility
@@ -38,6 +39,7 @@ object AbilityTypes {
     val SPAWN_PROJECTILE = register("spawn/projectile", SpawnProjectileAbility.Type())
 
     val AMMUNITION = register("ammunition", AmmunitionAbility.Type())
+    val DELAY_ABILITY = register("delay_ability", DelayAbility.Type())
     val MULTIPLE = register("multiple", MultipleAbility.Type())
     val RUN_COMMAND = register("run_command", RunCommandAbility.Type())
 
