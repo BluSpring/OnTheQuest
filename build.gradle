@@ -36,8 +36,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     paperweightDevelopmentBundle "io.papermc.paper:dev-bundle:1.19.2-R0.1-SNAPSHOT"
 
-    implementation "dev.jorel:commandapi-kotlin:9.0.3"
-    implementation "dev.jorel:commandapi-shade:9.0.3"
+    implementation "dev.jorel:commandapi-bukkit-kotlin:9.0.3"
+    implementation "dev.jorel:commandapi-bukkit-shade:9.0.3"
     implementation 'xyz.jpenilla:reflection-remapper:0.1.0-SNAPSHOT'
 }
 
