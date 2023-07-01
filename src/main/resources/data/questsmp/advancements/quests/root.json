@@ -1,5 +1,4 @@
 {
-  "parent": "questsmp:quests/root",
   "display": {
     "icon": {
       "item": "minecraft:map"
