@@ -23,22 +23,20 @@
     },
     "xp_increase": {
       "conditions": {
-        "player": [
-          {
-            "type_specific": {
-              "type": "player",
-              "level": {
-                "min": 50
-              }
+        "player": {
+          "type_specific": {
+            "type": "player",
+            "level": {
+              "min": 50
             }
           }
-        ]
+        }
       },
       "trigger": "minecraft:tick"
     }
   },
   "requirements": [
-    ["xp_increase",
-    "hasTag"]
+    ["xp_increase"],
+    ["hasTag"]
   ]
 }

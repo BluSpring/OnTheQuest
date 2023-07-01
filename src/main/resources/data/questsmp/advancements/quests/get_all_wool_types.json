@@ -158,7 +158,7 @@
     }
   },
   "requirements": [
-    ["welp",
-    "hasTag"]
+    ["welp"],
+    ["hasTag"]
   ]
 }

@@ -23,20 +23,28 @@
         }
       }
     },
-    "shipwreck": {
+    "shipwreck_map": {
       "conditions": {
-        "loot_tables": [
-          "minecraft:chests/shipwreck_map",
-          "minecraft:chests/shipwreck_supply",
-          "minecraft:chests/shipwreck_treasure"
-        ]
+        "loot_table": "minecraft:chests/shipwreck_map"
       },
-      "trigger": "questsmp:player_open_new_loot_chest"
+      "trigger": "minecraft:player_generates_container_loot"
+    },
+    "shipwreck_supply": {
+      "conditions": {
+        "loot_table": "minecraft:chests/shipwreck_supply"
+      },
+      "trigger": "minecraft:player_generates_container_loot"
+    },
+    "shipwreck_treasure": {
+      "conditions": {
+        "loot_table": "minecraft:chests/shipwreck_treasure"
+      },
+      "trigger": "minecraft:player_generates_container_loot"
     }
   },
   "requirements": [
-    ["shipwreck",
-    "hasTag"]
+    ["shipwreck_map","shipwreck_supply","shipwreck_treasure"],
+    ["hasTag"]
   ],
   "rewards": {
     "function": "questsmp:increment/found_shipwreck_chest"

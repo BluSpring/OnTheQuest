@@ -2,7 +2,7 @@
   "parent": "questsmp:quests/root",
   "display": {
     "icon": {
-      "item": "minecraft:empty_map"
+      "item": "minecraft:map"
     },
     "title": {
       "text": "QuestSMP"

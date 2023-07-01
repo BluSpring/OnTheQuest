@@ -5,15 +5,21 @@ import org.bukkit.entity.Player
 import org.bukkit.event.*
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockCanBuildEvent
+import org.bukkit.event.block.BlockDropItemEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent
+import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.EntityDropItemEvent
 import org.bukkit.event.entity.EntityEvent
+import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryInteractEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerEvent
+import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.plugin.RegisteredListener
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
@@ -111,4 +117,23 @@ class AbilityEventHandler : Listener {
             }
         }
     }
+
+    // TODO: write a way to load all of the events because fuck you bukkit
+    @EventHandler
+    fun fuck(ev: EntityDamageEvent) {}
+
+    @EventHandler
+    fun fuck(ev: PlayerToggleSneakEvent) {}
+
+    @EventHandler
+    fun fuck(ev: PlayerInteractEntityEvent) {}
+
+    @EventHandler
+    fun fuck(ev: EntityPotionEffectEvent) {}
+
+    @EventHandler
+    fun fuck(ev: BlockDropItemEvent) {}
+
+    @EventHandler
+    fun fuck(ev: EntityDropItemEvent) {}
 }
