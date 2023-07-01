@@ -62,7 +62,7 @@ class QuestEventHandler : Listener {
             .filter {
                 val advancement = Bukkit.getAdvancement(NamespacedKey.fromString(it.toString())!!)
                 advancement != null && !ev.player.getAdvancementProgress(advancement).isDone
-                        && !ev.player.scoreboardTags.contains("otq_${it.path.replace("/", "_")}")
+                        && !ev.player.scoreboardTags.contains("otq_${it.namespace}.${it.path.replace("/", "-")}")
             }
 
         if (quests.isEmpty()) {

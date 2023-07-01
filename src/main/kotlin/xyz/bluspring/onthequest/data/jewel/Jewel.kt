@@ -19,6 +19,7 @@ import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.util.CooldownUtil
+import xyz.bluspring.onthequest.data.util.KeybindType
 import xyz.bluspring.onthequest.data.util.predicates.RangePredicate
 
 data class Jewel(
@@ -36,6 +37,100 @@ data class Jewel(
     val minLevel = -2
 
     val translationKey = "jewels.${id.namespace}.${id.path}"
+
+    fun displayInfo(player: Player) {
+        val level = JewelManager.getOrCreateLevel(player)
+
+        /*
+        === X Jewel ===
+        --[  Lv. 1  ]--
+        Ability 1
+        > Description stuff
+
+        Ability 2 - (Shift + Right Click)
+        > Description stuff
+
+        --[  Lv. 2  ]--
+         */
+
+        val texts = mutableListOf<Component>(
+            Component.text("=== ")
+                .append(Component.translatable(this.translationKey).color(this.color).decoration(TextDecoration.BOLD, true))
+                .append(Component.text(" ==="))
+        )
+
+        this.abilities.sortedBy { it.level.min }.forEach { abilityList ->
+            texts.add(
+                Component.text("--[  ")
+                    .append(
+                        Component.text("Lv. ${abilityList.level.min}")
+                            .color(
+                                if (abilityList.level.isInRange(level))
+                                    NamedTextColor.GREEN
+                                else
+                                    NamedTextColor.RED
+                            )
+                    )
+                    .append(Component.text("  ]--"))
+            )
+
+            abilityList.passive.forEach { ability ->
+                val abilityId = QuestRegistries.ABILITY.getKey(ability)!!
+                val key = "abilities.${abilityId.namespace}.${abilityId.path.replace("/", ".")}"
+                texts.add(
+                    Component.translatable(key)
+                        .color(NamedTextColor.DARK_AQUA)
+                        .apply {
+                            if (ability.keybindType != KeybindType.NONE) {
+                                this.append(
+                                    Component.text(" - ")
+                                        .color(NamedTextColor.WHITE)
+                                        .append(Component.text("(").color(NamedTextColor.GOLD))
+                                        .append(ability.keybindType.getComponent().color(NamedTextColor.GOLD))
+                                        .append(Component.text(")").color(NamedTextColor.GOLD))
+                                )
+                            }
+                        }
+                )
+
+                texts.add(
+                    Component.text("> ")
+                        .append(Component.translatable("$key.description"))
+                )
+
+                texts.add(Component.text(""))
+            }
+
+            abilityList.active.forEach { ability ->
+                val abilityId = QuestRegistries.ABILITY.getKey(ability)!!
+                val key = "abilities.${abilityId.namespace}.${abilityId.path.replace("/", ".")}"
+                texts.add(
+                    Component.translatable(key)
+                        .color(NamedTextColor.DARK_GREEN)
+                        .apply {
+                            if (ability.keybindType != KeybindType.NONE) {
+                                this.append(
+                                    Component.text(" - ")
+                                        .color(NamedTextColor.WHITE)
+                                        .append(Component.text("(").color(NamedTextColor.GOLD))
+                                        .append(ability.keybindType.getComponent().color(NamedTextColor.GOLD))
+                                        .append(Component.text(")").color(NamedTextColor.GOLD))
+                                )
+                            }
+                        }
+                )
+
+                texts.add(
+                    Component.text("> ")
+                        .append(Component.translatable("$key.description"))
+                )
+
+                texts.add(Component.text(""))
+            }
+        }
+
+        player.sendMessage(Component.join(JoinConfiguration.newlines(), texts))
+    }
 
     fun displayCooldowns(player: Player) {
         val text = mutableListOf<Component>()

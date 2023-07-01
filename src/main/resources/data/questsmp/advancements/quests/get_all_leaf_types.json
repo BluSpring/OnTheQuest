@@ -17,7 +17,7 @@
       "trigger": "minecraft:tick",
       "conditions": {
         "player": {
-          "nbt": "{\"Tags\":[\"otq_get_all_leaf_types\"]}"
+          "nbt": "{\"Tags\":[\"otq_questsmp.quests-get_all_leaf_types\"]}"
         }
       }
     },

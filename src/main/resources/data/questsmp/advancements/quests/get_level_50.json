@@ -17,7 +17,7 @@
       "trigger": "minecraft:tick",
       "conditions": {
         "player": {
-          "nbt": "{\"Tags\":[\"otq_get_level_50\"]}"
+          "nbt": "{\"Tags\":[\"otq_questsmp.quests-get_level_50\"]}"
         }
       }
     },
