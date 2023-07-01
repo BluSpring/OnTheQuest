@@ -31,8 +31,9 @@ class JewelEventHandler : Listener {
             return
         }
 
-        ev.player.sendMessage(">> Your jewel has levelled up to ${level + 1}!")
+        ev.player.sendMessage("${ChatColor.GREEN}>> ${ChatColor.WHITE}Your jewel has levelled up to ${ChatColor.GOLD}Lv. ${level + 1}${ChatColor.WHITE}!")
         JewelManager.addToLevel(ev.player, 1)
+        JewelManager.replaceOldJewel(ev.player, jewel)
     }
 
     @EventHandler
@@ -64,13 +65,13 @@ class JewelEventHandler : Listener {
 
         val jewel = JewelManager.getOrCreateJewel(ev.player)
         val newLevel = JewelManager.addToLevel(ev.player, -1)
-        ev.player.sendMessage("${ChatColor.RED}>> You have died, and so your jewel level has dropped to ${ChatColor.GOLD}Level $newLevel${ChatColor.RED}!")
+        ev.player.sendMessage("${ChatColor.RED}>> You have died, and so your jewel level has dropped to ${ChatColor.GOLD}Lv $newLevel${ChatColor.RED}!")
 
         if (newLevel < jewel.minLevel) {
             ev.player.spigot().respawn()
 
             KotlinHelper.delayByOneTick {
-                ev.player.banPlayer("Your jewel level has dropped below Level ${jewel.minLevel}!")
+                ev.player.banPlayer("Your jewel level has dropped below Lv ${jewel.minLevel}!")
             }
         }
     }
