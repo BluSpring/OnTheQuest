@@ -1,6 +1,7 @@
 package xyz.bluspring.onthequest.events
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.minecraft.resources.ResourceLocation
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -73,9 +74,16 @@ class QuestEventHandler : Listener {
         val questId = quests.random()
         val advancement = Bukkit.getAdvancement(NamespacedKey.fromString(questId.toString())!!)!!
 
-        ev.player.addScoreboardTag("otq_${questId.path.replace("/", "_")}")
+        ev.player.addScoreboardTag("otq_${questId.namespace}.${questId.path.replace("/", "-")}")
         ev.item!!.amount -= 1
-        ev.player.sendMessage("${ChatColor.YELLOW} >> ${ChatColor.GREEN}New Quest: ")
-        ev.player.sendMessage(Component.text(" - ").append(advancement.displayName()))
+        ev.player.sendMessage(
+            Component.text(" >> ")
+                .color(NamedTextColor.YELLOW)
+                .append(
+                    Component.text("New Quest: ")
+                        .color(NamedTextColor.WHITE)
+                )
+                .append(advancement.displayName())
+        )
     }
 }
