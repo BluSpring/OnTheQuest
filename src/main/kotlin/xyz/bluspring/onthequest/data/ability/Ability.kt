@@ -12,40 +12,42 @@ import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.particle.ParticleSpawn
 import xyz.bluspring.onthequest.data.util.KeybindType
-import java.util.concurrent.ConcurrentHashMap
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedDeque
 
 abstract class Ability(val cooldownTicks: Long) {
     // This is stored by (player: triggerTime)
     // The trigger time is when the cooldown has been triggered,
     // which is based off of the server's current tick.
-    protected val cooldowns = ConcurrentHashMap<Player, Long>()
+    protected val cooldowns = mutableMapOf<UUID, Long>()
     var keybindType: KeybindType = KeybindType.NONE
-    private val isActivated = ConcurrentLinkedDeque<Player>()
+    private val isActivated = ConcurrentLinkedDeque<UUID>()
 
     private val particles = mutableListOf<AbilityParticles>()
 
     fun getCooldown(player: Player): Long {
-        if (!cooldowns.contains(player))
+        if (!cooldowns.contains(player.uniqueId))
             return 0L
 
-        return (Bukkit.getServer().currentTick.toLong() - cooldowns[player]!!).coerceAtLeast(0L)
+        val cooldownTime = cooldowns[player.uniqueId]!!
+        val endTime = cooldownTime + cooldownTicks
+        return (endTime - Bukkit.getServer().currentTick.toLong()).coerceAtLeast(0L)
     }
 
     fun markActive(player: Player) {
-        isActivated.add(player)
+        isActivated.add(player.uniqueId)
     }
 
     fun isActive(player: Player): Boolean {
-        return isActivated.contains(player)
+        return isActivated.contains(player.uniqueId)
     }
 
     fun clearActive(player: Player) {
-        isActivated.remove(player)
+        isActivated.remove(player.uniqueId)
     }
 
     open fun triggerCooldown(player: Player) {
-        cooldowns[player] = Bukkit.getServer().currentTick.toLong()
+        cooldowns[player.uniqueId] = Bukkit.getServer().currentTick.toLong()
 
         Bukkit.getScheduler().runTaskLater(OnTheQuest.plugin, Runnable {
             resetCooldown(player)
@@ -53,14 +55,14 @@ abstract class Ability(val cooldownTicks: Long) {
     }
 
     open fun resetCooldown(player: Player) {
-        cooldowns.remove(player)
+        cooldowns.remove(player.uniqueId)
     }
 
     open fun canTrigger(player: Player): Boolean {
-        if (!cooldowns.contains(player))
+        if (!cooldowns.contains(player.uniqueId))
             return true
 
-        if (cooldowns.contains(player) && Bukkit.getServer().currentTick.toLong() - cooldowns[player]!! >= cooldownTicks)
+        if (cooldowns.contains(player.uniqueId) && (Bukkit.getServer().currentTick.toLong() - cooldowns[player.uniqueId]!!) >= cooldownTicks)
             return true
 
         return false

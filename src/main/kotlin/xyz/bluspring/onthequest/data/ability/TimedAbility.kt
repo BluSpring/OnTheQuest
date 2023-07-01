@@ -3,21 +3,22 @@ package xyz.bluspring.onthequest.data.ability
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import xyz.bluspring.onthequest.OnTheQuest
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class TimedAbility(cooldownTicks: Long, val duration: Long) : Ability(cooldownTicks) {
-    private val enabledTimes = ConcurrentHashMap<Player, Long>()
+    private val enabledTimes = ConcurrentHashMap<UUID, Long>()
 
     override fun triggerCooldown(player: Player) {
-        if (enabledTimes.contains(player))
+        if (enabledTimes.contains(player.uniqueId))
             return
 
         markActive(player)
-        enabledTimes[player] = Bukkit.getServer().currentTick.toLong()
+        enabledTimes[player.uniqueId] = Bukkit.getServer().currentTick.toLong()
         Bukkit.getScheduler().runTaskLater(OnTheQuest.plugin, Runnable {
             super.triggerCooldown(player)
             resetState(player)
-            enabledTimes.remove(player)
+            enabledTimes.remove(player.uniqueId)
         }, duration)
     }
 
