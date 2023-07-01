@@ -7,7 +7,7 @@ object CooldownUtil {
         var text = ""
 
         num.toString().forEach {
-            text += Char(2070 + it.digitToInt())
+            text += Char(8320 + it.digitToInt())
         }
 
         return text
