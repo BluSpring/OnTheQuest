@@ -38,7 +38,7 @@
     }
   },
   "requirements": [
-    "xp_increase",
-    "hasTag"
+    ["xp_increase",
+    "hasTag"]
   ]
 }

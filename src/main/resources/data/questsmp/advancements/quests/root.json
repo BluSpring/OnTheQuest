@@ -27,6 +27,6 @@
     }
   },
   "requirements": [
-    "crafting_table"
+    ["crafting_table"]
   ]
 }

@@ -35,8 +35,8 @@
     }
   },
   "requirements": [
-    "shipwreck",
-    "hasTag"
+    ["shipwreck",
+    "hasTag"]
   ],
   "rewards": {
     "function": "questsmp:increment/found_shipwreck_chest"

@@ -18,6 +18,6 @@
     }
   },
   "requirements": [
-    "welp"
+    ["welp"]
   ]
 }

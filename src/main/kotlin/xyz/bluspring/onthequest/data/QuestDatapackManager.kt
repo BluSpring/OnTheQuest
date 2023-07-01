@@ -2,6 +2,7 @@ package xyz.bluspring.onthequest.data
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import io.papermc.paper.event.server.ServerResourcesReloadedEvent
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.PackResources
@@ -16,7 +17,8 @@ import xyz.bluspring.onthequest.data.util.KeybindType
 import java.io.File
 
 object QuestDatapackManager {
-    const val CURRENT_PACK_VERSION = 1
+    const val CURRENT_PACK_VERSION = 2
+    private var triggerReload = false
 
     fun reload() {
         val server = (OnTheQuest.plugin.server as CraftServer).handle.server
@@ -44,6 +46,7 @@ object QuestDatapackManager {
 
         datapack.writeBytes(rootFile!!.readBytes())
         versionFile.writeText("$CURRENT_PACK_VERSION")
+        triggerReload = true
     }
 
     fun loadAllResources() {
@@ -57,6 +60,12 @@ object QuestDatapackManager {
 
         server.resourceManager.listPacks().forEach { pack ->
             loadFromPack(pack)
+        }
+
+        if (triggerReload) {
+            OnTheQuest.logger.info("Automatically installed an update to the internal OnTheQuest datapack, reloading the resources to compensate.")
+            server.reloadResources(server.packRepository.selectedIds, ServerResourcesReloadedEvent.Cause.PLUGIN)
+            triggerReload = false
         }
     }
 
