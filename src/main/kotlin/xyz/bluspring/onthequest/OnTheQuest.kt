@@ -125,8 +125,10 @@ class OnTheQuest : JavaPlugin() {
                                     val to = args[0] as Player
                                     val level = args[1] as Int
 
+                                    val jewel = JewelManager.getOrCreateJewel(to)
                                     val current = JewelManager.getOrCreateLevel(to)
                                     JewelManager.addToLevel(to, level - current)
+                                    JewelManager.replaceOldJewel(to, jewel)
                                     player.sendMessage("${ChatColor.GREEN} >> ${ChatColor.WHITE}Set ${ChatColor.RED}${to.displayName}${ChatColor.WHITE}'s jewel level to ${ChatColor.RED}$level${ChatColor.WHITE}.")
                                 }
                             }
