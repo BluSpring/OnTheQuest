@@ -1,5 +1,6 @@
 package xyz.bluspring.onthequest.data.ability.custom.earth
 
+import com.google.gson.JsonObject
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket
 import net.minecraft.world.effect.MobEffectInstance
@@ -14,6 +15,8 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.jewel.Jewel
+import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
+import xyz.bluspring.onthequest.data.particle.types.CircleParticleSpawn
 import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -88,6 +91,15 @@ object GaiasBlessingAbility {
     class HealArea : Ability(6000L) {
         init {
             keybindType = KeybindType.PRIMARY_ABILITY
+
+            particles.add(
+                AbilityParticles(
+                    ParticleSpawnTypes.CIRCLE,
+                    CircleParticleSpawn.CircleSpawnData(JsonObject().apply {
+                        this.addProperty("radius", 5.25f)
+                    })
+                )
+            )
         }
 
         override fun trigger(player: Player, location: Location?): Boolean {

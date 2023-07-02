@@ -24,9 +24,9 @@ abstract class Ability(val cooldownTicks: Long) {
     var keybindType: KeybindType = KeybindType.NONE
     private val isActivated = ConcurrentLinkedDeque<UUID>()
 
-    private val particles = mutableListOf<AbilityParticles>()
-    private val conditions = mutableListOf<Condition>()
-    private val abilityEvents = mutableMapOf<AbilityEvents, Ability>()
+    protected val particles = mutableListOf<AbilityParticles>()
+    protected val conditions = mutableListOf<Condition>()
+    protected val abilityEvents = mutableMapOf<AbilityEvents, Ability>()
 
     private val didMeetCondition = mutableListOf<UUID>()
 
@@ -127,7 +127,7 @@ abstract class Ability(val cooldownTicks: Long) {
         }
     }
 
-    private data class AbilityParticles(
+    protected data class AbilityParticles(
         val particleSpawn: ParticleSpawn<ParticleSpawn.SpawnData>,
         val spawnData: ParticleSpawn.SpawnData
     )
