@@ -1,6 +1,5 @@
 {
   "type": "questsmp:effects/add",
-  "cooldown": 6000,
   "data": {
     "effects": [
       {
