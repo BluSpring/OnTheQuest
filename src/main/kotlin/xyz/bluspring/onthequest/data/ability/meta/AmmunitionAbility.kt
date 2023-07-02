@@ -18,7 +18,7 @@ class AmmunitionAbility(cooldownTicks: Long, val maxAmmo: Int, val ability: Abil
         if (!ammunition.contains(player.uniqueId) && canTrigger)
             return true
 
-        return ammunition.contains(player) && ammunition[player.uniqueId]!! > 0
+        return ammunition.contains(player.uniqueId) && ammunition[player.uniqueId]!! > 0
     }
 
     override fun resetCooldown(player: Player) {
