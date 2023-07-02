@@ -2,6 +2,7 @@ package xyz.bluspring.onthequest.data.particle.types
 
 import com.google.gson.JsonObject
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.Mth
 import net.minecraft.world.entity.player.Player
 import xyz.bluspring.onthequest.data.particle.ParticleSpawn
@@ -16,7 +17,7 @@ class CircleParticleSpawn : ParticleSpawn<CircleParticleSpawn.CircleSpawnData>()
             val x = (data.radius * Mth.sin(angle))
             val z = (data.radius * Mth.cos(angle))
 
-            level.sendParticles(particle.options, pos.x + x, pos.y, pos.z + z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed)
+            level.sendParticles(player as ServerPlayer, particle.options, true, pos.x + x, pos.y, pos.z + z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed)
 
             angle += data.distance
         } while (angle <= 360f)
