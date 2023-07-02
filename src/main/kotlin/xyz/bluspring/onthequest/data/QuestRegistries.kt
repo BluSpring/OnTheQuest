@@ -11,6 +11,8 @@ import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.ability.EmptyAbility
+import xyz.bluspring.onthequest.data.condition.Condition
+import xyz.bluspring.onthequest.data.condition.EmptyCondition
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.particle.ParticleSpawn
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
@@ -30,6 +32,11 @@ object QuestRegistries {
     val ABILITY_REGISTRY: ResourceKey<Registry<Ability>> = createRegistryKey("ability")
     val ABILITY = registerReloadable(ABILITY_REGISTRY) {
         EmptyAbility()
+    }
+
+    val CONDITION_REGISTRY: ResourceKey<Registry<Condition.Type>> = createRegistryKey("conditions")
+    val CONDITION = registerSimple(CONDITION_REGISTRY) {
+        EmptyCondition.Type()
     }
 
     val JEWEL_REGISTRY: ResourceKey<Registry<Jewel>> = createRegistryKey("jewels")

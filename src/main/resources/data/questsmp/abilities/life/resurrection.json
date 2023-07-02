@@ -5,7 +5,8 @@
     {
       "type": "questsmp:compare",
       "data": {
-        "input": "questsmp:player_health",
+        "input": "Health",
+        "type": "float",
         "comparison": "<=",
         "value": 6
       }

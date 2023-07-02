@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
+import xyz.bluspring.onthequest.data.condition.Condition
 import xyz.bluspring.onthequest.data.particle.ParticleSpawn
 import xyz.bluspring.onthequest.data.util.KeybindType
 import java.util.*
@@ -24,6 +25,7 @@ abstract class Ability(val cooldownTicks: Long) {
     private val isActivated = ConcurrentLinkedDeque<UUID>()
 
     private val particles = mutableListOf<AbilityParticles>()
+    private val conditions = mutableListOf<Condition>()
 
     fun getCooldown(player: Player): Long {
         if (!cooldowns.contains(player.uniqueId))
@@ -59,6 +61,9 @@ abstract class Ability(val cooldownTicks: Long) {
     }
 
     open fun canTrigger(player: Player): Boolean {
+        if (conditions.isNotEmpty() && conditions.none { it.meetsCondition(player) })
+            return false
+
         if (!cooldowns.contains(player.uniqueId))
             return true
 
@@ -117,6 +122,17 @@ abstract class Ability(val cooldownTicks: Long) {
                         val spawnType = QuestRegistries.PARTICLE_SPAWN_TYPE.get(ResourceLocation.tryParse(data.get("type").asString))!!
                         val spawnData = spawnType.createSpawnData(data)
                         this.particles.add(AbilityParticles(spawnType, spawnData))
+                    }
+                }
+
+                if (json.has("conditions")) {
+                    json.getAsJsonArray("conditions").forEach {
+                        val data = it.asJsonObject
+
+                        val conditionType = QuestRegistries.CONDITION.get(ResourceLocation.tryParse(data.get("type").asString))
+                        val condition = conditionType!!.parse(data.getAsJsonObject("data"))
+
+                        this.conditions.add(condition)
                     }
                 }
             }

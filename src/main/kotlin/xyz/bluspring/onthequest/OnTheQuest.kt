@@ -18,6 +18,7 @@ import org.slf4j.Logger
 import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
+import xyz.bluspring.onthequest.data.condition.Conditions
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.data.quests.QuestCustomCriterias
@@ -36,6 +37,7 @@ class OnTheQuest : JavaPlugin() {
         plugin = this
         CommandAPI.onLoad(CommandAPIBukkitConfig(this))
 
+        Conditions.init()
         QuestCustomCriterias.init()
         ParticleSpawnTypes.init()
         AbilityTypes.init()
