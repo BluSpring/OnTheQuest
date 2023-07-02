@@ -3,6 +3,7 @@ package xyz.bluspring.onthequest.data.ability.loot
 import com.google.gson.JsonObject
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeType
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -10,7 +11,8 @@ import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.block.BlockDropItemEvent
-import org.bukkit.event.entity.EntityDropItemEvent
+import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
@@ -27,67 +29,67 @@ class LootRecipeAbility(cooldownTicks: Long, val recipeType: RecipeType<*>) : Ab
     }
 
     override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
-        return (event is BlockDropItemEvent || event is EntityDropItemEvent) && super.canTriggerForEvent(player, event)
+        return (event is BlockDropItemEvent || event is EntityDeathEvent) && super.canTriggerForEvent(player, event)
     }
 
     override fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
-        if (event !is BlockDropItemEvent && event !is EntityDropItemEvent)
+        if (event !is BlockDropItemEvent && event !is EntityDeathEvent)
             return false
 
         val recipes = (player.server as CraftServer).handle.server.recipeManager.recipes[recipeType] ?: return false
 
-        return if (event is BlockDropItemEvent) {
-            event.items.forEach {
-                if (!recipeCache.contains(it.itemStack.type)) {
-                    val recipe = recipes.values.firstOrNull { recipe ->
-                        !recipe.isIncomplete && recipe.ingredients.isNotEmpty() && recipe.ingredients.size == 1 && recipe.ingredients.any { ingredient ->
-                            ingredient.items.any { stack ->
-                                stack.bukkitStack.type == it.itemStack.type
-                            }
-                        }
-                    }
-
-                    if (recipe == null) {
-                        recipeCache[it.itemStack.type] = it.itemStack.type
+        return when (event) {
+            is BlockDropItemEvent -> {
+                event.items.forEach {
+                    val stack = it.itemStack
+                    if (!applyRecipeToItemStack(stack, recipes)) {
                         return@forEach
                     }
 
-                    recipeCache[it.itemStack.type] = recipe.resultItem.bukkitStack.type
-                    it.itemStack.type = recipe.resultItem.bukkitStack.type
-
-                    return@forEach
+                    it.itemStack = stack
                 }
 
-                it.itemStack.type = recipeCache[it.itemStack.type]!!
+                true
             }
 
-            true
-        } else if (event is EntityDropItemEvent) {
-            val it = event.itemDrop
+            is EntityDeathEvent -> {
+                if (event.entity is Player)
+                    return false
 
-            if (!recipeCache.contains(it.itemStack.type)) {
-                val recipe = recipes.values.firstOrNull { recipe ->
-                    !recipe.isIncomplete && recipe.ingredients.isNotEmpty() && recipe.ingredients.size == 1 && recipe.ingredients.any { ingredient ->
-                        ingredient.items.any { stack ->
-                            stack.bukkitStack.type == it.itemStack.type
-                        }
+                event.drops.forEach {
+                    if (!applyRecipeToItemStack(it, recipes))
+                        return@forEach
+                }
+                true
+            }
+
+            else -> false
+        }
+    }
+
+    private fun applyRecipeToItemStack(stack: ItemStack, recipes: Map<ResourceLocation, Recipe<*>>): Boolean {
+        if (!recipeCache.contains(stack.type)) {
+            val recipe = recipes.values.firstOrNull { recipe ->
+                !recipe.isIncomplete && recipe.ingredients.isNotEmpty() && recipe.ingredients.size == 1 && recipe.ingredients.any { ingredient ->
+                    ingredient.items.any {
+                        it.bukkitStack.type == stack.type
                     }
                 }
+            }
 
-                if (recipe == null) {
-                    recipeCache[it.itemStack.type] = it.itemStack.type
-                    return false
-                }
-
-                recipeCache[it.itemStack.type] = recipe.resultItem.bukkitStack.type
-                it.itemStack.type = recipe.resultItem.bukkitStack.type
-
+            if (recipe == null) {
+                recipeCache[stack.type] = stack.type
                 return false
             }
 
-            it.itemStack.type = recipeCache[it.itemStack.type]!!
-            true
-        } else false
+            recipeCache[stack.type] = recipe.resultItem.bukkitStack.type
+            stack.type = recipe.resultItem.bukkitStack.type
+
+            return true
+        }
+
+        stack.type = recipeCache[stack.type]!!
+        return true
     }
 
     class Type : AbilityType() {
