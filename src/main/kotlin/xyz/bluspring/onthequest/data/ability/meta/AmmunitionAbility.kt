@@ -31,7 +31,7 @@ class AmmunitionAbility(cooldownTicks: Long, val maxAmmo: Int, val ability: Abil
         else
             ammunition[player.uniqueId]!!
 
-        if (ability.trigger(player, location)) {
+        if (ability.trigger(player, location) && getCooldown(player) <= 0) {
             ability.triggerCooldown(player)
         }
 
