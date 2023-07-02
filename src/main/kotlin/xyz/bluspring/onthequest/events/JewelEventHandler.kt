@@ -33,7 +33,6 @@ class JewelEventHandler : Listener {
 
         ev.player.sendMessage("${ChatColor.GREEN}>> ${ChatColor.WHITE}Your jewel has levelled up to ${ChatColor.GOLD}Lv. ${level + 1}${ChatColor.WHITE}!")
         JewelManager.addToLevel(ev.player, 1)
-        JewelManager.replaceOldJewel(ev.player, jewel)
     }
 
     @EventHandler

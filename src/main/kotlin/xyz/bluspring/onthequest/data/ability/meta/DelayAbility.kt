@@ -26,6 +26,10 @@ class DelayAbility(cooldownTicks: Long, val delay: Long, val ability: Ability) :
         return true
     }
 
+    override fun resetEffects(player: Player) {
+        ability.resetEffects(player)
+    }
+
     class Type : AbilityType() {
         override fun create(data: JsonObject, cooldownTicks: Long): Ability {
             val abilityData = data.getAsJsonObject("ability")

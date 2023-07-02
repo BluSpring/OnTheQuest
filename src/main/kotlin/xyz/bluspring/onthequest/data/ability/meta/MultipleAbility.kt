@@ -26,6 +26,10 @@ class MultipleAbility(cooldownTicks: Long, val abilities: List<Ability>) : Abili
         return abilities.all { it.triggerForEvent(player, event) }
     }
 
+    override fun resetEffects(player: Player) {
+        abilities.forEach { it.resetEffects(player) }
+    }
+
     class Type : AbilityType() {
         override fun create(data: JsonObject, cooldownTicks: Long): Ability {
             val abilities = mutableListOf<Ability>()

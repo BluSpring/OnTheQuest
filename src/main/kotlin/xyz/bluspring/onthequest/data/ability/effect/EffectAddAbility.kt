@@ -27,6 +27,12 @@ class EffectAddAbility(
         return trigger(player, null)
     }
 
+    override fun resetEffects(player: Player) {
+        effects.forEach {
+            (player as CraftPlayer).handle.removeEffect(it.effect)
+        }
+    }
+
     class Type : AbilityType() {
         override fun create(data: JsonObject, cooldownTicks: Long): Ability {
             val effects = mutableListOf<MobEffectInstance>()

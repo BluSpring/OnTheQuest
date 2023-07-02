@@ -199,6 +199,8 @@ class OnTheQuest : JavaPlugin() {
     private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
         val jewelType = QuestRegistries.JEWEL.get(ResourceLocation(key.namespace, key.key)) ?: return false
 
+        val oldJewel = JewelManager.getOrCreateJewel(to)
+        JewelManager.resetAbilityEffects(to, oldJewel)
         JewelManager.setJewel(to, jewelType)
 
         player.sendMessage(

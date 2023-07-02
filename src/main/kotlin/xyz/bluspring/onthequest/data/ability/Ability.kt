@@ -85,6 +85,8 @@ abstract class Ability(val cooldownTicks: Long) {
         return false
     }
 
+    open fun resetEffects(player: Player) {}
+
     open fun triggerParticles(player: Player) {
         val serverPlayer = (player as CraftPlayer).handle
         val level = serverPlayer.level as ServerLevel

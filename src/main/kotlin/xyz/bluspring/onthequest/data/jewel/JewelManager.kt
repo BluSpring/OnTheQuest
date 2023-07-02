@@ -23,9 +23,20 @@ object JewelManager {
         return itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY)
     }
 
-    fun replaceOldJewel(player: Player, jewel: Jewel) {
+    fun resetAbilityEffects(player: Player, jewel: Jewel) {
+        jewel.getAbilitiesInLevelRange(jewel.maxLevel).forEach {
+            it.resetEffects(player)
+        }
+    }
+
+    fun replaceOldJewel(player: Player, jewel: Jewel, resetEffects: Boolean = false) {
         val jewelSlots = mutableListOf<ItemStack>()
         val level = getOrCreateLevel(player)
+
+        if (resetEffects) {
+            val oldJewel = getOrCreateJewel(player)
+            resetAbilityEffects(player, oldJewel)
+        }
 
         player.inventory.contents.forEachIndexed { index, itemStack ->
             if (itemStack == null)
@@ -63,11 +74,13 @@ object JewelManager {
     }
 
     fun addToLevel(player: Player, amount: Int): Int {
+        val jewel = getOrCreateJewel(player)
         val currentLevel = getOrCreateLevel(player)
         val new = currentLevel + amount
 
         playerLevels[player.uniqueId] = new
         player.persistentDataContainer.set(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER, new)
+        replaceOldJewel(player, jewel)
 
         return new
     }
