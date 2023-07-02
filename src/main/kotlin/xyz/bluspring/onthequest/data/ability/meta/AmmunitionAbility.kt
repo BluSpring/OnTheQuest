@@ -8,10 +8,9 @@ import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 class AmmunitionAbility(cooldownTicks: Long, val maxAmmo: Int, val ability: Ability) : Ability(cooldownTicks) {
-    private val ammunition = ConcurrentHashMap<UUID, Int>()
+    private val ammunition = mutableMapOf<UUID, Int>()
 
     override fun canTrigger(player: Player): Boolean {
         val canTrigger = super.canTrigger(player)
