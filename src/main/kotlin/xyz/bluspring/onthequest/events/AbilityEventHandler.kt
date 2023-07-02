@@ -75,6 +75,12 @@ class AbilityEventHandler : Listener {
 
                 damageEvent.damager as Player
             }
+            is EntityDamageByEntityEvent -> {
+                if (event.damager !is Player)
+                    return
+
+                event.damager as Player
+            }
             is EntityEvent -> {
                 if (event.entity !is Player)
                     return
