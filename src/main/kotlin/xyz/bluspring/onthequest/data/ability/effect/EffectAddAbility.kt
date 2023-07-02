@@ -19,8 +19,12 @@ class EffectAddAbility(
     val effects: List<MobEffectInstance>
 ) : Ability(cooldownTicks) {
     override fun trigger(player: Player, location: Location?): Boolean {
+        val nmsPlayer = (player as CraftPlayer).handle
         effects.forEach {
-            (player as CraftPlayer).handle.addEffect(it)
+            if (nmsPlayer.hasEffect(it.effect))
+                return@forEach
+
+            nmsPlayer.addEffect(it)
         }
 
         return true
