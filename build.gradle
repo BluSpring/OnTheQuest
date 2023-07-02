@@ -39,6 +39,7 @@ dependencies {
     implementation "dev.jorel:commandapi-bukkit-kotlin:9.0.3"
     implementation "dev.jorel:commandapi-bukkit-shade:9.0.3"
     implementation 'xyz.jpenilla:reflection-remapper:0.1.0-SNAPSHOT'
+    implementation "org.reflections:reflections:0.10.2"
 }
 
 shadowJar {
