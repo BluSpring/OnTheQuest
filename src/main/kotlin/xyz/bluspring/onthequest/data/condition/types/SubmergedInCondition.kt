@@ -13,8 +13,7 @@ class SubmergedInCondition(val fluid: TagKey<Fluid>) : Condition() {
     override fun meetsCondition(player: Player): Boolean {
         val serverPlayer = (player as CraftPlayer).handle
 
-        serverPlayer.isEyeInFluid(fluid)
-        TODO("Not yet implemented")
+        return serverPlayer.isEyeInFluid(fluid)
     }
 
     class Type : Condition.Type() {
