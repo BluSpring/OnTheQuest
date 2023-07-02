@@ -27,7 +27,7 @@ class CircleParticleSpawn : ParticleSpawn<CircleParticleSpawn.CircleSpawnData>()
     }
 
     class CircleSpawnData(data: JsonObject) : SpawnData(data) {
-        val radius = data.get("radius").asFloat
-        val distance = data.get("distance").asFloat
+        val radius = if (data.has("radius")) data.get("radius").asFloat else 2.5F
+        val distance = if (data.has("distance")) data.get("distance").asFloat else 0.1F
     }
 }

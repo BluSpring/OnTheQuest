@@ -3,7 +3,9 @@
   "conditions": [
     {
       "type": "questsmp:submerged_in",
-      "fluid": "minecraft:water"
+      "data": {
+        "fluid": "minecraft:water"
+      }
     }
   ],
   "ability_events": {
