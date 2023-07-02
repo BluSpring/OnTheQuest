@@ -19,7 +19,6 @@ import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.util.CooldownUtil
-import xyz.bluspring.onthequest.data.util.KeybindType
 import xyz.bluspring.onthequest.data.util.predicates.RangePredicate
 
 data class Jewel(
@@ -81,7 +80,7 @@ data class Jewel(
                     Component.translatable(key)
                         .color(NamedTextColor.DARK_AQUA)
                         .run {
-                            if (ability.keybindType != KeybindType.NONE) {
+                            if (!ability.keybindType.isNone()) {
                                 this.append(
                                     Component.text(" - ")
                                         .color(NamedTextColor.WHITE)

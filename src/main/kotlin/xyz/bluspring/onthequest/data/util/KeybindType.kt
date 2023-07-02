@@ -19,7 +19,7 @@ enum class KeybindType(val key: String, val isLeftClick: Boolean, val isShift: B
 
                 if (isLeftClick)
                     this.add(Component.keybind(LEFT_CLICK_KEY))
-                else if (this@KeybindType != SHIFT)
+                else if (this@KeybindType != SHIFT && !isNone())
                     this.add(Component.keybind(RIGHT_CLICK_KEY))
 
                 if (isShift)

@@ -8,7 +8,7 @@
       "level": {
         "min": 1
       },
-      "active": [ "questsmp:life/resurrection" ]
+      "passive": [ "questsmp:life/resurrection" ]
     },
     {
       "level": {
