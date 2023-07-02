@@ -7,35 +7,36 @@ import org.bukkit.entity.Player
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class AmmunitionAbility(cooldownTicks: Long, val maxAmmo: Int, val ability: Ability) : Ability(cooldownTicks) {
-    private val ammunition = ConcurrentHashMap<Player, Int>()
+    private val ammunition = ConcurrentHashMap<UUID, Int>()
 
     override fun canTrigger(player: Player): Boolean {
         val canTrigger = super.canTrigger(player)
-        if (!ammunition.contains(player) && canTrigger)
+        if (!ammunition.contains(player.uniqueId) && canTrigger)
             return true
 
-        return ammunition.contains(player) && ammunition[player]!! > 0
+        return ammunition.contains(player) && ammunition[player.uniqueId]!! > 0
     }
 
     override fun resetCooldown(player: Player) {
         super.resetCooldown(player)
-        ammunition.remove(player)
+        ammunition.remove(player.uniqueId)
     }
 
     override fun trigger(player: Player, location: Location?): Boolean {
-        val currentAmmo = if (!ammunition.contains(player))
+        val currentAmmo = if (!ammunition.contains(player.uniqueId))
             maxAmmo
         else
-            ammunition[player]!!
+            ammunition[player.uniqueId]!!
 
         if (ability.trigger(player, location)) {
             ability.triggerCooldown(player)
         }
 
-        ammunition[player] = currentAmmo - 1
+        ammunition[player.uniqueId] = currentAmmo - 1
 
         return true
     }
