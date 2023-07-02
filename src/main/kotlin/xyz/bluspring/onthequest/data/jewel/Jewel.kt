@@ -107,17 +107,13 @@ data class Jewel(
                 texts.add(
                     Component.translatable(key)
                         .color(NamedTextColor.DARK_GREEN)
-                        .apply {
-                            if (ability.keybindType != KeybindType.NONE) {
-                                this.append(
-                                    Component.text(" - ")
-                                        .color(NamedTextColor.WHITE)
-                                        .append(Component.text("(").color(NamedTextColor.GOLD))
-                                        .append(ability.keybindType.getComponent().color(NamedTextColor.GOLD))
-                                        .append(Component.text(")").color(NamedTextColor.GOLD))
-                                )
-                            }
-                        }
+                        .append(
+                            Component.text(" - ")
+                                .color(NamedTextColor.WHITE)
+                                .append(Component.text("(").color(NamedTextColor.GOLD))
+                                .append(ability.keybindType.getComponent().color(NamedTextColor.GOLD))
+                                .append(Component.text(")").color(NamedTextColor.GOLD))
+                        )
                 )
 
                 texts.add(

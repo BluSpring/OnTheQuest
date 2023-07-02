@@ -13,6 +13,9 @@ enum class KeybindType(val key: String, val isLeftClick: Boolean, val isShift: B
     fun getComponent(): Component {
         return Component.join(JoinConfiguration.separator(Component.text(" + ")),
             mutableListOf<Component>().apply {
+                if (isNone())
+                    this.add(Component.text("None"))
+
                 if (isLeftClick)
                     this.add(Component.keybind(LEFT_CLICK_KEY))
                 else
