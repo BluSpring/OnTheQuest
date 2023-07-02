@@ -26,6 +26,9 @@ abstract class Ability(val cooldownTicks: Long) {
 
     private val particles = mutableListOf<AbilityParticles>()
     private val conditions = mutableListOf<Condition>()
+    private val abilityEvents = mutableMapOf<AbilityEvents, Ability>()
+
+    private val didMeetCondition = mutableListOf<UUID>()
 
     fun getCooldown(player: Player): Long {
         if (!cooldowns.contains(player.uniqueId))
@@ -60,15 +63,38 @@ abstract class Ability(val cooldownTicks: Long) {
         cooldowns.remove(player.uniqueId)
     }
 
+    open fun meetsConditions(player: Player): Boolean {
+        return conditions.isEmpty() || conditions.all { it.meetsCondition(player) }
+    }
+
     open fun canTrigger(player: Player): Boolean {
-        if (conditions.isNotEmpty() && conditions.none { it.meetsCondition(player) })
+        if (!meetsConditions(player)) {
+            if (didMeetCondition.contains(player.uniqueId)) {
+                abilityEvents[AbilityEvents.CONDITION_UNFULFILLED]?.trigger(player, null)
+                didMeetCondition.removeIf { it == player.uniqueId }
+            }
+
             return false
+        }
 
-        if (!cooldowns.contains(player.uniqueId))
-            return true
+        if (!cooldowns.contains(player.uniqueId)) {
+            if (!didMeetCondition.contains(player.uniqueId))
+                didMeetCondition.add(player.uniqueId)
 
-        if (cooldowns.contains(player.uniqueId) && (Bukkit.getServer().currentTick.toLong() - cooldowns[player.uniqueId]!!) >= cooldownTicks)
             return true
+        }
+
+        if (cooldowns.contains(player.uniqueId) && (Bukkit.getServer().currentTick.toLong() - cooldowns[player.uniqueId]!!) >= cooldownTicks) {
+            if (!didMeetCondition.contains(player.uniqueId))
+                didMeetCondition.add(player.uniqueId)
+
+            return true
+        }
+
+        if (didMeetCondition.contains(player.uniqueId)) {
+            abilityEvents[AbilityEvents.CONDITION_UNFULFILLED]?.trigger(player, null)
+            didMeetCondition.removeIf { it == player.uniqueId }
+        }
 
         return false
     }
@@ -135,6 +161,16 @@ abstract class Ability(val cooldownTicks: Long) {
                         val condition = conditionType!!.parse(data.getAsJsonObject("data"))
 
                         this.conditions.add(condition)
+                    }
+                }
+
+                if (json.has("ability_events")) {
+                    val evs = json.getAsJsonObject("ability_events")
+                    evs.keySet().forEach {
+                        val eventType = AbilityEvents.valueOf(it.uppercase())
+
+                        val ability = parse(evs.getAsJsonObject(it))
+                        this.abilityEvents[eventType] = ability
                     }
                 }
             }
