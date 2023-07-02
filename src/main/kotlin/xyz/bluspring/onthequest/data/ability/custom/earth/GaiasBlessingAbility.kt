@@ -18,11 +18,9 @@ import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.data.particle.types.CircleParticleSpawn
 import xyz.bluspring.onthequest.data.util.KeybindType
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedQueue
 
 object GaiasBlessingAbility {
-    private val markedPlayers = ConcurrentHashMap<Player, ConcurrentLinkedQueue<Player>>()
+    private val markedPlayers = mutableMapOf<Player, MutableList<Player>>()
 
     class ShowMarked : Ability(0L) {
         init {
@@ -38,7 +36,7 @@ object GaiasBlessingAbility {
                 return false
 
             if (!markedPlayers.contains(player))
-                return true
+                markedPlayers[player] = mutableListOf(player)
 
             val nmsPlayer = (player as CraftPlayer).handle
             markedPlayers[player]!!.forEach {
@@ -79,7 +77,7 @@ object GaiasBlessingAbility {
                 return false
 
             if (!markedPlayers.contains(player))
-                markedPlayers[player] = ConcurrentLinkedQueue()
+                markedPlayers[player] = mutableListOf(player)
 
             val nmsPlayer = (player as CraftPlayer).handle
             val markedPlayersForPlayer = markedPlayers[player]!!
@@ -116,11 +114,11 @@ object GaiasBlessingAbility {
 
         override fun trigger(player: Player, location: Location?): Boolean {
             if (!markedPlayers.contains(player))
-                markedPlayers[player] = ConcurrentLinkedQueue()
+                markedPlayers[player] = mutableListOf(player)
 
             val players = player.world.getNearbyPlayers(player.location, 5.5)
             players.forEach {
-                if (it == player || markedPlayers[player]!!.contains(it)) {
+                if (markedPlayers[player]!!.contains(it)) {
                     it.addPotionEffect(PotionEffect(PotionEffectType.HEAL, 1, 3))
                 }
             }
