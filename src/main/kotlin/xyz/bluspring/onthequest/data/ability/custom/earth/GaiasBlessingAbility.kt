@@ -25,6 +25,10 @@ object GaiasBlessingAbility {
     private val markedPlayers = ConcurrentHashMap<Player, ConcurrentLinkedQueue<Player>>()
 
     class ShowMarked : Ability(0L) {
+        init {
+            keybindType = KeybindType.SHIFT
+        }
+        
         override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
             return event is PlayerToggleSneakEvent
         }
@@ -49,6 +53,10 @@ object GaiasBlessingAbility {
     }
 
     class ToggleMark : Ability(0L) {
+        init {
+            keybindType = KeybindType.SECONDARY_ABILITY
+        }
+
         override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
             return event is PlayerInteractEntityEvent
         }

@@ -80,7 +80,7 @@ data class Jewel(
                 texts.add(
                     Component.translatable(key)
                         .color(NamedTextColor.DARK_AQUA)
-                        .apply {
+                        .run {
                             if (ability.keybindType != KeybindType.NONE) {
                                 this.append(
                                     Component.text(" - ")
@@ -89,7 +89,7 @@ data class Jewel(
                                         .append(ability.keybindType.getComponent().color(NamedTextColor.GOLD))
                                         .append(Component.text(")").color(NamedTextColor.GOLD))
                                 )
-                            }
+                            } else this
                         }
                 )
 

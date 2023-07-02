@@ -8,7 +8,8 @@ enum class KeybindType(val key: String, val isLeftClick: Boolean, val isShift: B
     PRIMARY_ABILITY("key.questsmp.primary_ability", true, false),
     SECONDARY_ABILITY("key.questsmp.secondary_ability", false, false),
     TERNARY_ABILITY("key.questsmp.ternary_ability", true, true),
-    QUATERNARY_ABILITY("key.questsmp.quaternary_ability", false, true);
+    QUATERNARY_ABILITY("key.questsmp.quaternary_ability", false, true),
+    SHIFT("shift", false, true);
 
     fun getComponent(): Component {
         return Component.join(JoinConfiguration.separator(Component.text(" + ")),
@@ -18,7 +19,7 @@ enum class KeybindType(val key: String, val isLeftClick: Boolean, val isShift: B
 
                 if (isLeftClick)
                     this.add(Component.keybind(LEFT_CLICK_KEY))
-                else
+                else if (this@KeybindType != SHIFT)
                     this.add(Component.keybind(RIGHT_CLICK_KEY))
 
                 if (isShift)
