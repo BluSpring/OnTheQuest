@@ -23,7 +23,7 @@ class RayParticleSpawn : ParticleSpawn<RayParticleSpawn.RaySpawnData>() {
             val currentPos = start.add(normalized.multiply(current, current, current))
             val offset = currentPos.add(particle.offset)
 
-            level.sendParticles(player as ServerPlayer, particle.options, true, offset.x, offset.y, offset.z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed)
+            level.sendParticles(player as ServerPlayer, particle.options, offset.x, offset.y, offset.z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed, true)
 
             current += data.increment
         } while (current <= max)

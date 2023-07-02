@@ -17,7 +17,7 @@ class CircleParticleSpawn : ParticleSpawn<CircleParticleSpawn.CircleSpawnData>()
             val x = (data.radius * Mth.sin(angle))
             val z = (data.radius * Mth.cos(angle))
 
-            level.sendParticles(player as ServerPlayer, particle.options, true, pos.x + x, pos.y, pos.z + z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed)
+            level.sendParticles(player as ServerPlayer, particle.options, pos.x + x, pos.y, pos.z + z, particle.count, particle.delta.x, particle.delta.y, particle.delta.z, particle.speed, true)
 
             angle += data.distance
         } while (angle <= 360f)
