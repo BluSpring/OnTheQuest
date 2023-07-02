@@ -11,7 +11,13 @@ import xyz.bluspring.onthequest.data.ability.AbilityType
 
 class RunCommandAbility(cooldownTicks: Long, val command: String) : Ability(cooldownTicks) {
     override fun trigger(player: Player, location: Location?): Boolean {
-        (Bukkit.getServer() as CraftServer).handle.server.commands.performPrefixedCommand((player as CraftPlayer).handle.createCommandSourceStack(), command)
+        val commands = (Bukkit.getServer() as CraftServer).handle.server.commands
+        commands.dispatchServerCommand(
+            (player as CraftPlayer).handle
+                .createCommandSourceStack()
+                .withPermission(4),
+            command
+        )
         return true
     }
 
