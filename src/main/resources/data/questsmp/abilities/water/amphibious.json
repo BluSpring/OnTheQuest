@@ -10,21 +10,21 @@
     "effects": [
       {
         "id": "minecraft:haste",
-        "duration": 3600,
+        "duration": 1000000,
         "amplifier": 2,
         "ambient": true,
         "particles": false
       },
       {
         "id": "minecraft:night_vision",
-        "duration": 3600,
+        "duration": 1000000,
         "amplifier": 2,
         "ambient": true,
         "particles": false
       },
       {
         "id": "minecraft:water_breathing",
-        "duration": 3600,
+        "duration": 1000000,
         "amplifier": 2,
         "ambient": true,
         "particles": false
