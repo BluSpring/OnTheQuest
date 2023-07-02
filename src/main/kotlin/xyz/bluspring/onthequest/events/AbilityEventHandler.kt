@@ -9,31 +9,52 @@ import org.bukkit.event.block.BlockDropItemEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent
-import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityDropItemEvent
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityEvent
-import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryInteractEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerEvent
-import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.plugin.RegisteredListener
+import org.reflections.Reflections
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.util.KeybindType
+import java.lang.reflect.Modifier
 
 class AbilityEventHandler : Listener {
     init {
+        // All Bukkit event packages to scan
+        val packages = listOf(
+            "com.destroystokyo.paper.event",
+            "io.papermc.paper.event",
+            "org.bukkit.event",
+            "org.spigotmc.event"
+        )
+
         val listener = RegisteredListener(this, { _, event ->
             onAllEvents(event)
         }, EventPriority.NORMAL, OnTheQuest.plugin, false)
 
-        HandlerList.getHandlerLists().forEach {
-            it.register(listener)
+        packages.forEach { pkg ->
+            val reflections = Reflections(pkg)
+
+            val events = reflections.getSubTypesOf(Event::class.java)
+            events.forEach eventScan@{ eventClass ->
+                if (Modifier.isAbstract(eventClass.modifiers))
+                    return@eventScan
+
+                try {
+                    val handlerList = eventClass.getDeclaredMethod("getHandlerList").invoke(null) as HandlerList
+
+                    handlerList.register(listener)
+                } catch (_: Exception) {
+                    // Event doesn't contain a handler list, just ignore
+                }
+            }
         }
     }
 
@@ -43,6 +64,17 @@ class AbilityEventHandler : Listener {
 
         val player: Player = when (event) {
             // Entity events
+            is EntityDeathEvent -> { // brought above to override EntityEvent
+                if (event.entity.lastDamageCause !is EntityDamageByEntityEvent)
+                    return
+
+                val damageEvent = event.entity.lastDamageCause as EntityDamageByEntityEvent
+
+                if (damageEvent.damager !is Player)
+                    return
+
+                damageEvent.damager as Player
+            }
             is EntityEvent -> {
                 if (event.entity !is Player)
                     return
@@ -60,6 +92,7 @@ class AbilityEventHandler : Listener {
                     event.primerEntity as Player
                 else return
             }
+            is BlockDropItemEvent -> event.player
 
             // Inventory events
             is InventoryOpenEvent -> event.player as Player
@@ -82,8 +115,6 @@ class AbilityEventHandler : Listener {
                     ability.triggerParticles(player)
                     ability.triggerCooldown(player)
                 }
-            } else {
-                ability.resetEffects(player)
             }
         }
     }
@@ -116,28 +147,7 @@ class AbilityEventHandler : Listener {
                     ability.triggerParticles(ev.player)
                     ability.triggerCooldown(ev.player)
                 }
-            } else {
-                ability.resetEffects(ev.player)
             }
         }
     }
-
-    // TODO: write a way to load all of the events because fuck you bukkit
-    @EventHandler
-    fun fuck(ev: EntityDamageEvent) {}
-
-    @EventHandler
-    fun fuck(ev: PlayerToggleSneakEvent) {}
-
-    @EventHandler
-    fun fuck(ev: PlayerInteractEntityEvent) {}
-
-    @EventHandler
-    fun fuck(ev: EntityPotionEffectEvent) {}
-
-    @EventHandler
-    fun fuck(ev: BlockDropItemEvent) {}
-
-    @EventHandler
-    fun fuck(ev: EntityDropItemEvent) {}
 }

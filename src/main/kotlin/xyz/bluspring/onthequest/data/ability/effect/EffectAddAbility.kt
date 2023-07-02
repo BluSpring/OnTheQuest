@@ -8,6 +8,9 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
 
@@ -21,6 +24,10 @@ class EffectAddAbility(
         }
 
         return true
+    }
+
+    override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
+        return (event is PlayerJoinEvent || event is PlayerMoveEvent || event is PlayerRespawnEvent) && super.canTriggerForEvent(player, event)
     }
 
     override fun <T : Event> triggerForEvent(player: Player, event: T): Boolean {
