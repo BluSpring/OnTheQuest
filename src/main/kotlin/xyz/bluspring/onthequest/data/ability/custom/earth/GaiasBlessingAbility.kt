@@ -105,6 +105,10 @@ object GaiasBlessingAbility {
                     ParticleSpawnTypes.CIRCLE,
                     CircleParticleSpawn.CircleSpawnData(JsonObject().apply {
                         this.addProperty("radius", 5.25f)
+                        this.addProperty("particle_type", "minecraft:villager_happy")
+                        this.addProperty("y", 0.2)
+                        this.addProperty("count", 2)
+                        this.addProperty("speed", 0.2)
                     })
                 )
             )
