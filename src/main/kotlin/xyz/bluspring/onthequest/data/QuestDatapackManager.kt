@@ -1,6 +1,5 @@
 package xyz.bluspring.onthequest.data
 
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
@@ -9,6 +8,7 @@ import net.minecraft.server.packs.PackType
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 import xyz.bluspring.onthequest.OnTheQuest
+import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.quests.QuestManager
@@ -98,18 +98,10 @@ object QuestDatapackManager {
                         val abilityType =
                             QuestRegistries.ABILITY_TYPE.get(ResourceLocation.tryParse(json.get("type").asString))!!
 
-                        val ability = Registry.register(QuestRegistries.ABILITY, id, abilityType.create(
-                            if (json.has("data"))
-                                json.getAsJsonObject("data")
-                            else
-                                JsonObject(),
-                            if (json.has("cooldown"))
-                                json.get("cooldown").asLong
-                            else
-                                0L
-                        ).apply {
-                            if (json.has("keybind")) {
-                                val keybindData = json.getAsJsonObject("keybind")
+                        val ability = Registry.register(QuestRegistries.ABILITY, id, Ability.parse(json)
+                            .apply {
+                                if (json.has("keybind")) {
+                                    val keybindData = json.getAsJsonObject("keybind")
 
                                 this.keybindType = KeybindType.fromKey(keybindData.get("key").asString)
                             }

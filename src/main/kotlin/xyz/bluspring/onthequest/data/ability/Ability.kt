@@ -117,6 +117,9 @@ abstract class Ability(val cooldownTicks: Long) {
         val serverPlayer = (player as CraftPlayer).handle
         val level = serverPlayer.level as ServerLevel
 
+        if (particles.isEmpty())
+            return
+
         particles.forEach { particle ->
             val spawn = particle.particleSpawn
             val spawnData = particle.spawnData
