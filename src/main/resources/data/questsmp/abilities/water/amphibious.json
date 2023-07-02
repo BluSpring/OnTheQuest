@@ -6,14 +6,6 @@
       "fluid": "minecraft:water"
     }
   ],
-  "ability_events": {
-    "condition_unfulfilled": {
-      "type": "questsmp:effects/clear",
-      "data": {
-        "effects": ["minecraft:haste", "minecraft:night_vision", "minecraft:water_breathing"]
-      }
-    }
-  },
   "data": {
     "effects": [
       {

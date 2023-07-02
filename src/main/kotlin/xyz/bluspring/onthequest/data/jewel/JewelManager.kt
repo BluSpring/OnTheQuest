@@ -80,7 +80,7 @@ object JewelManager {
 
         playerLevels[player.uniqueId] = new
         player.persistentDataContainer.set(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER, new)
-        replaceOldJewel(player, jewel)
+        replaceOldJewel(player, jewel, true)
 
         return new
     }

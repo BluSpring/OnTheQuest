@@ -82,6 +82,8 @@ class AbilityEventHandler : Listener {
                     ability.triggerParticles(player)
                     ability.triggerCooldown(player)
                 }
+            } else {
+                ability.resetEffects(player)
             }
         }
     }
@@ -114,6 +116,8 @@ class AbilityEventHandler : Listener {
                     ability.triggerParticles(ev.player)
                     ability.triggerCooldown(ev.player)
                 }
+            } else {
+                ability.resetEffects(ev.player)
             }
         }
     }
