@@ -23,10 +23,7 @@ import xyz.bluspring.onthequest.data.condition.Conditions
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
 import xyz.bluspring.onthequest.data.quests.QuestCustomCriterias
-import xyz.bluspring.onthequest.events.AbilityEventHandler
-import xyz.bluspring.onthequest.events.JewelEventHandler
-import xyz.bluspring.onthequest.events.QuestEventHandler
-import xyz.bluspring.onthequest.events.QuestPackEventHandler
+import xyz.bluspring.onthequest.events.*
 import java.io.File
 
 class OnTheQuest : JavaPlugin() {
@@ -59,6 +56,7 @@ class OnTheQuest : JavaPlugin() {
         this.server.pluginManager.registerEvents(QuestEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
         this.server.pluginManager.registerEvents(AbilityEventHandler(), this)
+        this.server.pluginManager.registerEvents(CustomItemEventHandler(), this)
 
         commandTree("quest") {
             withAliases("q")
@@ -186,6 +184,31 @@ class OnTheQuest : JavaPlugin() {
                         }
                     }
                 }
+
+                literalArgument("item") {
+                    entitySelectorArgumentManyPlayers("player") {
+                        namespacedKeyArgument("item") {
+                            replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.CUSTOM_ITEM.keySet().map { it.toString() }))
+
+                            integerArgument("count") {
+                                anyExecutor { sender, args ->
+                                    val to = args[0] as List<Player>
+                                    val id = args[1] as NamespacedKey
+                                    val count = args[2] as Int
+
+                                    giveCustomItem(to, sender, id, count)
+                                }
+                            }
+
+                            anyExecutor { sender, args ->
+                                val to = args[0] as List<Player>
+                                val id = args[1] as NamespacedKey
+
+                                giveCustomItem(to, sender, id)
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -195,6 +218,22 @@ class OnTheQuest : JavaPlugin() {
                 jewel.displayCooldowns(it)
             }
         }, 0L, 20L)
+    }
+
+    private fun giveCustomItem(to: List<Player>, sender: CommandSender, key: NamespacedKey, count: Int = 1) {
+        val id = ResourceLocation(key.namespace, key.key)
+        val item = QuestRegistries.CUSTOM_ITEM.get(id)
+
+        if (item == null) {
+            sender.sendMessage("${ChatColor.RED}> Custom item $id does not exist!")
+            return
+        }
+
+        val stack = item.getItem(count)
+
+        to.forEach {
+            it.world.dropItem(it.location, stack.asBukkitCopy())
+        }
     }
 
     private fun giveJewelItem(to: Player, player: CommandSender, key: NamespacedKey, level: Int, count: Int = 1): Boolean {

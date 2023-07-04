@@ -70,7 +70,7 @@ class JewelEventHandler : Listener {
             ev.player.spigot().respawn()
 
             KotlinHelper.delayByOneTick {
-                ev.player.banPlayer("Your jewel level has dropped below Lv ${jewel.minLevel}!")
+                ev.player.banPlayer("Your jewel level has dropped below Lv ${jewel.minLevel}!", "questsmp_level_ban")
             }
         }
     }

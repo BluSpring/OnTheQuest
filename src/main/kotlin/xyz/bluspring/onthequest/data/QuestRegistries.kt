@@ -6,6 +6,9 @@ import net.minecraft.core.Registry
 import net.minecraft.core.WritableRegistry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.Items
+import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerInteractEvent
 import xyz.bluspring.onthequest.OnTheQuest
 import xyz.bluspring.onthequest.data.ability.Ability
 import xyz.bluspring.onthequest.data.ability.AbilityType
@@ -13,6 +16,7 @@ import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.ability.EmptyAbility
 import xyz.bluspring.onthequest.data.condition.Condition
 import xyz.bluspring.onthequest.data.condition.EmptyCondition
+import xyz.bluspring.onthequest.data.item.CustomItem
 import xyz.bluspring.onthequest.data.jewel.Jewel
 import xyz.bluspring.onthequest.data.particle.ParticleSpawn
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
@@ -37,6 +41,14 @@ object QuestRegistries {
     val CONDITION_REGISTRY: ResourceKey<Registry<Condition.Type>> = createRegistryKey("conditions")
     val CONDITION = registerSimple(CONDITION_REGISTRY) {
         EmptyCondition.Type()
+    }
+
+    val CUSTOM_ITEM_REGISTRY: ResourceKey<Registry<CustomItem>> = createRegistryKey("custom_item")
+    val CUSTOM_ITEM = registerSimple(CUSTOM_ITEM_REGISTRY) {
+        object : CustomItem(Items.AIR, 0) {
+            override fun use(player: Player, event: PlayerInteractEvent) {
+            }
+        }
     }
 
     val JEWEL_REGISTRY: ResourceKey<Registry<Jewel>> = createRegistryKey("jewels")
