@@ -7,6 +7,9 @@
   "jewels.questsmp.strength": "Strength Jewel",
   "jewels.questsmp.water": "Water Jewel",
 
+  "item.questsmp.revive": "Revival Stone",
+  "item.questsmp.jewel_reloader": "DNA Mutator",
+
   "abilities.questsmp.earth.farmers_glitch": "Farmer's Glitch",
   "abilities.questsmp.earth.farmers_glitch.description": "When harvesting crops, you will acquire up to 5 more produce than what you would normally get.",
   "abilities.questsmp.earth.gaias_blessing.show_marked": "Gaia's Blessing: Show Marked Players",
