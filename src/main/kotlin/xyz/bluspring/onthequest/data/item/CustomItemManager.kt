@@ -9,6 +9,8 @@ object CustomItemManager {
     val REVIVE = register("revive", ReviveItem())
     val JEWEL_RELOADER = register("jewel_reloader", JewelReloaderItem())
 
+    fun init() {}
+
     fun getCustomItem(stack: ItemStack): CustomItem? {
         return QuestRegistries.CUSTOM_ITEM.firstOrNull { it.isEqual(stack) }
     }
