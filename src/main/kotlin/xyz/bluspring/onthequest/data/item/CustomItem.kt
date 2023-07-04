@@ -20,7 +20,9 @@ abstract class CustomItem(
     open fun getItem(count: Int = 1): ItemStack {
         val stack = ItemStack(item, count)
         stack.orCreateTag.putInt("CustomModelData", customModel)
-        stack.hoverName = Component.translatable(getTranslationKey()).withStyle(Rarity.EPIC.color)
+        stack.hoverName = Component.translatable(getTranslationKey()).withStyle {
+            it.withItalic(false).withColor(Rarity.EPIC.color)
+        }
 
         return stack
     }
