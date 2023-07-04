@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.NamespacedKey
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.slf4j.Logger
@@ -123,7 +124,7 @@ class OnTheQuest : JavaPlugin() {
                     literalArgument("set") {
                         entitySelectorArgumentOnePlayer("player") {
                             integerArgument("level") {
-                                playerExecutor { player, args ->
+                                anyExecutor { player, args ->
                                     val to = args[0] as Player
                                     val level = args[1] as Int
 
@@ -140,7 +141,7 @@ class OnTheQuest : JavaPlugin() {
                     literalArgument("add") {
                         entitySelectorArgumentOnePlayer("player") {
                             integerArgument("level") {
-                                playerExecutor { player, args ->
+                                anyExecutor { player, args ->
                                     val to = args[0] as Player
                                     val level = args[1] as Int
 
@@ -154,7 +155,7 @@ class OnTheQuest : JavaPlugin() {
                     literalArgument("remove") {
                         entitySelectorArgumentOnePlayer("player") {
                             integerArgument("level") {
-                                playerExecutor { player, args ->
+                                anyExecutor { player, args ->
                                     val to = args[0] as Player
                                     val level = args[1] as Int
 
@@ -172,13 +173,13 @@ class OnTheQuest : JavaPlugin() {
                             namespacedKeyArgument("jewel_type") {
                                 replaceSuggestions(ArgumentSuggestions.strings(QuestRegistries.JEWEL.keySet().map { it.toString() }))
 
-                                playerExecutor { player, args ->
+                                anyExecutor { sender, args ->
                                     val to = args[0] as Player
                                     val jewelType = args[1] as NamespacedKey
 
                                     val level = JewelManager.getOrCreateLevel(to)
 
-                                    if (!giveJewelItem(to, player, jewelType, level))
+                                    if (!giveJewelItem(to, sender, jewelType, level))
                                         throw CommandAPI.failWithString("Invalid jewel type!")
                                 }
                             }
@@ -196,7 +197,7 @@ class OnTheQuest : JavaPlugin() {
         }, 0L, 20L)
     }
 
-    private fun giveJewelItem(to: Player, player: Player, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
+    private fun giveJewelItem(to: Player, player: CommandSender, key: NamespacedKey, level: Int, count: Int = 1): Boolean {
         val jewelType = QuestRegistries.JEWEL.get(ResourceLocation(key.namespace, key.key)) ?: return false
 
         val oldJewel = JewelManager.getOrCreateJewel(to)
