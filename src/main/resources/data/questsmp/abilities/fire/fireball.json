@@ -1,9 +1,28 @@
 {
-  "type": "questsmp:spawn/projectile",
+  "type": "questsmp:multiple",
   "cooldown": 6000,
   "data": {
-    "entity": "minecraft:fireball",
-    "speed": 2
+    "abilities": [
+      {
+        "type": "questsmp:spawn/projectile",
+        "data": {
+          "entity": "minecraft:fireball",
+          "speed": 2
+        }
+      },
+      {
+        "type": "questsmp:delay_ability",
+        "data": {
+          "delay": 1,
+          "ability": {
+            "type": "questsmp:run_command",
+            "data": {
+              "command": "execute at @s as @e[type=fireball,distance=..5] run data merge entity @s {power:[4.,4.,4.],ExplosionPower:3}"
+            }
+          }
+        }
+      }
+    ]
   },
   "keybind": {
     "key": "key.questsmp.primary_ability"
