@@ -25,9 +25,9 @@ class JewelReloaderItem : CustomItem(Items.BLAZE_ROD, 1) {
             jewel = QuestRegistries.JEWEL.getRandom(random).get().value()
         } while (jewel.id == old.id)
 
-        JewelManager.setJewel(player, jewel)
         JewelManager.replaceOldJewel(player, jewel, true)
-        player.activeItem.subtract()
+        JewelManager.setJewel(player, jewel)
+        event.item!!.subtract(1)
         player.sendMessage(
             Component.text(">> ")
                 .color(NamedTextColor.GREEN)

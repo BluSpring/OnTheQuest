@@ -7,7 +7,7 @@
       "type": "questsmp:attack/pellet",
       "data": {
         "max_distance": 40,
-        "damage": 3.5
+        "damage": 8.5
       }
     }
   },
