@@ -16,7 +16,7 @@ import xyz.bluspring.onthequest.data.util.KeybindType
 import java.io.File
 
 object QuestDatapackManager {
-    const val CURRENT_PACK_VERSION = 11
+    const val CURRENT_PACK_VERSION = 12
     private var triggerReload = false
 
     fun reload() {
