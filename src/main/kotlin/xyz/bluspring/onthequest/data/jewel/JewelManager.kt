@@ -47,6 +47,9 @@ object JewelManager {
             }
         }
 
+        if (isJewel(player.inventory.itemInOffHand))
+            jewelSlots.add(player.inventory.itemInOffHand)
+
         player.inventory.removeItem(*jewelSlots.toTypedArray())
         player.inventory.addItem(jewel.getItem(level).bukkitStack)
     }
