@@ -40,6 +40,7 @@ class JewelEventHandler : Listener {
         val jewel = JewelManager.getOrCreateJewel(ev.player)
         val level = JewelManager.getOrCreateLevel(ev.player)
 
+        JewelManager.replaceOldJewel(ev.player, jewel, true)
         ev.player.sendMessage(
             Component.text(">>")
                 .color(NamedTextColor.GREEN)
