@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerAdvancementDoneEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import xyz.bluspring.onthequest.data.jewel.JewelManager
@@ -80,5 +81,11 @@ class JewelEventHandler : Listener {
     fun onPlayerRespawn(ev: PlayerRespawnEvent) {
         val jewel = JewelManager.getOrCreateJewel(ev.player)
         JewelManager.setJewel(ev.player, jewel)
+    }
+
+    @EventHandler
+    fun onDropItem(ev: PlayerDropItemEvent) {
+        if (JewelManager.isJewel(ev.itemDrop.itemStack))
+            ev.isCancelled = true
     }
 }
