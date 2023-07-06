@@ -20,6 +20,7 @@ import xyz.bluspring.onthequest.data.QuestDatapackManager
 import xyz.bluspring.onthequest.data.QuestRegistries
 import xyz.bluspring.onthequest.data.ability.AbilityTypes
 import xyz.bluspring.onthequest.data.condition.Conditions
+import xyz.bluspring.onthequest.data.crafting.CraftingManager
 import xyz.bluspring.onthequest.data.item.CustomItemManager
 import xyz.bluspring.onthequest.data.jewel.JewelManager
 import xyz.bluspring.onthequest.data.particle.ParticleSpawnTypes
@@ -54,6 +55,7 @@ class OnTheQuest : JavaPlugin() {
 
         QuestDatapackManager.loadAllResources()
 
+        CraftingManager.init()
         this.server.pluginManager.registerEvents(JewelEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestEventHandler(), this)
         this.server.pluginManager.registerEvents(QuestPackEventHandler(), this)
