@@ -7,6 +7,6 @@ import kotlin.time.Duration
 object KotlinHelper {
     public inline val Duration.ticks: Int get() = (this.inWholeMilliseconds / 50).toInt()
     fun delayByOneTick(runnable: Runnable) {
-        Bukkit.getScheduler().runTask(OnTheQuest.plugin, runnable)
+        Bukkit.getScheduler().runTaskLater(OnTheQuest.plugin, runnable, 1L)
     }
 }
