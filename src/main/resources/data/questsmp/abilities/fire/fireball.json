@@ -17,7 +17,7 @@
           "ability": {
             "type": "questsmp:run_command",
             "data": {
-              "command": "execute at @s as @e[type=fireball,distance=..5] run data merge entity @s {power:[4.,4.,4.],ExplosionPower:3}"
+              "command": "execute at @s as @e[type=fireball,distance=..5] run data merge entity @s {ExplosionPower:3}"
             }
           }
         }
