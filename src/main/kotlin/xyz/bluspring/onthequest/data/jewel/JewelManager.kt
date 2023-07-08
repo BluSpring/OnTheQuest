@@ -20,7 +20,7 @@ object JewelManager {
     private val playerLevels = mutableMapOf<UUID, Int>()
 
     fun isJewel(itemStack: ItemStack): Boolean {
-        return itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY)
+        return itemStack.hasItemMeta() && itemStack.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY, PersistentDataType.STRING)
     }
 
     fun resetAbilityEffects(player: Player, jewel: Jewel) {
@@ -65,7 +65,7 @@ object JewelManager {
         if (playerLevels.containsKey(player.uniqueId))
             return playerLevels[player.uniqueId]!!
 
-        if (player.persistentDataContainer.has(JEWEL_LEVEL_KEY)) {
+        if (player.persistentDataContainer.has(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER)) {
             val currentLevel = player.persistentDataContainer.get(JEWEL_LEVEL_KEY, PersistentDataType.INTEGER)!!
 
             playerLevels[player.uniqueId] = currentLevel
@@ -92,7 +92,8 @@ object JewelManager {
         if (playerJewels.containsKey(player.uniqueId))
             return playerJewels[player.uniqueId]!!
 
-        if (player.persistentDataContainer.has(JEWEL_KEY)) {
+        player.loadData()
+        if (player.persistentDataContainer.has(JEWEL_KEY, PersistentDataType.STRING)) {
             val currentJewelId = player.persistentDataContainer.get(JEWEL_KEY, PersistentDataType.STRING)!!
             val currentJewel = QuestRegistries.JEWEL.get(ResourceLocation.tryParse(currentJewelId)) ?: Jewel.EMPTY
 

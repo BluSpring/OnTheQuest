@@ -14,7 +14,7 @@ class AttackPelletAbility(cooldownTicks: Long, val maxDistance: Double, val dama
     override fun trigger(player: Player, location: Location?): Boolean {
         val nmsPlayer = (player as CraftPlayer).handle
 
-        val rayTrace = nmsPlayer.getTargetEntity(maxDistance.toInt())
+        val rayTrace = nmsPlayer.getTargetEntity(maxDistance.toInt()) ?: return true
 
         if (rayTrace.type == HitResult.Type.ENTITY) {
             (rayTrace as EntityHitResult).entity.hurt(DamageSource.playerAttack(nmsPlayer), damageAmount.toFloat())

@@ -11,11 +11,11 @@ import xyz.bluspring.onthequest.data.ability.AbilityType
 
 class MultipleAbility(cooldownTicks: Long, val abilities: List<Ability>) : Ability(cooldownTicks) {
     override fun canTrigger(player: Player): Boolean {
-        return abilities.all { it.canTrigger(player) }
+        return super.canTrigger(player) && abilities.all { it.canTrigger(player) }
     }
 
     override fun <T : Event> canTriggerForEvent(player: Player, event: T): Boolean {
-        return abilities.all { it.canTriggerForEvent(player, event) }
+        return super.canTriggerForEvent(player, event) && abilities.all { it.canTriggerForEvent(player, event) }
     }
 
     override fun trigger(player: Player, location: Location?): Boolean {

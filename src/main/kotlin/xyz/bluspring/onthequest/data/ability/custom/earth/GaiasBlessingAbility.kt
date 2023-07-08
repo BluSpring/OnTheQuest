@@ -11,6 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.bluspring.onthequest.data.ability.Ability
@@ -67,7 +68,7 @@ object GaiasBlessingAbility {
             if (!heldItem.hasItemMeta())
                 return false
 
-            if (!heldItem.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY))
+            if (!heldItem.itemMeta.persistentDataContainer.has(Jewel.JEWEL_TYPE_KEY, PersistentDataType.STRING))
                 return false
 
             if (event.rightClicked !is Player)

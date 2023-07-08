@@ -7,7 +7,7 @@
         "type": "questsmp:spawn/projectile",
         "data": {
           "entity": "minecraft:fireball",
-          "speed": 2
+          "speed": 0.95
         }
       },
       {

@@ -21,7 +21,7 @@ class SpawnProjectileAbility(cooldownTicks: Long, val entityType: EntityType<out
         val pos = nmsPlayer.eyePosition.add(Vec3(1.0, 1.0, 1.0).multiply(nmsPlayer.lookAngle))
         entity.absMoveTo(pos.x, pos.y, pos.z)
         nmsPlayer.level.addFreshEntity(entity)
-        entity.shoot(nmsPlayer.lookAngle.x, nmsPlayer.lookAngle.y, nmsPlayer.lookAngle.z, speed, divergence)
+        entity.shootFromRotation(nmsPlayer, nmsPlayer.bukkitYaw, nmsPlayer.rotationVector.y, 0f, speed, divergence)
 
         return true
     }
